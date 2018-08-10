@@ -7,7 +7,7 @@ import selectcarReducer from '../reducers/selectcar/selectcarReducer';
 import MycarReducer from '../reducers/selectcar/MycarReducer';
 import SelectMyCarReducer from '../reducers/selectcar/SelectMyCarReducer';
 import EditCarReducer from '../reducers/selectcar/EditCarReducer';
-import startmapReducer from '../reducers/startmap/startmapReducer';
+import HomeReducer from '../reducers/home/HomeReducer';
 
 export default combineReducers({
   routesReducer,
@@ -17,5 +17,5 @@ export default combineReducers({
   MycarReducer,
   SelectMyCarReducer,
   EditCarReducer,
-  // startmapReducer,
+  HomeReducer,
 });

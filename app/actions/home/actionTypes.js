@@ -1,0 +1,3 @@
+export const CARDETAIL = 'CARDETAIL'
+export const VISIBLEFALSE = 'VISIBLEFALSE'
+export const VISIBLETRUE = 'VISIBLETRUE'

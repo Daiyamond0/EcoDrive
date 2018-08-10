@@ -1,29 +1,37 @@
-import React, { Component } from 'react';
-import { View, Button, Image , Text ,Switch,Platform ,TouchableOpacity,ScrollView,ActivityIndicator} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { styles } from './styles';
-import { Actions } from 'react-native-router-flux';
-import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
-import {Footer , FooterTab} from 'native-base';
+import React, { Component } from 'react'
+import {
+  View,
+  Button,
+  Image,
+  Text,
+  Switch,
+  Platform,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator
+} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { styles } from './styles'
+import { Actions } from 'react-native-router-flux'
+import { LoadingIndicator } from '../loadingIndicator/loadingIndicator'
+import { Footer, FooterTab } from 'native-base'
 
 import Toast from '@remobile/react-native-toast'
-import firebaseService from '../../enviroments/firebase';
-export  class Home extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state={
-      visible:true,
-      cardetail:[],
+import firebaseService from '../../enviroments/firebase'
+export class Home extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      visible: true,
+      cardetail: []
     }
-    
   }
 
-  logout() {
-    this.props.logout();
+  logout () {
+    this.props.logout()
     setTimeout(() => {
-      Actions.reset('login');
-    }, 100);
+      Actions.reset('login')
+    }, 100)
   }
 
   componentWillMount () {
@@ -31,74 +39,74 @@ export  class Home extends React.Component {
     // BluetoothSerial.on('bluetoothDisabled', () => Toast.showShortBottom('Bluetooth disabled'))
   }
 
-  componentDidMount(){
-   
+  componentDidMount () {}
+
+  showCar () {
+    if (this.props.visible === true) {
+      return (
+        <View>
+          <ActivityIndicator animating={this.props.visible} />
+        </View>
+      )
+    }
+    return (
+      <View>
+        <Text>
+          {this.props.cardetail.Make + ' ' + this.props.cardetail.Model}
+        </Text>
+      </View>
+    )
   }
 
-  getCar(){
-    firebaseService.database().ref('SimulateCar/CarDetail').once('value',function(snapshot){
-      const detail = snapshot.val();
-      this.setState({ cardetail: detail})
-    }.bind(this), function(error) { console.log(error); });
-    this.setState({visible:true})
-    setTimeout(() => {
-      this.setState({visible:false})
-    }, 3000)
-  }
-showCar(){
-  if(this.state.visible === true){
-  return(
-    <View>
-    <ActivityIndicator animating={this.state.visible}/>
-    </View>
-  )
-}
-  return(
-    <View>
-    <Text>{this.state.cardetail.Make+' '+this.state.cardetail.Model}</Text>
-    </View>
-  )
-}
-
-  render() {
-    console.log(this.state.visible)
+  render () {
+    console.log(this.props.cardetail.Make)
     return (
       <View style={styles.container}>
-        <View style={{flex:1, flexDirection: 'row'}}>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{}}>
-          <Text style={styles.title}>Welcome {this.props.user.email}</Text>
+            <Text style={styles.title}>Welcome {this.props.user.email}</Text>
           </View>
           <View style={styles.marginBox}>
-            <Button onPress={this.logout.bind(this)} title="Logout"></Button>
+            <Button onPress={this.logout.bind(this)} title='Logout' />
           </View>
         </View>
 
-        <View style={{flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom:150}}>
-          <View style={{margin:40}}>
-            <Button onPress={Actions.startmap} title="Start"></Button>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingBottom: 150
+          }}
+        >
+          <View style={{ margin: 40 }}>
+            <Button onPress={Actions.startmap} title='Start' />
           </View>
-          <View style={{margin:40}}>
-            <Button onPress={Actions.selectcar} title="Select Car"></Button>
+          <View style={{ margin: 40 }}>
+            <Button onPress={Actions.selectcar} title='Select Car' />
           </View>
-          <View style={{margin:40}}>
-            <Button onPress={Actions.history} title="Histoty"></Button>
+          <View style={{ margin: 40 }}>
+            <Button onPress={Actions.history} title='Histoty' />
           </View>
         </View>
-        <View style={{
-        flexDirection: 'row',
-        flex:1}}>
-            <View>
-                <Button title='Pair' onPress={this.getCar.bind(this)}/>
-            </View>
-           
-              <View>
-                { this.state.cardetail.Make === undefined && this.state.cardetail.Model === undefined ?  null: this.showCar()}
-            </View>
-            
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1
+          }}
+        >
+          <View>
+            <Button title='Pair' onPress={this.props.getCar.bind(this)} />
+          </View>
+
+          <View>
+            {this.props.cardetail.Make === undefined &&
+              this.props.cardetail.Model === undefined
+              ? null
+              : this.showCar()}
+          </View>
+
         </View>
         <Footer>
           {/* <FooterTab style={{alignItems:'center'}}>
@@ -116,33 +124,41 @@ showCar(){
                     </View>
                 ) : null}
               </View>
-              
+
           </FooterTab> */}
           {Platform.OS === 'android' && this.props.connected
-            ? (
-          <View  style={{flex:1,flexDirection: 'row',
-        justifyContent: 'center',alignItems: 'center',}}>
+            ? <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+              >
               <TouchableOpacity onPress={Actions.bluetooth}>
-                <Text  style={{ fontSize: 12, color: '#FFFFFF' }}>
-                  Connecting
-                </Text>
-                </TouchableOpacity>
-              </View>
-            ) : 
-            <View  style={{flex:1,flexDirection: 'row',
-        justifyContent: 'center',alignItems: 'center',}}>
+                <Text style={{ fontSize: 12, color: '#FFFFFF' }}>
+                    Connecting
+                  </Text>
+              </TouchableOpacity>
+            </View>
+            : <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+              >
               <TouchableOpacity onPress={Actions.bluetooth}>
-                <Text  style={{ fontSize: 12, color: '#FFFFFF' }}>
-                Not Connecting
-                </Text>
-                </TouchableOpacity>
-              </View>
-            }
-              
+                <Text style={{ fontSize: 12, color: '#FFFFFF' }}>
+                    Not Connecting
+                  </Text>
+              </TouchableOpacity>
+            </View>}
+
         </Footer>
-       
 
       </View>
-    );
+    )
   }
 }
