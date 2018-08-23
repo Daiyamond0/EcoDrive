@@ -20,7 +20,8 @@ import {
   contedfalse,
   list,
   enabledevice,
-  bluetoothSession
+  bluetoothSession,
+  promiseall
 } from '../../actions/ฺBluetooth/ConnectDevice'
 
 const mapStateToProps = state => ({
@@ -31,7 +32,9 @@ const mapStateToProps = state => ({
   devices: state.BlueToothReducer.devices,
   device: state.BlueToothReducer.device,
   deviceID: state.BlueToothReducer.device.id,
-  deviceName: state.BlueToothReducer.device.name
+  deviceName: state.BlueToothReducer.device.name,
+  connecting: state.BlueToothReducer.connecting,
+  connected: state.BlueToothReducer.connected
 })
 
 const mapDispatchToProps = {
@@ -47,7 +50,8 @@ const mapDispatchToProps = {
   contedfalse: contedfalse,
   list: list,
   enabledevice: enabledevice,
-  bluetoothSession: bluetoothSession
+  bluetoothSession: bluetoothSession,
+  promiseall:promiseall
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Bluetooth)

@@ -61,6 +61,13 @@ const make = makecar => {
   }
 }
 
+const resetselectmake = () => {
+  return {
+    type: types.RESETMAKE,
+    
+  }
+}
+
 /// ดึงข้อมูลรถทุกคันจาก db
 export const carlist = () => dispatch => {
   firebaseService.database().ref('CarList').on(
@@ -80,6 +87,7 @@ export const selectmakecar = () => dispatch => {
 }
 
 export const MakeChange = make => dispatch => {
+  if(make != null){
   dispatch(valuemake(make))
   firebaseService.database().ref(`/CarList/${make}`).on(
     'value',
@@ -91,6 +99,9 @@ export const MakeChange = make => dispatch => {
       console.log(error)
     }
   )
+}else{
+  dispatch(resetselectmake())
+}
 }
 
 export const modelselect = () => dispatch => {

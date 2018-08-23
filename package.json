@@ -23,6 +23,7 @@
     "react-native-flexi-radio-button": "^0.2.2",
     "react-native-i18n": "^2.0.11",
     "react-native-keyboard-aware-scroll-view": "^0.4.3",
+    "react-native-picker-select": "^4.2.0",
     "react-native-radio-buttons": "^1.0.0",
     "react-native-radio-buttons-group": "^1.0.7",
     "react-native-router-flux": "^4.0.0-beta.28",

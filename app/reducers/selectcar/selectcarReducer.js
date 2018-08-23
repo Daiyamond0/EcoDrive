@@ -36,6 +36,9 @@ const selectcarReducer = (state = initialState, action) => {
     case types.MAKEMODEL:
       return { ...state, make: action.make, modelselect: action.model }
 
+    case types.RESETMAKE:
+      return { ...state, make: undefined ,modelselect:undefined ,model:[]}
+
     default:
       return state
   }

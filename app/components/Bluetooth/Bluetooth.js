@@ -12,7 +12,7 @@ const Button = ({ title, onPress, style, textStyle }) =>
     <Text style={[ styles.buttonText, textStyle ]}>{title.toUpperCase()}</Text>
   </TouchableOpacity>
 
- const DeviceList = ({ devices, connectedId, showConnectedIcon, onDevicePress }) =>
+ const DeviceList = ({ devices, connectedId, showConnectedIcon, onDevicePress ,Enable}) =>
   <ScrollView style={styles.container}>
     <View style={styles.listContainer}>
       {devices.map((device, i) => {
@@ -25,12 +25,12 @@ const Button = ({ title, onPress, style, textStyle }) =>
               {showConnectedIcon
               ? (
                 <View style={{ width: 48, height: 48, opacity: 0.4 }}>
-                  {connectedId === device.id
+                  {connectedId === device.id && Enable === true
                   ? (
                     <Image style={{ resizeMode: 'contain', width: 24, height: 24, flex: 1 }} source={require('./images/ic_done_black_24dp.png')} />
                   ) : null}
                 </View>
-              ) : null}
+              ) : <View style={{ width: 48, height: 48, opacity: 0.4 }}/>}
               <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={{ fontWeight: 'bold' }}>{device.name}</Text>
                 <Text>{`<${device.id}>`}</Text>
@@ -53,11 +53,12 @@ export class Bluetooth extends Component {
 
   componentWillMount () {
     // this.props.enabledevice()
-    this.props.list()
+    this.props.promiseall()
+    // this.props.list()
     // this.props.bluetoothSession()
     BluetoothSerial.on('bluetoothEnabled', () => Toast.showShortBottom('Bluetooth enabled'))
     BluetoothSerial.on('bluetoothDisabled', () => Toast.showShortBottom('Bluetooth disabled'))
-    BluetoothSerial.on('error', (err) => console.log(`Error: ${err.message}`))
+    // BluetoothSerial.on('error', (err) => console.log(`Error: ${err.message}`))
     BluetoothSerial.on('connectionLost', () => {
       if (this.props.device) {
         Toast.showShortBottom(`Connection to device ${this.props.deviceName} has been lost`)
@@ -66,7 +67,7 @@ export class Bluetooth extends Component {
     })
   }
   
-  
+ 
 
   disconnect () {
     BluetoothSerial.disconnect()
@@ -88,7 +89,14 @@ export class Bluetooth extends Component {
   
   render() {
     const activeTabStyle = { borderBottomWidth: 6, borderColor: '#009688' }
-    
+    console.log('isenable',this.props.isEnabled)
+    console.log('connected',this.props.connected)
+    console.log('connecting',this.props.connecting)
+    console.log('section',this.props.section)
+    // console.log('devices',this.props.devices)
+    // console.log('device',this.props.device)
+    // console.log('deviceID',this.props.deviceID)
+    // console.log('deviceName',this.props.deviceName)
     return (
       
       <View style={{ flex: 1 }}>
@@ -132,10 +140,13 @@ export class Bluetooth extends Component {
           </View>
         ) : (
           <DeviceList
-            showConnectedIcon={this.props.section === 0}
+            showConnectedIcon={this.props.section === 0 && this.props.connected === true}
             connectedId={this.props.device && this.props.deviceID}
-            devices={this.props.section === 0 ? this.props.devices : this.props.unpairedDevices}
-            onDevicePress={(device) => this.props.onDevicePress(device)} />
+            devices={this.props.section === 0  ? this.props.devices : this.props.unpairedDevices}
+            onDevicePress={(device) => this.props.onDevicePress(device,this.props.section)} 
+            Enable={this.props.isEnabled}
+            />
+            
         )}
 
 

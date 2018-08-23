@@ -65,11 +65,22 @@ export const pairDevice = device => dispatch => {
         // devices.push(device)
         dispatch(updateDevices(device))
         // dispatch(unpairedDevices2(device))
+
+        BluetoothSerial.connect(device.id).then(res => {
+          Toast.showShortBottom(`Connected to device ${device.name}`)
+          dispatch(connectdevice(device))
+        })
+        .catch(err => Toast.showShortBottom(err.message))
       } else {
         Toast.showShortBottom(`Device ${device.name} pairing failed`)
       }
     })
     .catch(err => Toast.showShortBottom(err.message))
+
+
+    dispatch(connectingTrue())
+
+    
 }
 
 export const connect = device => dispatch => {
@@ -83,12 +94,15 @@ export const connect = device => dispatch => {
     .catch(err => Toast.showShortBottom(err.message))
 }
 
-export const onDevicePress = device => dispatch => {
-  if (dispatch(section())) {
+export const onDevicePress = (device,section) => dispatch => {
+  if (section === 0) {
     dispatch(connect(device))
   } else {
     dispatch(pairDevice(device))
+    
   }
+  
+
 }
 
 export const contedfalse = () => dispatch => {
@@ -126,5 +140,27 @@ export const bluetoothSession = () => dispatch => {
       )
     }
     dispatch(connectedFalse())
+  })
+}
+
+
+
+export const promise = (isEnabled, devices) => ({
+  type: types.PROMISE,
+  enable:isEnabled,
+  devices:devices
+  
+})
+
+export const promiseall = () => dispatch => {
+  Promise.all([
+    BluetoothSerial.isEnabled(),
+    BluetoothSerial.list()
+  ])
+  .then((values) => {
+    const [ isEnabled, devices ] = values
+    
+    dispatch(promise(isEnabled, devices))
+    
   })
 }

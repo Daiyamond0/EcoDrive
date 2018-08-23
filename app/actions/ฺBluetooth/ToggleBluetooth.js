@@ -10,6 +10,10 @@ const isdisable = () => ({
   type: types.DISABLE
 })
 
+const connectfalse = () =>({
+  type:types.CONNECTFALSE
+})
+
 export const enable = () => dispatch => {
   BluetoothSerial.enable()
     .then(res => {
@@ -24,6 +28,9 @@ export const disable = () => dispatch => {
       dispatch(isdisable())
     })
     .catch(err => Toast.showShortBottom(err.message))
+    BluetoothSerial.disconnect()
+    .then(() => dispatch(connectfalse()))
+    .catch((err) => Toast.showShortBottom(err.message))
 }
 
 export const toggleBluetooth = value => dispatch => {
@@ -36,6 +43,6 @@ export const toggleBluetooth = value => dispatch => {
 
 export const requestEnable = () => dispatch => {
   BluetoothSerial.requestEnable()
-    .then(res => dispatch(isenable()))
-    .catch(err => Toast.showShortBottom(err.message))
+    .then((res) => dispatch(isenable()))
+    .catch((err) => Toast.showShortBottom(err.message))
 }

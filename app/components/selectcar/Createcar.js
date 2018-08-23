@@ -4,6 +4,7 @@ import { View, Button, Text, FlatList, TouchableHighlight } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { ListItem, List, Picker } from 'native-base'
 import firebaseService from '../../enviroments/firebase'
+import RNPickerSelect from 'react-native-picker-select';
 
 export class CreateCar extends React.Component {
   constructor (props) {
@@ -46,6 +47,13 @@ export class CreateCar extends React.Component {
             console.log(error)
           }
         )
+    }else{
+      this.setState({
+        series: undefined
+      })
+      this.setState({
+        seriecar:[]
+      })
     }
     /// //// เมื่อเข้ามาหน้านี้จะดึงรถที่ add ไปแล้วของ user ที่ login อยู่
     const uid = this.props.user.uid
@@ -89,6 +97,24 @@ export class CreateCar extends React.Component {
           }
         )
     }
+    if(model == undefined && make == undefined && series == null){
+      alert('กรุณาเลือก Make และ Model และ Serie')
+     this.setState({details: []})
+     this.setState({ cardetail: []})
+     
+  }
+  if(make != undefined && model == undefined && series == undefined){
+      
+   alert('กรุณาเลือก Model และ Serie')
+   this.setState({details: []})
+   this.setState({ cardetail: []})
+ }
+ if(make != undefined && model != undefined && series == undefined){
+      
+  alert('กรุณาเลือก Serie')
+  this.setState({details: []})
+  this.setState({ cardetail: []})
+}
   }
 
   /// /////เพิ่มรถที่ต้องการ
@@ -97,8 +123,9 @@ export class CreateCar extends React.Component {
     const car = Object.values(this.state.details)[0]
     const model = this.state.cardetail.Model
     const checky = this.state.checkcar
+    const cardetail = this.state.cardetail;
     console.log(checky)
-    if (checky.includes(model) === false) {
+    if (checky.includes(model) === false && cardetail.length != 0) {
       /// ///เช็คว่าเคยเพิ่มรถคันนี้ไปยัง
       firebaseService
         .database()
@@ -110,8 +137,11 @@ export class CreateCar extends React.Component {
           console.log(error)
         })
       Actions.reset('selectcar')
-    } else {
+    } if(checky.includes(model) === true ) {
       alert('เคยเพิ่มไปแล้ว')
+    }
+    if(cardetail.length == 0){
+        alert('กรุณาเพิ่มรถที่ต้องการ')
     }
     /// แสดงรถทุกคันที่เพิ่มไปแล้วจาก firebase
     firebaseService.database().ref(`user/${uid}`).once('value', function (
@@ -122,9 +152,12 @@ export class CreateCar extends React.Component {
     }.bind(this), function (error) {
       console.log(error)
     })
+  
+    
   }
 
   render () {
+    console.log(this.state.cardetail)
     return (
       <View style={{}}>
         <Picker
@@ -133,13 +166,17 @@ export class CreateCar extends React.Component {
           placeholderStyle={{ color: '#2874F0' }}
           note={false}
           selectedValue={this.props.make}
-          onValueChange={this.props.MakeChange.bind(this)}
+          onValueChange={ this.props.MakeChange.bind(this) }
+
         >
+          
+          <Picker.Item label='Select Make' value={null} />
           {Object.keys(this.props.cardata).map((item, index) => {
             return <Picker.Item label={item} value={item} key={index} />
           })}
         </Picker>
-        <Picker
+      
+         <Picker
           mode='dropdown'
           placeholder='Select One'
           placeholderStyle={{ color: '#2874F0' }}
@@ -147,6 +184,7 @@ export class CreateCar extends React.Component {
           selectedValue={this.props.modelselect} // change to props
           onValueChange={this.props.Modelchange.bind(this)} // change to props
         >
+          <Picker.Item label='Select Model' value={null} />
           {Object.keys(this.props.model).map((item, index) => {
             return <Picker.Item label={item} value={item} key={index} />
           })}
@@ -160,6 +198,7 @@ export class CreateCar extends React.Component {
           selectedValue={this.state.series}
           onValueChange={this.onValueChange.bind(this)}
         >
+        <Picker.Item label='Select Serie' value={null} />
           {this.state.seriecar.map((item, index) => {
             return (
               <Picker.Item
@@ -169,7 +208,7 @@ export class CreateCar extends React.Component {
               />
             ) /// ถ้าเพิ่ม document ต้องแก้ให้เลือกที่ model car
           })}
-        </Picker>
+        </Picker> 
         <TouchableHighlight>
           <Button title='Go' onPress={() => this.CarDetail()} />
         </TouchableHighlight>

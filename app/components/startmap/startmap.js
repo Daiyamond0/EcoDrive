@@ -70,6 +70,50 @@ export class StartMap extends React.Component {
     console.log(a)
   }
 
+  changeColor(){
+    const acceleration = this.state.acceleration
+    if(acceleration[acceleration.length - 1]< 50){
+      return{
+        color:'green'
+      }
+    }
+     if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
+      return{
+        color:'orange'
+      }
+    } if(acceleration[acceleration.length - 1] >= 70){
+      return{
+        color:'red'
+      }
+    } 
+    
+  }
+
+  fuelconsumption(){
+    const acceleration = this.state.acceleration
+    const totalfueluse = this.state.totalfueluse
+    const fuelconsumption =
+      this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
+     
+      if(acceleration[acceleration.length - 1]< 50  ){
+        return(
+          <Text>{Number.parseFloat(fuelconsumption.toFixed(1))}</Text>
+          
+        )
+      }
+       if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
+        return(
+          <Text>{Number.parseFloat(fuelconsumption.toFixed(1),10) +parseInt(10) }</Text>
+          
+        )
+      } if(acceleration[acceleration.length - 1] >= 70){
+        return(
+          <Text>{Number.parseFloat(fuelconsumption.toFixed(1),10) + parseInt(20)}</Text>
+          // <Text>777</Text>
+        )
+      } 
+  }
+
   render () {
     if (this.state.loading) {
       return null
@@ -86,16 +130,16 @@ export class StartMap extends React.Component {
     return (
       <View style={{ flex: 1, justifyContent: 'space-around' }}>
         <View style={{}}>
-          <Text>StartMap</Text>
-          <Text>{JSON.stringify(this.props.text.FuelType.CO2Emission)}</Text>
+          <Text style={this.changeColor()}>StartMap</Text>
+          <Text>CO2Emission: {JSON.stringify(this.props.text.FuelType.CO2Emission)}</Text>
           <ScrollView>
             {/* <Text>5555</Text> */}
             {/* {this.getDistance()} */}
             {/* <Text>{this.props.speed}</Text> */}
             {/* <Text>{this.state.distance+","}</Text> */}
-            <Text>{this.state.sum.toFixed(1) + ','}</Text>
-            <Text>{totalfueluse[totalfueluse.length - 1]}</Text>
-            <Text>{co2}</Text>
+            <Text>Distance: {this.state.sum.toFixed(1) + ','}</Text>
+            <Text>FuelUse: {totalfueluse[totalfueluse.length - 1]}</Text>
+            <Text>CO2: {co2}</Text>
           </ScrollView>
         </View>
         <View
@@ -128,7 +172,7 @@ export class StartMap extends React.Component {
             }}
           >
             <Text>Fuelrate</Text>
-            <Text>{fuelconsumption.toFixed(1)}</Text>
+            {this.fuelconsumption()}
             <Text>Km/L</Text>
           </View>
           <View

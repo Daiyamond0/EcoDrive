@@ -11,6 +11,8 @@ export const MAKEMODEL = 'MAKEMODEL'
 export const MAKE = 'MAKE'
 export const MODEL = 'MODEL'
 
+export const RESETMAKE = 'RESETMAKE'
+
 /// // addcar.js
 export const ADD = 'ADD'
 

@@ -73,6 +73,14 @@ const BlueToothReducer = (state = initialState, action) => {
     case types.SESSIONDEVICENAME:
       return { ...state, device: state.device.name }
 
+
+    case types.PROMISE:
+      return { ...state, isEnabled: action.enable , devices:action.devices }
+
+    case types.CONNECTFALSE:
+      return { ...state, connected:false}
+
+
     default:
       return state
   }
