@@ -2,12 +2,12 @@ var firebase = require('firebase');
 require('@firebase/firestore');
 
 const config = {
-  apiKey: "AIzaSyAdJduv0cb2LOwzTo_QY24p2O4OiFY97SE",
-  authDomain: "todo-67dd3.firebaseapp.com",
-  databaseURL: "https://todo-67dd3.firebaseio.com",
-  projectId: "todo-67dd3",
-  storageBucket: "todo-67dd3.appspot.com",
-  messagingSenderId: "8791448380"
+  apiKey: "AIzaSyAQ79Myn8zWUanExxi915gcyeFfwOaJSZw",
+    authDomain: "ecodrive-a28d6.firebaseapp.com",
+    databaseURL: "https://ecodrive-a28d6.firebaseio.com",
+    projectId: "ecodrive-a28d6",
+    storageBucket: "ecodrive-a28d6.appspot.com",
+    messagingSenderId: "639206788051"
 }
 
 

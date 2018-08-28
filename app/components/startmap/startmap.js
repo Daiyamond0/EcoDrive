@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux'
 export class StartMap extends React.Component {
   constructor () {
     super()
-    this.ref = firebaseService.database().ref('Holds')
+    this.ref = firebaseService.database().ref('Speed')
     this.unsubscribe = null
 
     this.state = {
