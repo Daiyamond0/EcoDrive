@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { View, Button, Text, FlatList, TouchableHighlight } from 'react-native'
-
+import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import { ListItem, List, Picker } from 'native-base'
 import firebaseService from '../../enviroments/firebase'
 import RNPickerSelect from 'react-native-picker-select';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export class CreateCar extends React.Component {
   constructor (props) {
@@ -160,7 +161,10 @@ export class CreateCar extends React.Component {
     console.log(this.state.cardetail)
     return (
       <View style={{}}>
-        <Picker
+        <View style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:400,height:50}}>      
+        <Text style={{fontSize:15,color:'#000066',marginTop:'3%',marginLeft:'1%'}}>Make Car</Text>
+      </View>
+      <Picker style={{}}
           mode='dropdown'
           placeholder='Select One'
           placeholderStyle={{ color: '#2874F0' }}
@@ -170,13 +174,16 @@ export class CreateCar extends React.Component {
 
         >
           
-          <Picker.Item label='Select Make' value={null} />
+          <Picker.Item label='Select' value={null} />
           {Object.keys(this.props.cardata).map((item, index) => {
             return <Picker.Item label={item} value={item} key={index} />
           })}
+
         </Picker>
-      
-         <Picker
+        <View style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:400,height:50}}>
+        <Text style={{fontSize:15,color:'#000066',marginTop:'3%',marginLeft:'1%'}}>Model Car</Text>
+      </View>
+         <Picker style={{}}
           mode='dropdown'
           placeholder='Select One'
           placeholderStyle={{ color: '#2874F0' }}
@@ -184,13 +191,15 @@ export class CreateCar extends React.Component {
           selectedValue={this.props.modelselect} // change to props
           onValueChange={this.props.Modelchange.bind(this)} // change to props
         >
-          <Picker.Item label='Select Model' value={null} />
+          <Picker.Item label='Select' value={null} />
           {Object.keys(this.props.model).map((item, index) => {
             return <Picker.Item label={item} value={item} key={index} />
           })}
         </Picker>
-
-        <Picker
+        <View style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:400,height:50}}>
+      <Text style={{fontSize:15,color:'#000066',marginTop:'3%',marginLeft:'1%'}}>Serie Car</Text>
+    </View>
+    <Picker style={{}}        
           mode='dropdown'
           placeholder='Select One'
           placeholderStyle={{ color: '#2874F0' }}
@@ -198,7 +207,7 @@ export class CreateCar extends React.Component {
           selectedValue={this.state.series}
           onValueChange={this.onValueChange.bind(this)}
         >
-        <Picker.Item label='Select Serie' value={null} />
+        <Picker.Item label='Select' value={null} />
           {this.state.seriecar.map((item, index) => {
             return (
               <Picker.Item
@@ -208,29 +217,48 @@ export class CreateCar extends React.Component {
               />
             ) /// ถ้าเพิ่ม document ต้องแก้ให้เลือกที่ model car
           })}
-        </Picker> 
+        </Picker>
         <TouchableHighlight>
-          <Button title='Go' onPress={() => this.CarDetail()} />
+        <View style={{alignItems:"center"}}>
+          <Icon name='md-checkmark-circle' onPress={() => this.CarDetail()} style={styles.actionButtonIcon} />
+          <Text style={{fontSize:12,color:'blue'}}>Check!</Text>
+        </View>
         </TouchableHighlight>
         <View>
           <List
             dataArray={this.state.details}
             renderRow={item => {
               return (
-                <View>
+                <View style={{}}>
+                <View style={{alignItems:"center"}}>
                   <Text>Model: {item.Model}</Text>
                   <Text>Speed: {item.Speed}</Text>
                   <Text>FuelType: {item.FuelType.FuelType}</Text>
+                </View>
                 </View>
               )
             }}
           />
         </View>
-        <View>
-          <Button title='Add' onPress={() => this.AddData()} />
+        <View style={styles.submitText}>
+          <Button title='Create' onPress={() => this.AddData()} />
         </View>
-
       </View>
     )
   }
 }
+
+export const styles = StyleSheet.create({
+  actionButtonIcon: {
+    fontSize: 70,
+    height: 70,
+    color: 'black',
+    marginTop: '20%',
+  },
+  submitText:{
+    borderRadius:30,
+    marginRight:50,
+    marginLeft:50,
+    marginTop:'15%',
+},
+});

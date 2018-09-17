@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ListView,
   Button,
+  ImageBackground,
   Text,
   TouchableOpacity
 } from 'react-native'
@@ -55,6 +56,11 @@ export class Edit extends React.Component {
       '2': ['E85', 2360]
     }
     return (
+      <ImageBackground
+                style={styles.container}
+                source={require('../Image/Edit.png')}
+                imageStyle={{ resizeMode: 'cover' }}
+              >
       <View style={styles.mainviewStyle}>
 
         {/* <Text>{this.props.index}</Text> */}
@@ -90,19 +96,12 @@ export class Edit extends React.Component {
           </List>
 
         </View>
-        <View style={styles.footer}>
-          <TouchableHighlight
-            style={styles.bottomButtons}
-            onPress={() => this.edit()}
-          >
-            <Text style={styles.footerText}>OK</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.bottomButtons} onPress={{}}>
-            <Text style={styles.footerText}>CANCEL</Text>
-          </TouchableHighlight>
-        </View>
-
+        <View style={{marginTop:330,marginLeft:65,marginRight:65,backgroundColor:'#b33c00'}}>
+          <Button style={styles.bottomButtons}
+            onPress={() => this.edit()} title='OK'></Button>
       </View>
+      </View>
+      </ImageBackground>
     )
   }
 }
@@ -126,12 +125,17 @@ const styles = StyleSheet.create({
   bottomButtons: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
+    backgroundColor:'#b33c00',
   },
   footerText: {
     color: 'white',
     fontWeight: 'bold',
     alignItems: 'center',
     fontSize: 18
-  }
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF'
+  },
 })

@@ -44,10 +44,11 @@ export class BasicFormComponent extends Component {
           onChangeText={this.handlePasswordChange}
           value={password}
           underlineColorAndroid={'transparent'} />
-
+        <View style={{alignItems:'center'}}>
         <TouchableOpacity style={styles.button} onPress={this.handleButtonPress}>
           <Text style={styles.buttonTitle}>{this.props.buttonTitle}</Text>
         </TouchableOpacity>
+      </View>
       </View>
     );
   }

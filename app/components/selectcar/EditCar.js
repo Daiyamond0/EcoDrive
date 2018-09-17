@@ -6,7 +6,9 @@ import {
   ListView,
   Button,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Image,
+  ImageBackground
 } from 'react-native'
 import {
   ListItem,
@@ -18,6 +20,8 @@ import {
 } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import firebaseService from '../../enviroments/firebase'
+import Icon from 'react-native-vector-icons/Ionicons';
+
 export class EditCar extends React.Component {
   constructor (props) {
     super(props)
@@ -53,12 +57,23 @@ export class EditCar extends React.Component {
 
     return (
       <View style={styles.mainviewStyle}>
+      <ImageBackground
+      style={styles.container}
+      source={require('../Image/backgroundEdit.png')}
+      imageStyle={{ resizeMode: 'cover' }}
+    >
+     </ImageBackground>
         {/* <Text>{JSON.stringify(this.props.mycar)}</Text> */}
         <View>
           <List
             dataArray={this.props.mycar}
             renderRow={(item, index, key) => {
               return (
+                <ImageBackground
+                style={styles.container}
+                source={require('../Image/Editcar.png')}
+                imageStyle={{ resizeMode: 'cover' }}
+              >
                 <TouchableHighlight>
                   <ListItem>
                     <View>
@@ -67,21 +82,17 @@ export class EditCar extends React.Component {
                       <Text>Speed:{item.Speed} </Text>
                       <Text>Fueltype: {item.FuelType.FuelType}</Text>
                     </View>
-                    <View style={{ marginLeft: 100 }}>
-                      <View>
-                        <Button
-                          title='Remove'
-                          onPress={() => this.removeCar(key)}
-                          key={index}
-                        />
-                        <Button
-                          title='Edit'
-                          onPress={() => this.editCar(item, key)}
-                        />
+                    <View style={{ marginLeft: 20 }}>
+                      <View style={{ margin: 10,marginLeft:1,marginRight:60,borderRadius:100,marginTop:5 }}>
+                        <Button onPress={() => this.removeCar(key)}key={index} title='delete Car'/>
                       </View>
+                      <View style={{borderRadius:100,margin:10,marginLeft:1,marginRight:60}}>
+                        <Button onPress={() => this.editCar(item, key)} title='Edit'/>
+                        </View>
                     </View>
                   </ListItem>
                 </TouchableHighlight>
+              </ImageBackground>
               )
             }}
           />
@@ -124,5 +135,10 @@ const styles = StyleSheet.create({
   mainviewStyle: {
     flex: 1,
     flexDirection: 'column'
-  }
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF'
+  },
+  
 })

@@ -4,7 +4,8 @@ import {
   Button,
   Text,
   TouchableHighlight,
-  StyleSheet
+  StyleSheet,
+  ImageBackground
 } from 'react-native'
 import { ListItem, List } from 'native-base'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
@@ -24,10 +25,15 @@ export class SelectMyCar extends React.Component {
   render () {
     return (
       <View style={styles.mainviewStyle}>
+      <ImageBackground
+      style={styles.container}
+      source={require('../Image/MyCar.png')}
+      imageStyle={{ resizeMode: 'cover' }}
+    >
         <View>
           <RadioGroup
             onSelect={(index, value) => this.props.onSelect(index, value)}
-          >
+          style={{marginBottom:60}}>
             {this.props.mycar.map((item, index) => {
               return (
                 <RadioButton value={item} key={index}>
@@ -36,16 +42,16 @@ export class SelectMyCar extends React.Component {
               )
             })}
           </RadioGroup>
-          <Text>{JSON.stringify(this.props.text)}</Text>
         </View>
         <View style={styles.footer}>
           <TouchableHighlight
             style={styles.bottomButtons}
-            onPress={() => Actions.pop()}
+            onPress={() => Actions.home()}
           >
-            <Text style={styles.footerText}>SelectCar</Text>
+            <Text style={styles.footerText}>Select</Text>
           </TouchableHighlight>
         </View>
+      </ImageBackground>
       </View>
     )
   }
@@ -68,7 +74,7 @@ const styles = StyleSheet.create({
     bottom: -10,
     backgroundColor: 'green',
     flexDirection: 'row',
-    height: 80,
+    height: 55,
     alignItems: 'center'
   },
   bottomButtons: {
@@ -80,6 +86,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     alignItems: 'center',
-    fontSize: 18
-  }
+    fontSize: 14,
+    marginBottom:5
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF'
+  },
 })

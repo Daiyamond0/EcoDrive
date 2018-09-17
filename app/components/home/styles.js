@@ -8,6 +8,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#e9f7fd',
   },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
   image: {
     width: 100,
     height: 100,
@@ -24,7 +29,8 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     margin: 20,
-    paddingRight: 0,
+    paddingRight: 15,
+    alignItems: 'center'
   },
   footer:{
     position: 'relative',
@@ -55,4 +61,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
+  icon:{
+    width:24,
+    height:24
+  }
 });
