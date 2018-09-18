@@ -42,11 +42,12 @@ export class SelectMyCar extends React.Component {
               )
             })}
           </RadioGroup>
+          <Text>{JSON.stringify(this.props.text)}</Text>
         </View>
         <View style={styles.footer}>
           <TouchableHighlight
             style={styles.bottomButtons}
-            onPress={() => Actions.home()}
+            onPress={() => Actions.popTo('home')}
           >
             <Text style={styles.footerText}>Select</Text>
           </TouchableHighlight>

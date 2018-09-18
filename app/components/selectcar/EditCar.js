@@ -42,6 +42,8 @@ export class EditCar extends React.Component {
     const uid = this.props.user.uid
     console.log(x)
     firebaseService.database().ref(`user/${uid}/`).child(x).remove()
+    
+    Actions.replace('editcar')
     Actions.refresh('editcar')
   }
 
@@ -84,7 +86,7 @@ export class EditCar extends React.Component {
                     </View>
                     <View style={{ marginLeft: 20 }}>
                       <View style={{ margin: 10,marginLeft:1,marginRight:60,borderRadius:100,marginTop:5 }}>
-                        <Button onPress={() => this.removeCar(key)}key={index} title='delete Car'/>
+                        <Button onPress={() => this.removeCar(key)} key={index} title='delete Car'/>
                       </View>
                       <View style={{borderRadius:100,margin:10,marginLeft:1,marginRight:60}}>
                         <Button onPress={() => this.editCar(item, key)} title='Edit'/>

@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
   connected: state.BlueToothReducer.connected,
   visible : state.HomeReducer.visible,
   cardetail:state.HomeReducer.cardetail,
+  CarSelect: state.SelectMyCarReducer.CarSelect
 })
 
 const mapDispatchToProps = {

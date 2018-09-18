@@ -106,10 +106,10 @@ export class MyCar extends React.Component {
           <ActionButton.Item buttonColor='green' title="Select Car" onPress={Actions.selectmycar}>
             <Icon name="md-search" style={styles.actionButtonIcon} />
           </ActionButton.Item>
-              {this.props.text.Make === undefined &&
-                this.props.text.Model === undefined
+              {this.props.CarSelect.Make === undefined &&
+                this.props.CarSelect.Model === undefined
                 ? 'SelectCar'
-                : this.props.text.Make + ' ' + this.props.text.Model}
+                : this.props.CarSelect.Make + ' ' + this.props.CarSelect.Model}
           <ActionButton.Item buttonColor='#9b59b6' title="Edit Car" onPress={Actions.editcar}>
             <Icon name="md-clipboard" style={styles.actionButtonIcon} />
           </ActionButton.Item>

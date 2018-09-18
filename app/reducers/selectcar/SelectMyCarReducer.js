@@ -1,13 +1,13 @@
 import * as types from '../../actions/selectcar/actionTypes'
 
 const initialState = {
-  text: ''
+  CarSelect: ''
 }
 
 const SelectMyCarReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.MYCAR:
-      return { ...state, text: action.value }
+      return { ...state, CarSelect: action.value }
 
     default:
       return state

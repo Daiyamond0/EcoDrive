@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { StartMap } from '../../components/startmap/startmap'
 import { getDistance } from '../../actions/startmap/actions'
 const mapStateToProps = state => ({
-  text: state.SelectMyCarReducer.text
+  CarSelect: state.SelectMyCarReducer.CarSelect
   // distance: state.startmapReducer.distance,
   // totalfueluse:state.startmapReducer.totalfueluse,
 })

@@ -137,7 +137,7 @@ export class CreateCar extends React.Component {
         .catch(error => {
           console.log(error)
         })
-      Actions.reset('selectcar')
+      Actions.popTo('selectcar')
     } if(checky.includes(model) === true ) {
       alert('เคยเพิ่มไปแล้ว')
     }

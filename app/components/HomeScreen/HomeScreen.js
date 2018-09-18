@@ -14,13 +14,13 @@ import{
   StackNavigator
 } from 'react-navigation';
 import {SideBar} from "./SideBar/SideBar.js";
-import { styles } from '../home/styles.js'
+import { styles } from './styles.js'
 import { Actions } from 'react-native-router-flux'
-import { LoadingIndicator } from '../loadingIndicator/loadingIndicator'
+import { LoadingIndicator } from '../loadingIndicator/loadingIndicator.js'
 import { Footer, FooterTab } from 'native-base'
 import ActionButton from 'react-native-action-button';
 import Toast from '@remobile/react-native-toast'
-import firebaseService from '../../enviroments/firebase'
+import firebaseService from '../../enviroments/firebase.js'
 import {DrawerNavigator} from 'react-navigation';
 
 
@@ -39,6 +39,16 @@ export  class HomeScreen extends React.Component {
     setTimeout(() => {
       Actions.reset('login')
     }, 100)
+  }
+
+  startmap(){
+    if(this.props.CarSelect.Make === undefined &&
+      this.props.CarSelect.Model === undefined){
+        alert('Select Car First')
+    }else{
+      Actions.push('startmap')
+    }
+    
   }
 
   componentWillMount () {
@@ -62,7 +72,7 @@ export  class HomeScreen extends React.Component {
         ref={(ref) => { this._drawer = ref; }}
         content={<SideBar navigator={this._navigator} />}
         onClose={() => this.closeDrawer()} >
-      <Container>
+      
         <Header>
           <Left>
             <Button
@@ -77,45 +87,16 @@ export  class HomeScreen extends React.Component {
           </Body>
           <Right />
         </Header>
-          
+        
                 <ImageBackground
       style={styles.container}
       source={require('../Image/home.png')}
       imageStyle={{ resizeMode: 'cover' }}
       >
-        {/* Rest of the app comes ABOVE the action button component !*/}
-        <ActionButton buttonColor='#b35900'>
-          <ActionButton.Item buttonColor='#33cc33' title="Start" onPress={Actions.startmap}>
-            <Icon name="ios-car-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3366ff' title="Mycar" onPress={Actions.selectcar}>
-            <Icon name="ios-contact-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#804000' title="History" onPress={Actions.history}>
-            <Icon name="md-clipboard" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor="rgba(231,76,60,1)" title="Logout" onPress={this.logout.bind(this)}>
-            <Icon name="ios-log-out" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
-        <Footer>
-          {/* <FooterTab style={{alignItems:'center'}}>
-            <View style={styles.topBar}>
-            <Text style={styles.heading}>Bluetooth</Text>
-            {Platform.OS === 'android'
-            ? (
-              <View style={styles.enableInfoWrapper}>
-                        <Text style={{ fontSize: 12, color: '#FFFFFF' }}>
-                        {this.props.isEnabled ? 'disable' : 'enable'}
-                        </Text>
-                        <Switch
-                        onValueChange={this.props.toggleBluetooth.bind(this)}
-                        value={this.props.isEnabled} />
-                    </View>
-                  ) : null}
-                  </View>
-                
-          </FooterTab> */}
+        
+       
+        <View style={styles.footer}>
+         
           {Platform.OS === 'android' && this.props.connected
             ? <View
               style={{
@@ -146,13 +127,32 @@ export  class HomeScreen extends React.Component {
                   </Text>
               </TouchableOpacity>
             </View>}
-        </Footer>
+        </View>
             {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/} 
             
-            <View>
+            <View> 
+            <Text>CarSelect: {this.props.CarSelect.Make === undefined &&
+                this.props.CarSelect.Model === undefined
+                ? 'SelectCar'
+                : this.props.CarSelect.Make + ' ' + this.props.CarSelect.Model}</Text>
       </View>
 </ImageBackground>
-      </Container>
+
+      {/* Rest of the app comes ABOVE the action button component !*/}
+      <ActionButton buttonColor='#b35900'>
+          <ActionButton.Item buttonColor='#33cc33' title="Start" onPress={this.startmap.bind(this)} >
+            <Icon name="ios-car-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#3366ff' title="Mycar" onPress={Actions.selectcar}>
+            <Icon name="ios-contact-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#804000' title="History" onPress={Actions.history}>
+            <Icon name="md-clipboard" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor="rgba(231,76,60,1)" title="Logout" onPress={this.logout.bind(this)}>
+            <Icon name="ios-log-out" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
       </Drawer>
             )
   }

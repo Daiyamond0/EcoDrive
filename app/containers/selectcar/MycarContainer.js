@@ -6,7 +6,7 @@ import { MyCarlist } from '../../actions/selectcar/Mycar'
 const mapStateToProps = state => ({
   user: state.sessionReducer.user,
   mycar: state.MycarReducer.mycar,
-  text: state.SelectMyCarReducer.text
+  CarSelect: state.SelectMyCarReducer.CarSelect
 })
 
 const mapDispatchToProps = {

@@ -123,7 +123,7 @@ export class StartMap extends React.Component {
       this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
     const co2 =
       totalfueluse[totalfueluse.length - 1] *
-      this.props.text.FuelType.CO2Emission
+      this.props.CarSelect.FuelType.CO2Emission
 
     const acceleration = this.state.acceleration
 
@@ -131,7 +131,7 @@ export class StartMap extends React.Component {
       <View style={{ flex: 1, justifyContent: 'space-around' }}>
         <View style={{}}>
           <Text style={this.changeColor()}>StartMap</Text>
-          <Text>CO2Emission: {JSON.stringify(this.props.text.FuelType.CO2Emission)}</Text>
+          <Text>CO2Emission: {JSON.stringify(this.props.CarSelect.FuelType.CO2Emission)}</Text>
           <ScrollView>
             {/* <Text>5555</Text> */}
             {/* {this.getDistance()} */}

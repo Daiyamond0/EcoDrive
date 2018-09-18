@@ -5,7 +5,7 @@ import BluetoothSerial from 'react-native-bluetooth-serial';
 import Toast from '@remobile/react-native-toast'
 
 import { Actions } from 'react-native-router-flux';
-import Home from '../../components/home/home'
+import HomeScreen from '../../components/HomeScreen/HomeScreen'
 
 const Button = ({ title, onPress, style, textStyle }) =>
   <TouchableOpacity style={[ styles.button, style ]} onPress={onPress}>

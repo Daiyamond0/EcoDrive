@@ -47,6 +47,10 @@ export class Edit extends React.Component {
       CO2Emission: select[1],
       FuelType: select[0]
     })
+    Actions.pop('edit')
+    Actions.replace('editcar')
+    Actions.refresh('edit')
+    
   }
 
   render () {
