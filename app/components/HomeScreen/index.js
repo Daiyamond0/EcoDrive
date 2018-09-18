@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import HomeScreen from "./HomeScreen.js";
+import {HomeScreen} from "./HomeScreen.js";
 import SideBar from "./SideBar/SideBar.js";
 import { DrawerNavigator } from "react-navigation";
 const HomeScreenRouter = DrawerNavigator(
@@ -10,4 +10,4 @@ const HomeScreenRouter = DrawerNavigator(
     contentComponent: props => <SideBar {...props} />
   }
 );
-export default HomeScreenRouter;
+export default  HomeScreenRouter;

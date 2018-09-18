@@ -1,9 +1,11 @@
 import { connect } from 'react-redux'
-import { Home } from '../../components/home/home'
+import { HomeScreen } from '../../components/HomeScreen/HomeScreen'
 // import { Bluetooth } from '../../components/Bluetooth/Bluetooth';
 
 import { logoutUser } from '../../actions/session/actions'
 import { getCar } from '../../actions/home/home';
+
+
 
 const mapStateToProps = state => ({
   routes: state.routes,
@@ -18,4 +20,4 @@ const mapDispatchToProps = {
   getCar : getCar,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

@@ -9,10 +9,11 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from 'react-native'
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text, Card, CardItem } from "native-base";
+import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text, Card, CardItem,Drawer } from "native-base";
 import{
   StackNavigator
 } from 'react-navigation';
+import {SideBar} from "./SideBar/SideBar.js";
 import { styles } from '../home/styles.js'
 import { Actions } from 'react-native-router-flux'
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator'
@@ -23,10 +24,10 @@ import firebaseService from '../../enviroments/firebase'
 import {DrawerNavigator} from 'react-navigation';
 
 
-export default class HomeScreen extends React.Component {
+export  class HomeScreen extends React.Component {
    
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isReady: false
     };
@@ -46,16 +47,29 @@ export default class HomeScreen extends React.Component {
   }
   
   componentDidMount () {}
-  
+   closeDrawer(){
+      this._drawer._root.close()
+    };
+    openDrawer(){
+      this._drawer._root.open()
+    };
+    
+    
   render () {
+   
     return (
+      <Drawer
+        ref={(ref) => { this._drawer = ref; }}
+        content={<SideBar navigator={this._navigator} />}
+        onClose={() => this.closeDrawer()} >
       <Container>
         <Header>
           <Left>
             <Button
               transparent
-              onPress={() => this.props.navigation.navigate("DrawerOpen")}>
+              onPress={() => this.openDrawer()}>
               <Icon name="menu" />
+             
             </Button>
           </Left>
           <Body>
@@ -139,6 +153,7 @@ export default class HomeScreen extends React.Component {
       </View>
 </ImageBackground>
       </Container>
+      </Drawer>
             )
   }
 }

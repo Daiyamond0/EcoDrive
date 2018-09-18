@@ -29,11 +29,11 @@ export class Routes extends React.Component {
           <Scene key="root">
             <Scene key="login" component={SessionContainer} title="Login" initial={true}/>
             <Scene key="signup" component={SignupContainer} title="Signup"/>
-            <Scene key="home" component={HomeContainer} title="Home"/>
+            <Scene key="home" component={HomeContainer} title="Home" hideNavBar='true'/>
             <Scene key="startmap" component={startmapContainer} title="Startmap" hideNavBar='true'/>
-            <Scene key="selectcar" component={selectcatContainer} title="SelectCar"/>
-            <Scene key="history" component={historyContainer} title="History"/>
-            <Scene key="bluetooth" component={BluetoothContainer} title="Bluetooth"/>
+            <Scene key="selectcar" component={selectcatContainer} title="SelectCar" hideNavBar='true'/>
+            <Scene key="history" component={historyContainer} title="History" hideNavBar='true'/>
+            <Scene key="bluetooth" component={BluetoothContainer} title="Bluetooth" hideNavBar='true'/>
             <Scene key="createcar" component={CreatecarContainer} title="CreateCar" hideNavBar='true' />
             <Scene key="mycar" component={MycarContainer} title="MyCar" hideNavBar='true' />
             <Scene key="selectmycar" component={SelectMyCarContainer} title="SelectMyCar" hideNavBar='true' />
