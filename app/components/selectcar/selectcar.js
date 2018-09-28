@@ -17,7 +17,7 @@ export class SelectCar extends React.Component {
       <View style={{alignItems:'center'}}>
       <Image source={require('../auth/LoginForm/create.png')} style={{height:200,width:200}}/>      
       </View>
-      <View style={{marginBottom:'15%'}}>
+      <View style={{marginBottom:'30%'}}>
       <View style={{ margin: 10,marginLeft:60,marginRight:60,borderRadius:100 }}>
             <Button onPress={Actions.createcar} title='Create Car' />
           </View>
