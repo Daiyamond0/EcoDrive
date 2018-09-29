@@ -10,7 +10,7 @@ import firebaseService from '../../enviroments/firebase'
 //     };
 //   };
 
-AddCar = (uid, email, detail) => dispatch => {
+export const AddCar = (uid, email, detail) => dispatch => {
   firebaseService
     .database()
     .ref(`user/${uid}`)

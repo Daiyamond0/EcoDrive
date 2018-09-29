@@ -1,13 +1,16 @@
 import { connect } from 'react-redux'
-import { StartMap } from '../../components/startmap/startmap'
+import { StartMap1 } from '../../components/startmap/startmap1'
 import { getDistance } from '../../actions/startmap/actions'
 const mapStateToProps = state => ({
-  CarSelect: state.SelectMyCarReducer.CarSelect
+  CarSelect: state.SelectMyCarReducer.CarSelect,
   // distance: state.startmapReducer.distance,
   // totalfueluse:state.startmapReducer.totalfueluse,
+  initialPosition : state.HomeReducer.initialPosition,
+  markerPosition : state.HomeReducer.markerPosition,
+  origin : state.HomeReducer.markerPosition
 })
 const mapDispatchToProps = {
   // getDistance:getDistance
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StartMap)
+export default connect(mapStateToProps, mapDispatchToProps)(StartMap1)

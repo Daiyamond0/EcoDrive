@@ -52,6 +52,7 @@ export  class HomeScreen extends React.Component {
   }
 
   componentWillMount () {
+    this.props.getCurrentLocation()
     // BluetoothSerial.on('bluetoothEnabled', () => Toast.showShortBottom('Bluetooth enabled'))
     // BluetoothSerial.on('bluetoothDisabled', () => Toast.showShortBottom('Bluetooth disabled'))
   }
@@ -135,10 +136,7 @@ export  class HomeScreen extends React.Component {
                 this.props.CarSelect.Model === undefined
                 ? 'SelectCar'
                 : this.props.CarSelect.Make + ' ' + this.props.CarSelect.Model}</Text>
-      </View>
-</ImageBackground>
-
-      {/* Rest of the app comes ABOVE the action button component !*/}
+      </View> 
       <ActionButton buttonColor='#b35900'>
           <ActionButton.Item buttonColor='#33cc33' title="Start" onPress={this.startmap.bind(this)} >
             <Icon name="ios-car-outline" style={styles.actionButtonIcon} />
@@ -153,6 +151,10 @@ export  class HomeScreen extends React.Component {
             <Icon name="ios-log-out" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
+</ImageBackground>
+
+      {/* Rest of the app comes ABOVE the action button component !*/}
+     
       </Drawer>
             )
   }

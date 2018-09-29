@@ -3,6 +3,8 @@ package com.ecodrive;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.rusel.RCTBluetoothSerial.RCTBluetoothSerialPackage;
@@ -27,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
+            new RNGooglePlacesPackage(),
             new VectorIconsPackage(),
             new RNI18nPackage(),
             new RCTBluetoothSerialPackage(),

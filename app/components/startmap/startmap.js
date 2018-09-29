@@ -35,7 +35,7 @@ export class StartMap extends React.Component {
     )
     this.setState({
       speed,
-      loading: false
+      // loading: false
     })
     this.getDistance()
     var sum = 0
@@ -115,9 +115,9 @@ export class StartMap extends React.Component {
   }
 
   render () {
-    if (this.state.loading) {
-      return null
-    }
+    // if (this.state.loading) {
+    //   return null
+    // }
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption =
       this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
