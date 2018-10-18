@@ -8,6 +8,7 @@ import MycarReducer from '../reducers/selectcar/MycarReducer';
 import SelectMyCarReducer from '../reducers/selectcar/SelectMyCarReducer';
 import EditCarReducer from '../reducers/selectcar/EditCarReducer';
 import HomeReducer from '../reducers/home/HomeReducer';
+import HistoryReducer from  '../reducers/history/historyReducer';
 
 export default combineReducers({
   routesReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   SelectMyCarReducer,
   EditCarReducer,
   HomeReducer,
+  HistoryReducer
 });

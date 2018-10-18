@@ -5,10 +5,12 @@ import {
   Switch,
   Platform,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   ActivityIndicator,
   ImageBackground,
-} from 'react-native'
+  LayoutAnimation, 
+  UIManager} from 'react-native'
 import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text, Card, CardItem,Drawer } from "native-base";
 import{
   StackNavigator
@@ -24,15 +26,39 @@ import firebaseService from '../../enviroments/firebase.js'
 import {DrawerNavigator} from 'react-navigation';
 
 
+
 export  class HomeScreen extends React.Component {
    
   constructor(props) {
-    super(props);
+    
+    super();
+    this.state ={
+ 
+      status:true
+ 
+    }
+    this.state = { onLayoutHeight: 0, modifiedHeight: 0, expanded: false }
+ 
+    if( Platform.OS === 'android' )
+    {
+      UIManager.setLayoutAnimationEnabledExperimental( true )
+}
+super(props);
     this.state = {
       isReady: false
     };
   }
-  
+  ShowHideTextComponentView = () =>{
+ 
+    if(this.state.status == true)
+    {
+      this.setState({status: false})
+    }
+    else
+    {
+      this.setState({status: true})
+    }
+  } 
 
   logout () {
     this.props.logout()
@@ -52,7 +78,6 @@ export  class HomeScreen extends React.Component {
   }
 
   componentWillMount () {
-    this.props.getCurrentLocation()
     // BluetoothSerial.on('bluetoothEnabled', () => Toast.showShortBottom('Bluetooth enabled'))
     // BluetoothSerial.on('bluetoothDisabled', () => Toast.showShortBottom('Bluetooth disabled'))
   }
@@ -66,6 +91,19 @@ export  class HomeScreen extends React.Component {
     };
     
     
+changeLayout = () =>
+{
+    LayoutAnimation.configureNext( LayoutAnimation.Presets.easeInEaseOut );
+ 
+    if( this.state.expanded === false )
+        this.setState({ modifiedHeight: this.state.onLayoutHeight, expanded: true });
+    else
+        this.setState({ modifiedHeight: 0, expanded: false });
+}
+getViewHeight( height )
+{
+    this.setState({ onLayoutHeight: height });
+}
   render () {
    
     return (
@@ -79,8 +117,7 @@ export  class HomeScreen extends React.Component {
             <Button
               transparent
               onPress={() => this.openDrawer()}>
-              <Icon name="menu" />
-             
+              <Icon name="menu" />           
             </Button>
           </Left>
           <Body>
@@ -88,15 +125,8 @@ export  class HomeScreen extends React.Component {
           </Body>
           <Right />
         </Header>
-        
-                <ImageBackground
-      style={styles.container}
-      source={require('../Image/home.png')}
-      imageStyle={{ resizeMode: 'cover' }}
-      >
-        
-       
-        <View style={styles.footer}>
+      
+       <View style={styles.footer1}>
          
           {Platform.OS === 'android' && this.props.connected
             ? <View
@@ -108,8 +138,8 @@ export  class HomeScreen extends React.Component {
               }}
               >
               <TouchableOpacity onPress={Actions.bluetooth}>
-                <Text style={{ fontSize: 12, color: '#FFFFFF' }}>
-                    Connecting
+                <Text style={{ fontSize: 19, color: 'black' }}>
+                    OBD2 is Connecting
                   </Text>
               </TouchableOpacity>
               <Drawer/>
@@ -123,39 +153,83 @@ export  class HomeScreen extends React.Component {
               }}
               >
               <TouchableOpacity onPress={Actions.bluetooth}>
-                <Text style={{ fontSize: 12, color: '#FFFFFF' }}>
-                    Not Connecting
+                <Text style={{ fontSize: 19, color: 'black' }}>
+                    OBD2 is not connect
                   </Text>
               </TouchableOpacity>
             </View>}
-        </View>
-            {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/} 
-            
-            <View> 
-            <Text>CarSelect: {this.props.CarSelect.Make === undefined &&
+            </View>
+            {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/}
+            <View style={styles.s2}> 
+            <Text onPress={Actions.selectmycar} style={{color:'white',fontSize:15}}>{this.props.CarSelect.Make === undefined &&
                 this.props.CarSelect.Model === undefined
-                ? 'SelectCar'
+                ? 'Select Car'
                 : this.props.CarSelect.Make + ' ' + this.props.CarSelect.Model}</Text>
-      </View> 
-      <ActionButton buttonColor='#b35900'>
-          <ActionButton.Item buttonColor='#33cc33' title="Start" onPress={this.startmap.bind(this)} >
-            <Icon name="ios-car-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3366ff' title="Mycar" onPress={Actions.selectcar}>
-            <Icon name="ios-contact-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#804000' title="History" onPress={Actions.history}>
-            <Icon name="md-clipboard" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor="rgba(231,76,60,1)" title="Logout" onPress={this.logout.bind(this)}>
-            <Icon name="ios-log-out" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
-</ImageBackground>
-
-      {/* Rest of the app comes ABOVE the action button component !*/}
+      </View>
+  
      
+ 
+      
+        
+        <View style={styles.s1}> 
+        <Text style= {{ fontSize: 15, color: "#000", textAlign: 'center', marginLeft:10,marginTop:10 }}> Today </Text>
+        <Image
+          style={{width: 40, height: 40,position:'absolute',marginTop:50,marginLeft:35}}
+          source={require('./gas.png')}
+        />
+        <Text style={{marginTop:95,marginLeft:40,position:'absolute'}}>38</Text>
+        <Text style={{marginTop:115,marginLeft:35,position:'absolute',fontSize:15}}>KM/L</Text>        
+        <Image
+          style={{width: 40, height: 40,marginTop:50,marginLeft:55}}
+          source={require('./co2.png')}
+        />
+        <Text style={{marginTop:95,marginLeft:125,position:'absolute'}}>69</Text>
+        <Text style={{marginTop:115,marginLeft:115,position:'absolute',fontSize:15}}>G/KM</Text>
+        <Image
+          style={{width: 40, height: 40,marginTop:50,marginLeft:35}}
+          source={require('./road.png')}
+        />
+        <Text style={{marginTop:95,marginLeft:198,position:'absolute'}}>10</Text>
+        <Text style={{marginTop:115,marginLeft:196,position:'absolute',fontSize:15}}>KM</Text>
+        <Image
+          style={{width: 40, height: 40,marginTop:60,marginLeft:40}}
+          source={require('./arrow.png')}
+        />
+        </View>
+        <View style={styles.s1}>
+        <Text style= {{ fontSize: 15, color: "#000", textAlign: 'center', marginLeft:10,marginTop:10, }}> Do you want to drive? </Text>          
+        <View style={style=styles.s3}>
+        <Button onPress={this.startmap.bind(this)} style={{height:80,width:250,justifyContent:'center',backgroundColor:'#6a83fb'}} iconLeft>
+            <Text>Start Driving</Text>
+            <Icon name='paper-plane' />
+          </Button>
+          </View>
+        </View>
+        
+        <View>
+        <Footer>
+          <FooterTab>
+            <Button vertical onPress={()=> Actions.popTo('home')}>
+              <Icon name="home" />
+              <Text>Home</Text>
+            </Button>
+            <Button vertical onPress={Actions.history}>
+              <Icon name="md-time" />
+              <Text>History</Text>
+            </Button>
+            <Button vertical onPress={Actions.selectcar}>
+              <Icon active name="contact" />
+              <Text>Profile</Text>
+            </Button>
+            <Button vertical onPress={this.logout.bind(this)}> 
+              <Icon name="logout" />
+              <Text>Logout</Text>
+            </Button>
+          </FooterTab>
+        </Footer>      
+  </View>
       </Drawer>
             )
+            
   }
 }

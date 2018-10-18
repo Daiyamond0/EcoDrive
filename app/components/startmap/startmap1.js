@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react'
+
+let date = new Date();
+
 import {
   Platform,
   StyleSheet,
@@ -29,6 +32,8 @@ import Autocomplete from 'react-native-autocomplete-input'
 import Simulator from '../../../modules/Simulator';
 import SlidingUpPanel from 'rn-sliding-up-panel'
 import TimerMixin from 'react-timer-mixin'
+import { Dialog } from 'react-native-simple-dialogs';
+import Geocoder from 'react-native-geocoding';
 
 import firebaseService from '../../enviroments/firebase'
 
@@ -88,134 +93,262 @@ export  class StartMap1 extends Component {
       sum: 0,
       totalfueluse: [],
       speedId:[],
-      acceleration: []
-     
+      acceleration: [],
+      distancedrive :[],
+      intervalId:null,
+      sumdistance1:0,
+      sumdistance2:0,
+      i:0,
+      j:1,
+      k:2,
+      summarydistance:[],
+      summaryco2:[],
+      summaryduration:'',
+      durationtime:'00.00.00',
+      summaryfueluse:0,
+      summaryfuelconsumtion:0,
+      date:'',
+      summarysource:'',
+      summarydestination:'',
+      dialogVisible:false,
+      timestart:'',
+
+      historylength : 0
     }
     const {width, height} = Dimensions.get('window');
     this.aspectRatio = width / height;
     this.simulator = new Simulator(this);
-    this._renderFavoriteIcon = this._renderFavoriteIcon.bind(this);
     this.ref = firebaseService.database().ref('Speed');
     this.unsubscribe = null;
-    this.Timmer = null;
+    this.intervalId = null;
+    this.map = null;
   }
 
   componentWillMount =()=> {
     this.state.markerPosition = this.props.markerPosition;
-    /// /ดึง current location ก่อน render
-    // navigator.geolocation.getCurrentPosition(
-      
-    //   (positions) => {
-    //     console.log(positions)
-    //     this.setState({
-    //       initialPosition: {
-    //         latitude: positions.coords.latitude,
-    //         longitude: positions.coords.longitude,
-    //         latitudeDelta: 0.0922,
-    //         longitudeDelta: 0.0421
-    //       },
-    //       markerPosition: {
-    //         latitude: positions.coords.latitude,
-    //         longitude: positions.coords.longitude
-    //       },
-    //       origin: {
-    //         latitude: positions.coords.latitude,
-    //         longitude: positions.coords.longitude
-    //       }
-    //     })
-    //   },
-    //   error => console.log(error),
-    //   {enableHighAccuracy: false, timeout: 20000, maximumAge: 500}
-      
-    // )
+    firebaseService.database().ref('Speed').remove()
+    var dd = date.getDate();
+    var mm = date.getMonth()+1; 
+    var yyyy = date.getFullYear();
+    if(dd<10) {
+      dd='0'+dd;
+    } 
+    if(mm<10) {
+    mm='0'+mm;
+    }
+    this.setState({date:yyyy + '-' + mm + '-'+ dd}) 
+
+    const uid = this.props.user.uid
+    var history =[]
+    firebaseService.database().ref(`History/${uid}`).on(
+      'value',
+      function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            const his = childSnapshot.val()
+            history.push(his)
+            this.setState({historylength:history.length})
+        }.bind(this))
+        
+      }.bind(this),
+      function (error) {
+        console.log(error)
+      }
+    )
     
+
+
   }
   shouldComponentUpdate(nextProps, nextState){
+    
     const { speed , sum ,hideinitmarker,stop,query,place ,markerPosition,
       destinationplace,initail,destinate,result,hidebubble,hideway,acceleration,totalfueluse,
-      distance,speedId} = this.state
+      distance,speedId,distancedrive,sumdistance1,i,j,k,sumdistance2,summarydistance
+    ,summaryco2,summaryduration,durationtime,summaryfueluse,summaryfuelconsumtion,date
+  ,summarysource,summarydestination,dialogVisible} = this.state
+
+    
 
       const {CarSelect ,initialPosition ,origin ,draggableRange} = this.props
-    if (speed !== nextState.speed ) {
+    if (this.state.speed !== nextState.speed ) {
       return true
     }
-    if (sum !== nextState.sum ) {
+    if (this.state.sum !== nextState.sum ) {
         return true
       }
-      if (hideinitmarker !== nextState.hideinitmarker ) {
+      if (this.state.hideinitmarker !== nextState.hideinitmarker ) {
         return true
       }
-      if (stop !== nextState.stop ) {
+      if (this.state.stop !== nextState.stop ) {
         return true
       }
-      if (query !== nextState.query ) {
+      if (this.state.query !== nextState.query ) {
         return true
       }
-      if (place !== nextState.place ) {
+      if (this.state.place !== nextState.place ) {
         return true
       }
       
-      if (markerPosition !== nextState.markerPosition ) {
+      if (this.state.markerPosition !== nextState.markerPosition ) {
         return true
       }
-      if (destinationplace !== nextState.destinationplace ) {
+      if (this.props.markerPosition !== nextProps.markerPosition ) {
         return true
       }
-      if (origin !== nextProps.origin) {
+      if (this.state.destinationplace !== nextState.destinationplace ) {
         return true
       }
-      if (initail !== nextState.initail ) {
+      if (this.props.origin !== nextProps.origin) {
         return true
       }
-      if (destinate !== nextState.destinate ) {
+      if (this.state.initail !== nextState.initail ) {
         return true
       }
-      if (result !== nextState.result  ) {
+      if (this.state.destinate !== nextState.destinate ) {
         return true
       }
-      if (hidebubble !== nextState.hidebubble ) {
+      if (this.state.result !== nextState.result  ) {
         return true
       }
-      if (hideway !== nextState.hideway ) {
+      if (this.state.hidebubble !== nextState.hidebubble ) {
         return true
       }
-      if (acceleration !== nextState.acceleration ) {
+      if (this.state.hideway !== nextState.hideway ) {
         return true
       }
-      if (CarSelect  !== nextProps.CarSelect.FuelType.CO2Emission ) {
+      if (this.state.acceleration !== nextState.acceleration ) {
         return true
       }
-      if (totalfueluse !== nextState.totalfueluse ) {
+      if (this.props.CarSelect  !== nextProps.CarSelect.FuelType.CO2Emission ) {
         return true
       }
-      if (distance !== nextState.distance) {
+      if (this.state.totalfueluse !== nextState.totalfueluse ) {
         return true
       }
-      if (initialPosition !== nextProps.initialPosition) {
+      if (this.state.distance !== nextState.distance) {
         return true
       }
-      if (draggableRange !== nextProps.draggableRange) {
+      if (this.props.initialPosition !== nextProps.initialPosition) {
         return true
       }
-      if (speedId !== nextState.speedId) {
+      if (this.props.draggableRange !== nextProps.draggableRange) {
+        return true
+      }
+      if (this.state.speedId !== nextState.speedId) {
+        return true
+      }
+      if (this.state.distancedrive !== nextState.distancedrive) {
+        return true
+      }
+      if (this.state.sumdistance1 !== nextState.sumdistance1) {
+        return true
+      }
+      if (this.state.sumdistance2 !== nextState.sumdistance2) {
+        return true
+      }
+      if (this.state.i !== nextState.i) {
+        return true
+      }
+      if (this.state.j !== nextState.j) {
+        return true
+      }
+      if (this.state.k !== nextState.k) {
+        return true
+      }
+      if (this.state.summarydistancek !== nextState.summarydistance) {
+        return true
+      }
+      if (this.state.summaryco2 !== nextState.summaryco2) {
+        
+        return true
+      }
+      if (this.state.durationtime !== nextState.durationtime) {
+        return true
+      }
+      if (this.state.summaryfueluse !== nextState.summaryfueluse) {
+        return true
+      }
+      if (this.state.summaryfuelconsumtion !== nextState.summaryfuelconsumtion) {
+        return true
+      }
+      if (this.state.date !== nextState.date) {
+        return true
+      }
+      if (this.state.summarysource !== nextState.summarysource) {
+        return true
+      }
+      if (this.state.summarydestination !== nextState.summarydestination) {
+        return true
+      }
+      if (this.state.dialogVisible !== nextState.dialogVisible) {
         return true
       }
     
-
     return false
 }
 
   componentDidMount (){
-    clearTimeout(this.unsubscribe)
-    this.unsubscribe =  setTimeout(()=>this.ref.on('value', this.onCollectionUpdate.bind(this)).bind(this),0.1)
-    this.Timmer = TimerMixin.setTimeout(()=>{
-      
-    },0.1)
+    
+    this.unsubscribe = this.ref.on('value', this.onCollectionUpdate)
+    
    
+
+ 
+this.intervalId = setInterval(()=>{ 
   
+  var num = this.state.result.Number
+  var distance = Number.parseFloat(this.state.sum);
+  var co2 =((100 / this.props.CarSelect.FuelConsumption) * this.props.CarSelect.FuelType.CO2Emission) * Number.parseFloat(this.state.sum.toFixed(2))
+  if( distance > this.state.sumdistance1 && this.state.i < this.state.result.way[num].length ){
+    if(this.state.i == 2){
+      this.setState({timestart:date.getHours()+':'+date.getMinutes()})
+    }
+    this.setState({
+          markerPosition: {
+            latitude: this.state.result.way[num][this.state.i].latitude,
+            longitude: this.state.result.way[num][this.state.i].longitude
+          }
+        })
+        
+    this.setState({sumdistance1: this.state.sumdistance1 + parseFloat(this.state.distancedrive[this.state.j])   })
+    this.setState({sumdistance2: this.state.sumdistance2 + parseFloat(this.state.distancedrive[this.state.k])   })
+    this.setState({i:this.state.i +1 })
+    this.setState({j:this.state.j +1 })
+    this.setState({k:this.state.k +1 })
+   
+    
+    
+   if(this.state.i == this.state.result.way[num].length -1){
+
+      clearInterval(this.intervalId)
+      clearInterval(this.durationtime)
+      this.setState({summarydistance:distance}) 
+      this.setState({summaryco2:parseFloat(co2 / 1000).toFixed(2)})
+      this.setState({summaryduration:this.state.durationtime})
+      this.setState({summaryfueluse:this.state.totalfueluse[this.state.totalfueluse.length - 1]})
+      this.setState({summaryfuelconsumtion:this.state.sum.toFixed(1) / this.state.totalfueluse[this.state.totalfueluse.length - 1]})
+      // this.setState({date:date.toLocaleDateString()})
+      this.setState({dialogVisible:true})
+      console.log(this.state.summaryfuelconsumtion)
+   }
+    // this.map.animateToCoordinate(this.state.markerPosition);
+  }
+  },100)
+
+
+var totalSeconds = 0;
+this.durationtime = setInterval(()=>{
+  if(this.state.sum !=0 ){
+
+  ++totalSeconds;
+  var hour = Math.floor(totalSeconds /3600);
+  var minute = Math.floor((totalSeconds - hour*3600)/60);
+  var seconds = totalSeconds - (hour*3600 + minute*60);
+
+  this.setState({durationtime: hour + ":" + minute + ":" + seconds })}},1000)
+
   }
   onCollectionUpdate = (snapshot) => {
-    clearTimeout(this.unsubscribe)
+    
     var speed = []
      snapshot.forEach(
       function (childSnapshot) {
@@ -244,9 +377,8 @@ export  class StartMap1 extends Component {
 
   componentWillUnmount() {
     
-  
-    clearTimeout(this.unsubscribe)
-    TimerMixin.clearTimeout(this.Timmer)
+    clearInterval(this.intervalId)
+    clearInterval(this.durationtime)
   }
 
   getDistance () {
@@ -304,8 +436,8 @@ export  class StartMap1 extends Component {
     }
    
      if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
-        Vibration.vibrate(2000)
-        Vibration.cancel()
+        // Vibration.vibrate(2000)
+        // Vibration.cancel()
       return{
         height: 120,
         backgroundColor: 'orange',
@@ -313,8 +445,8 @@ export  class StartMap1 extends Component {
         justifyContent: 'center'
       }
     } if(acceleration[acceleration.length - 1] >= 70){
-      Vibration.vibrate(2000)
-      Vibration.cancel()
+      // Vibration.vibrate(2000)
+      // Vibration.cancel()
       return{
         
         height: 120,
@@ -323,6 +455,12 @@ export  class StartMap1 extends Component {
         justifyContent: 'center'
       }
     } 
+    return{
+      height: 120,
+      backgroundColor: 'green',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
   }
 
   fuelconsumption(){
@@ -352,7 +490,8 @@ export  class StartMap1 extends Component {
           <Text style={styles.runInfoValue}>{Number.parseFloat(fuelconsumption.toFixed(1),10) + parseInt(20)}</Text>
           // <Text>777</Text>
         )
-      } 
+      }
+      
   }
 
   
@@ -389,6 +528,7 @@ export  class StartMap1 extends Component {
             longitude: results.longitude
           }
         })
+        
       )
       .catch(error => console.log(error.message))
   }
@@ -403,10 +543,29 @@ export  class StartMap1 extends Component {
       latitudeDelta: 0.006760843098163605,
       longitudeDelta: 0.011241360405390921
   };
+
   this.map.animateToRegion(region,750);
     this.setState({ hideinitmarker: true })
     this.setState({ hidebubble: true })
     this.setState({ hideway: true })
+    this.convertlatlongtodistance(this.state.result.way,this.state.result.Number)
+    
+    Geocoder.setApiKey('AIzaSyCIDhCTooCtG9yU4vGws43l51z-RPobgm0');
+    Geocoder.getFromLatLng(this.props.initialPosition.latitude,this.props.initialPosition.longitude)
+		.then(json => {
+        		var addressComponent = json.results[0].address_components[0].short_name;
+			this.setState({summarysource:addressComponent})
+		})
+		.catch(error => console.warn(error));
+    Geocoder.getFromLatLng(this.state.destinationplace.latitude,this.state.destinationplace.longitude)
+		.then(json => {
+        		var addressComponent = json.results[0].address_components[0].short_name;
+      this.setState({summarydestination:addressComponent})
+      console.log(this.state.summarydestination)
+		})
+		.catch(error => console.warn(error));
+   
+    
   }
   fitBottomTwoMarkers () {
     this.setState({ hideinitmarker: false })
@@ -419,6 +578,7 @@ export  class StartMap1 extends Component {
     )
     this.setState({ hidebubble: false })
     this.setState({ hideway: false })
+
   }
   getZoomValue(level) {
     const value = 0.00001 * (21- (level <5 ? 5 : level));
@@ -435,9 +595,6 @@ export  class StartMap1 extends Component {
    var i = 0
    var x = 0
  
-
-   
-    
    animationTimeout = setInterval(() => {
       // this.map.animateToViewingAngle(60, 750);
         if (i < this.state.result.way[num].length&&this.state.stop == true) {
@@ -447,7 +604,6 @@ export  class StartMap1 extends Component {
               longitude: this.state.result.way[num][i].longitude
             }
           })
-          
           //  console.log(this.state.markerPosition.latitude.toFixed(4),this.state.markerPosition.longitude.toFixed(4))
           //-------------อย่าลืมแปลง parse เป็น float
           // if(this.state.markerPosition.latitude.toFixed(5) == this.state.result.bearing[num][x].start.latitude.toFixed(5) && this.state.markerPosition.longitude.toFixed(5)==this.state.result.bearing[num][x].start.longitude.toFixed(5)){
@@ -478,32 +634,61 @@ export  class StartMap1 extends Component {
     // console.log(region)
   }
 
-  _renderFavoriteIcon() {
-    const {top, bottom} = this.props.draggableRange
+  convertlatlongtodistance(way,number){
+    console.log(way[number])
+    var Distance = []
+    var i = 0;
+    var j = 1;
 
-    const draggedValue = this._draggedValue.interpolate({
-      inputRange: [bottom, top],
-      outputRange: [0, 1],
-      extrapolate: 'clamp'
-    })
-
-    const transform = [{scale: draggedValue}]
-    return (
-      <Animated.View style={[styles.favoriteIcon, {transform}]}>
-        <Image
-          source={require('.././Image/carmap.png')}
-          style={{width: 32, height: 32}}
-        />
-      </Animated.View>
-    )
+    for( i,j ; i < way[number].length -1 && j <way[number].length ; i++,j++){
+    var radlat1 = Math.PI * way[number][i].latitude/180
+	  var radlat2 = Math.PI * way[number][j].latitude/180
+	  var theta = way[number][i].longitude - way[number][j].longitude
+	  var radtheta = Math.PI * theta/180
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	    if (dist > 1) {
+		    dist = 1;
+    	}
+  	dist = Math.acos(dist)
+  	dist = dist * 180/Math.PI
+	  dist = dist * 60 * 1.1515 * 1.609344
+    Distance.push(parseFloat(dist))
+    this.setState({distancedrive:Distance})
+   this.setState({sumdistance1:parseFloat(Distance[0])})
+   this.setState({sumdistance2:parseFloat(Distance[0]) + parseFloat(Distance[1])})
+  //  console.log(this.state.distancedrive)
+    }
   }
 
+  AddHistory(){
+    this.setState({dialogVisible: false})
+    const uid = this.props.user.uid
+  
+    firebaseService.database().ref(`History/${uid}/${this.state.historylength++}`).set({
+            Make:this.props.CarSelect.Make,
+            Model:this.props.CarSelect.Model,
+            Distance: parseInt(this.state.summarydistance),
+            CO2: this.state.summaryco2 ,
+            Duration: this.state.durationtime,
+            Fueluse: parseInt(this.state.summaryfueluse), 
+            Fuelrate: parseInt(this.state.summaryfuelconsumtion),
+            Date: this.state.date,
+            Source: this.state.summarysource,
+            Destination: this.state.summarydestination,
+            Time:this.state.timestart
+     })
+
+  }
+  
+
   render () {
-   
-    console.log(this.props)
+    
+  // console.log('length',this.state.historylength)
+    
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
-    const co2 = totalfueluse[totalfueluse.length - 1] * this.props.CarSelect.FuelType.CO2Emission
+    // const co2 = totalfueluse[totalfueluse.length - 1] * this.props.CarSelect.FuelType.CO2Emission
+    const co2 =((100 / this.props.CarSelect.FuelConsumption) * this.props.CarSelect.FuelType.CO2Emission) * Number.parseFloat(this.state.sum.toFixed(2))
     const acceleration = this.state.acceleration
     
     const data = this.state.place
@@ -522,6 +707,7 @@ export  class StartMap1 extends Component {
           style={styles.map}
           ref={ref => {
             this.map = ref
+            
           }}
           // showsMyLocationButton={false}
           // showsUserLocation
@@ -545,9 +731,10 @@ export  class StartMap1 extends Component {
             strokeWidth={10}
             // strokeColor='hotpink'
             alternatives
-            onReady={result => {
+            onReady={ result => {
               // console.log(result)
               this.setState({ result: result })
+              // this.convertlatlongtodistance(result.way,result.Number)
             }}
             onStart={params => {
               // console.log(params);
@@ -555,7 +742,8 @@ export  class StartMap1 extends Component {
             hidebubble={this.state.hidebubble}
             hideway={this.state.hideway}
             reduceArr={this.state.markerPosition}
-
+            co2={this.props.CarSelect.FuelType.CO2Emission}
+            fuelconsumption={this.props.CarSelect.FuelConsumption}
           />
         </MapView>
         {this.state.hideinitmarker == false ?
@@ -589,9 +777,11 @@ export  class StartMap1 extends Component {
         :null
         }
        
-        <View style={{ flexDirection: 'row' }}>
-
-          <Button
+        
+  { this.state.destinate.latitude != 0 && this.state.destinate.longitude != 0
+  ? 
+  <View style={{ flexDirection: 'row' }}>
+  <Button
             title='ZoomIN'
             onPress={() => this.fitBottomMarkers()}
             style={[styles.bubble, styles.button]}
@@ -602,6 +792,9 @@ export  class StartMap1 extends Component {
             style={[styles.bubble, styles.button]}
           />
         </View>
+   :null
+   }
+          
         {this.state.hideinitmarker == false
           ? null
           :<View style={{flexDirection:'row'}}>
@@ -617,14 +810,15 @@ export  class StartMap1 extends Component {
           visible={true}
           startCollapsed
           showBackdrop={false}
-          // ref={c => this._panel = c}
+          ref={c => this._panel = c}
           draggableRange={this.props.draggableRange}
           onDrag={v => this._draggedValue.setValue(v)}
+          allowMomentum
           >
           <View style={styles.panel}>
-            {/* {this._renderFavoriteIcon()} */}
-            <View style={this.changeColorPanelHeader()}>
-              {/* <Text style={{color: '#FFF'}}>Bottom Sheet Peek</Text> */}
+           
+            <View style={[this.changeColorPanelHeader()]}>
+              
             
           <View style={styles.infoWrapper}>
           <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
@@ -639,27 +833,53 @@ export  class StartMap1 extends Component {
           </View>
           <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
             <Text style={styles.runInfoTitle}>CO2</Text>
-             <Text style={styles.runInfoValue}>{parseInt(co2)}</Text> 
-            <Text style={styles.runInfoTitle}>G/KM</Text>
+             <Text style={styles.runInfoValue}>{parseFloat(co2 / 1000).toFixed(2)}</Text> 
+            <Text style={styles.runInfoTitle}>KG</Text>
           </View>
         </View>
         </View>
             <View style={styles.containerslideup}>
             <Text style={this.changeColor()}>StartMap</Text>
-          <Text>CO2Emission: {JSON.stringify(this.props.CarSelect.FuelType.CO2Emission)}</Text>
+          
           <ScrollView>
-            {/* <Text>5555</Text> */}
+            <Text>Date: {this.state.date} </Text>
+            <Text>Time: {this.state.durationtime}</Text>
+            <Text>Distance: {this.state.sum.toFixed(1)} KM</Text>
+            <Text>FuelUse: {parseInt(totalfueluse[totalfueluse.length - 1])} L</Text>
+            {/* <Text>CO2Emission: {JSON.stringify(this.props.CarSelect.FuelType.CO2Emission)}</Text> */}
             {/* {this.getDistance()} */}
             {/* <Text>{this.props.speed}</Text> */}
             {/* <Text>{this.state.distance+","}</Text> */}
-            <Text>Distance: {this.state.sum.toFixed(1)} KM</Text>
-            <Text>FuelUse: {parseInt(totalfueluse[totalfueluse.length - 1])} L</Text>
             {/* <Text>CO2: {co2}</Text> */}
           </ScrollView>
             </View>
           </View>
         </SlidingUpPanel>
           </View>}
+
+        <Dialog 
+          visible={this.state.dialogVisible}  
+          title="Finish"
+          titleStyle={{textAlign:'center'}}
+          // onTouchOutside={() => this.setState({dialogVisible: false})} 
+
+        >
+          <View>
+            <Text style={{textAlign:'center'}}>Result</Text>
+            <Text>Time:{this.state.timestart}</Text>
+            <Text>Distance: {parseInt(this.state.summarydistance)} KM</Text>
+            <Text>CO2: {this.state.summaryco2} KG</Text>
+            <Text>Duration: {this.state.durationtime}</Text>
+            <Text>Fueluse: {parseInt(this.state.summaryfueluse)} L</Text>
+            <Text>Fuelrate: {parseInt(this.state.summaryfuelconsumtion)} KM/L</Text>
+            <Text>Date: {this.state.date}</Text>
+            <Text>Source: {this.state.summarysource}</Text>
+            <Text>Destination: {this.state.summarydestination}</Text>
+      
+            <Button title='OK' onPress={()=> this.AddHistory()}/>
+          </View>
+        </Dialog>
+
           
       </View>
     )
@@ -722,7 +942,7 @@ const styles = StyleSheet.create({
   },
   // panelHeader: {
   //   height: 120,
-  //   backgroundColor: '#b197fc',
+  //   backgroundColor: 'green',
   //   alignItems: 'center',
   //   justifyContent: 'center'
   // },
