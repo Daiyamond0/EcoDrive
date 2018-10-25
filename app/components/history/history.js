@@ -56,7 +56,7 @@ export class History extends React.Component {
         Distane:[]
       },
       isModalVisible: false,
-      dateselect: date.toISOString().split("T")[0],
+      dateselect: ' ',
       selectedIndex: 0
       
     }
@@ -85,6 +85,7 @@ export class History extends React.Component {
       function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var his = childSnapshot.val()
+            
             historytrip.push(his)
             this.setState({historytrip:historytrip})
             historydate.push(his.Date)
@@ -111,16 +112,16 @@ export class History extends React.Component {
       
     )
     
-    // var dd = date.getDate();
-    // var mm = date.getMonth()+1; 
-    // var yyyy = date.getFullYear();
-    // if(dd<10) {
-    //   dd='0'+dd;
-    // } 
-    // if(mm<10) {
-    // mm='0'+mm;
-    // }
-    // this.setState({dateselect:yyyy + '-' + mm + '-'+ dd})
+    var dd = date.getDate();
+    var mm = date.getMonth()+1; 
+    var yyyy = date.getFullYear();
+    if(dd<10) {
+      dd='0'+dd;
+    } 
+    if(mm<10) {
+    mm='0'+mm;
+    }
+    this.setState({dateselect:yyyy + '-' + mm + '-'+ dd})
     
     
   
@@ -133,10 +134,10 @@ export class History extends React.Component {
     });
   }
    
-  // Historyday(item,index){
-  //   this.props.HistoryTripsDay(item,index)
-  //   Actions.push('historytripday')
-  // }
+  Historyday(item,index){
+    this.props.HistoryTripsDay(item,index)
+    Actions.push('historytripday')
+  }
 
   toggleModal () {
     this.setState({ isModalVisible: !this.state.isModalVisible })
@@ -149,14 +150,21 @@ export class History extends React.Component {
     this.setState({selectedIndex})
     
   }
+  parsedate(date){
+    
+    var d = new Date(date)
+    return (
+      <Text>{d.toDateString()}</Text>
+    )
+  }
   render() {
     // console.log(Object(this.state.historytrip[0]).Date)
     // console.log(this.state.historytrip)
     // console.log(this.state.historydate)
     // console.log(this.state.historycar)
-console.log(this.state.dayofweek)
-console.log(this.state.Week.CO2)
-const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+// console.log(this.state.dayofweek)
+// console.log(this.state.Week.CO2)
+
 
   
     return (
@@ -211,7 +219,7 @@ const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
           </Modal>
         </View>
       <View>
-        <Text style={{textAlign:'center'}}>{this.state.dateselect}</Text>
+        <Text style={{textAlign:'center'}}>{this.parsedate(this.state.dateselect)}</Text>
         </View>
         {this.state.historytrip.map((item, index) => {
           if(Object(item).Date == this.state.dateselect){
@@ -219,21 +227,28 @@ const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
             return (
            
               <View>
+                
                 <Card>
-                  <CardItem header>
-                  <Text>Date: {Object(item).Date}</Text>
-                  </CardItem>
-                  <CardItem>
+                  {/* <CardItem header>
+                  <Text>Date: { this.parsedate(Object(item).Date) }</Text>
+                  
+                  </CardItem> */}<TouchableHighlight onPress={()=>this.Historyday(item,index)}>
+                  <CardItem >
                     <View>
+                  <Text>Time: {Object(item).Time} - {Object(item).Timeend}</Text>
+                  <Text>Source: {Object(item).Source}</Text> 
+                  <Text>Source: {Object(item).Destination}</Text> 
                   <Text>Fueluse: {Object(item).Fueluse} L  </Text>
                   <Text>CO2: {Object(item).CO2} KG  </Text>
                   <Text>Distance: {Object(item).Distance} KM  </Text>
                   </View>
                   <View>
-                  <Text>Car: {Object(item).Make + '' + Object(item).Model}    </Text>
+                  <Text>Car: {Object(item).Car.Make + '' + Object(item).Car.Model}    </Text>
                   </View>
-                </CardItem>
+                </CardItem> 
+                </TouchableHighlight>
                 </Card>
+               
               </View>
             ) 
           }
@@ -250,99 +265,7 @@ const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
      </ScrollView>
      
         </Tab>
-        <Tab heading="Statistics">
-        <View>
-        <ButtonGroup
-      onPress={this.updateIndex.bind(this)}
-      selectedIndex={this.state.selectedIndex}
-      buttons={['Today', 'Week', 'Month','Year']}
-      containerStyle={{height: 30}}
-    />
-    </View>
-      
-      
-   {this.state.selectedIndex == 0 && this.state.Today.CO2.length != 0?
-   <View>
-   <Text>
-     CO2
-   </Text>
-   <View>
-  <LineChart
-    data={{
-      labels: [],
-      datasets: [{
-        data: this.state.Today.CO2
-      }]
-    }}
-    width={Dimensions.get('window').width} // from react-native
-    height={220}
-    chartConfig={{
-      backgroundColor: '#e26a00',
-      backgroundGradientFrom: '#fb8c00',
-      backgroundGradientTo: '#ffa726',
-      decimalPlaces: 2, // optional, defaults to 2dp
-      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      style: {
-        borderRadius: 5
-      }
-    }}
-    bezier={true}
-    style={{
-      marginVertical: 8,
-      borderRadius: 16
-    }}
-  /> 
-  </View>
-  </View>
-  :  null
-  // <View style={{flex:1, alignItems: 'center',
-  // justifyContent: 'center',paddingTop:150}}>
-  //     <Text>Not Drive This Day</Text>
-  //   </View>
-  }
-   {/*------------------------- week------------------------------ */}
-    {this.state.selectedIndex == 1 && this.state.Week.CO2.length != 0 ? 
-   <View>
-   <Text>
-     CO2
-   </Text>
-   <View>
-  <LineChart
-    data={{
-      labels: [],
-      datasets: [{
-        data: this.state.Week.CO2
-      }]
-    }}
-    width={Dimensions.get('window').width} // from react-native
-    height={220}
-    chartConfig={{
-      backgroundColor: '#e26a00',
-      backgroundGradientFrom: '#fb8c00',
-      backgroundGradientTo: '#ffa726',
-      decimalPlaces: 2, // optional, defaults to 2dp
-      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      style: {
-        borderRadius: 5
-      }
-    }}
-    bezier={true}
-    style={{
-      marginVertical: 8,
-      borderRadius: 16
-    }}
-  /> 
-  </View>
-  </View>
-  : null
-  //  <View style={{flex:1, alignItems: 'center',
-  // justifyContent: 'center',paddingTop:150}}>
-  //     <Text>Not Drive This Week</Text>
-    // </View>
-    }
-            
-            
-        </Tab>
+       
       
       </Tabs>
     </Container>

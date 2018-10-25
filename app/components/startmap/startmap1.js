@@ -112,6 +112,8 @@ export  class StartMap1 extends Component {
       summarydestination:'',
       dialogVisible:false,
       timestart:'',
+      timeend:'',
+      fuelraterealtime:[],
 
       historylength : 0
     }
@@ -295,12 +297,15 @@ export  class StartMap1 extends Component {
  
 this.intervalId = setInterval(()=>{ 
   
+  var totalfueluse = this.state.totalfueluse //
+
   var num = this.state.result.Number
   var distance = Number.parseFloat(this.state.sum);
   var co2 =((100 / this.props.CarSelect.FuelConsumption) * this.props.CarSelect.FuelType.CO2Emission) * Number.parseFloat(this.state.sum.toFixed(2))
   if( distance > this.state.sumdistance1 && this.state.i < this.state.result.way[num].length ){
     if(this.state.i == 2){
-      this.setState({timestart:date.getHours()+':'+date.getMinutes()})
+      var d = new Date()
+      this.setState({timestart:d.getHours()+':'+d.getMinutes()})
     }
     this.setState({
           markerPosition: {
@@ -314,11 +319,16 @@ this.intervalId = setInterval(()=>{
     this.setState({i:this.state.i +1 })
     this.setState({j:this.state.j +1 })
     this.setState({k:this.state.k +1 })
+    
+    
+    this.setState({
+      fuelraterealtime: [...this.state.fuelraterealtime,this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]]
+    })
    
     
     
    if(this.state.i == this.state.result.way[num].length -1){
-
+var d = new Date()
       clearInterval(this.intervalId)
       clearInterval(this.durationtime)
       this.setState({summarydistance:distance}) 
@@ -328,7 +338,9 @@ this.intervalId = setInterval(()=>{
       this.setState({summaryfuelconsumtion:this.state.sum.toFixed(1) / this.state.totalfueluse[this.state.totalfueluse.length - 1]})
       // this.setState({date:date.toLocaleDateString()})
       this.setState({dialogVisible:true})
-      console.log(this.state.summaryfuelconsumtion)
+      this.setState({timeend:d.getHours()+':'+d.getMinutes()})
+      
+
    }
     // this.map.animateToCoordinate(this.state.markerPosition);
   }
@@ -343,7 +355,15 @@ this.durationtime = setInterval(()=>{
   var hour = Math.floor(totalSeconds /3600);
   var minute = Math.floor((totalSeconds - hour*3600)/60);
   var seconds = totalSeconds - (hour*3600 + minute*60);
-
+if(hour<10){
+  hour='0'+hour
+}
+if(minute<10){
+  minute='0'+minute
+}
+if(seconds<10){
+  seconds='0'+seconds
+}
   this.setState({durationtime: hour + ":" + minute + ":" + seconds })}},1000)
 
   }
@@ -366,11 +386,16 @@ this.durationtime = setInterval(()=>{
     const numbers = this.state.distance
     for (const i = 0; i < numbers.length; i++) {
       sum += Number.parseFloat(numbers[i], 10)
+      
     }
     this.setState({
       sum: sum / 1000
     })
    
+    
+    
+    
+    
     
    // this.setState({co2:[...this.state.co2,100/(this.state.sum.toFixed(1) / this.state.totalfueluse[this.state.totalfueluse.length - 1])]})
   }
@@ -422,77 +447,103 @@ this.durationtime = setInterval(()=>{
     
   }
 
-  changeColorPanelHeader(){
-    
+  Notification(){
+    const totalfueluse = this.state.totalfueluse
+    const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
     const acceleration = this.state.acceleration
-    if(acceleration[acceleration.length - 1]< 50){
-      
-      return{
-        height: 120,
-        backgroundColor: 'green',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }
-    }
-   
-     if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
+     if( fuelconsumption < this.props.CarSelect.FuelConsumption- (this.props.CarSelect.FuelConsumption * 0.2)){
         // Vibration.vibrate(2000)
         // Vibration.cancel()
       return{
-        height: 120,
-        backgroundColor: 'orange',
-        alignItems: 'center',
-        justifyContent: 'center'
+        position:'absolute',
+        left: 0,
+        bottom:50,
+        right:0,
+        flexDirection: 'row',
+        flex:1,
+        backgroundColor: 'orange'
       }
-    } if(acceleration[acceleration.length - 1] >= 70){
+      }if(fuelconsumption < this.props.CarSelect.FuelConsumption - (this.props.CarSelect.FuelConsumption * 0.3)){
       // Vibration.vibrate(2000)
       // Vibration.cancel()
       return{
-        
-        height: 120,
+        position:'absolute',
+        left: 0,
+        bottom:50,
+        right:0,
+        flexDirection: 'row',
+        flex:1,
         backgroundColor: 'red',
-        alignItems: 'center',
-        justifyContent: 'center'
       }
     } 
-    return{
-      height: 120,
-      backgroundColor: 'green',
-      alignItems: 'center',
-      justifyContent: 'center'
+      if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
+       return{
+        position:'absolute',
+        left: 0,
+        bottom:50,
+        right:0,
+        flexDirection: 'row',
+        flex:1,
+        backgroundColor: 'orange'
+      }
+    } if(acceleration[acceleration.length - 1] >= 70){
+        return{
+        position:'absolute',
+        left: 0,
+        bottom:50,
+        right:0,
+        flexDirection: 'row',
+        flex:1,
+        backgroundColor: 'red',
+      }
     }
+        return {
+        position:'absolute',
+        left: 0,
+        bottom:50,
+        right:0,
+        flexDirection: 'row',
+        flex:1,
+        backgroundColor: 'green'
+    }
+     
   }
 
-  fuelconsumption(){
-    const acceleration = this.state.acceleration
-    const totalfueluse = this.state.totalfueluse
-    const fuelconsumption =
-      this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
-      if(acceleration[acceleration.length - 1] == null  ){
-        return(
-         <Text style={styles.runInfoValue}>-</Text>
-        
-        )
-      }
-      if(acceleration[acceleration.length - 1]< 50  ){
-        return(
-         <Text style={styles.runInfoValue}>{Number.parseFloat(fuelconsumption.toFixed(1))}</Text>
-        
-        )
-      }
-       if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
-        return(
-          <Text style={styles.runInfoValue}>{Number.parseFloat(fuelconsumption.toFixed(1),10) +parseInt(10) }</Text>
-          
-        )
-      } if(acceleration[acceleration.length - 1] >= 70){
-        return(
-          <Text style={styles.runInfoValue}>{Number.parseFloat(fuelconsumption.toFixed(1),10) + parseInt(20)}</Text>
-          // <Text>777</Text>
-        )
-      }
+  // fuelconsumption(){
+    
+  //   const acceleration = this.state.acceleration
+  //   const totalfueluse = this.state.totalfueluse
+  //   const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
       
-  }
+  //     if(acceleration[acceleration.length - 1] == null  ){
+  //       return(
+  //        <Text style={styles.runInfoValue}>-</Text>
+        
+  //       )
+  //     }
+  //     if(acceleration[acceleration.length - 1]< 50  ){
+          
+  //       return(
+         
+  //        <Text style={styles.runInfoValue}>{Number.parseFloat(fuelconsumption.toFixed(1))}</Text>
+        
+  //       )
+  //     }
+  //      if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
+       
+  //       return(
+  //         <Text style={styles.runInfoValue}>{Number.parseFloat(fuelconsumption.toFixed(1),10) +parseInt(10) }</Text>
+          
+  //       )
+  //     } if(acceleration[acceleration.length - 1] >= 70){
+   
+  //       return(
+  //         <Text style={styles.runInfoValue}>{Number.parseFloat(fuelconsumption.toFixed(1),10) + parseInt(20)}</Text>
+  //         // <Text>777</Text>
+  //       )
+  //     }
+      
+  // }
 
   
 
@@ -588,47 +639,47 @@ this.durationtime = setInterval(()=>{
         longitudeDelta: value * this.aspectRatio
     }
 }
-  start () {
-    const num = this.state.result.Number
+  // start () {
+  //   const num = this.state.result.Number
     
-    this.setState({stop:true})
-   var i = 0
-   var x = 0
+  //   this.setState({stop:true})
+  //  var i = 0
+  //  var x = 0
  
-   animationTimeout = setInterval(() => {
-      // this.map.animateToViewingAngle(60, 750);
-        if (i < this.state.result.way[num].length&&this.state.stop == true) {
-          this.setState({
-            markerPosition: {
-              latitude: this.state.result.way[num][i].latitude,
-              longitude: this.state.result.way[num][i].longitude
-            }
-          })
-          //  console.log(this.state.markerPosition.latitude.toFixed(4),this.state.markerPosition.longitude.toFixed(4))
-          //-------------อย่าลืมแปลง parse เป็น float
-          // if(this.state.markerPosition.latitude.toFixed(5) == this.state.result.bearing[num][x].start.latitude.toFixed(5) && this.state.markerPosition.longitude.toFixed(5)==this.state.result.bearing[num][x].start.longitude.toFixed(5)){
-          // console.log('555')
+  //  animationTimeout = setInterval(() => {
+  //     // this.map.animateToViewingAngle(60, 750);
+  //       if (i < this.state.result.way[num].length&&this.state.stop == true) {
+  //         this.setState({
+  //           markerPosition: {
+  //             latitude: this.state.result.way[num][i].latitude,
+  //             longitude: this.state.result.way[num][i].longitude
+  //           }
+  //         })
+  //         //  console.log(this.state.markerPosition.latitude.toFixed(4),this.state.markerPosition.longitude.toFixed(4))
+  //         //-------------อย่าลืมแปลง parse เป็น float
+  //         // if(this.state.markerPosition.latitude.toFixed(5) == this.state.result.bearing[num][x].start.latitude.toFixed(5) && this.state.markerPosition.longitude.toFixed(5)==this.state.result.bearing[num][x].start.longitude.toFixed(5)){
+  //         // console.log('555')
           
-          //   this.map.animateToBearing(this.state.result.bearing[num][x].bearing);
-          //  return x++
-          // }
+  //         //   this.map.animateToBearing(this.state.result.bearing[num][x].bearing);
+  //         //  return x++
+  //         // }
          
-         this.map.animateToCoordinate(this.state.markerPosition);
+  //        this.map.animateToCoordinate(this.state.markerPosition);
           
           
-          // setTimeout(() => this.simulator.start(this.state.result.steps[this.state.result.Number]), 750 * 1.5);
-          i++
+  //         // setTimeout(() => this.simulator.start(this.state.result.steps[this.state.result.Number]), 750 * 1.5);
+  //         i++
           
-        }
-      }, 1000)
+  //       }
+  //     }, 1000)
       
       
-  }
-  stop(){
-    this.setState({stop:false})
-    clearTimeout(animationTimeout);
+  // }
+  // stop(){
+  //   this.setState({stop:false})
+  //   clearTimeout(animationTimeout);
     
-  }
+  // }
   movelocation (location) {}
   regionchange(region){
     // console.log(region)
@@ -665,25 +716,32 @@ this.durationtime = setInterval(()=>{
     const uid = this.props.user.uid
   
     firebaseService.database().ref(`History/${uid}/${this.state.historylength++}`).set({
-            Make:this.props.CarSelect.Make,
-            Model:this.props.CarSelect.Model,
+            Car:this.props.CarSelect,
             Distance: parseInt(this.state.summarydistance),
             CO2: this.state.summaryco2 ,
             Duration: this.state.durationtime,
-            Fueluse: parseInt(this.state.summaryfueluse), 
+            Fueluse: parseFloat(this.state.summaryfueluse).toFixed(1), 
             Fuelrate: parseInt(this.state.summaryfuelconsumtion),
             Date: this.state.date,
             Source: this.state.summarysource,
-            Destination: this.state.summarydestination,
-            Time:this.state.timestart
+            Destination: this.state.query,
+            Time:this.state.timestart,
+            Timeend:this.state.timeend,
+            fuelraterealtime:this.state.fuelraterealtime
      })
 
   }
-  
+  parsedate(date){
+    
+    var d = new Date(date)
+    return (
+      <Text>{d.toDateString()}</Text>
+    )
+  }
 
   render () {
     
-  // console.log('length',this.state.historylength)
+  console.log('fuelrate realtime',this.state.fuelraterealtime)
     
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
@@ -778,7 +836,7 @@ this.durationtime = setInterval(()=>{
         }
        
         
-  { this.state.destinate.latitude != 0 && this.state.destinate.longitude != 0
+  { this.state.destinate.latitude != 0 && this.state.destinate.longitude != 0 && this.state.hideinitmarker == false
   ? 
   <View style={{ flexDirection: 'row' }}>
   <Button
@@ -786,27 +844,94 @@ this.durationtime = setInterval(()=>{
             onPress={() => this.fitBottomMarkers()}
             style={[styles.bubble, styles.button]}
           />
-          <Button
+          {/* <Button
             title='ZoomOut'
             onPress={() => this.fitBottomTwoMarkers()}
             style={[styles.bubble, styles.button]}
-          />
+          /> */}
         </View>
    :null
    }
           
         {this.state.hideinitmarker == false
           ? null
-          :<View style={{flexDirection:'row'}}>
-          { this.state.stop == false ?
+          :<View style={{flexDirection:'row',flex:1}}>
+
+
+<View style={styles.zoom}>
+<View style={{flex:1,flexDirection:'column',borderColor:'#6a83fb', borderWidth: 2,}}>
+<TouchableOpacity onPress={() => this.fitBottomTwoMarkers()}>
+  <Text style={styles.zoomtext}>- ZOOMOUT</Text>
+  </TouchableOpacity>
+</View>
+<View style={{flex:1,flexDirection:'column',borderColor:'#6a83fb', borderWidth: 2,}}>
+  <Text style={{textAlign:'center',color:'#6a83fb',fontSize:10,fontWeight:'300',paddingHorizontal: 5,}}>FuelConsumtion Standard: {this.props.CarSelect.FuelConsumption} KM/L</Text>
+</View>
+</View>
+<View style={this.Notification()}>
+{/* <View style={{}}> */}
+   {/* <View style={styles.infoWrapper}> */}
+          <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
+          <Image
+          style={{width: 35, height: 35,marginLeft: 40}}
+          source={require('./car.png')}
+        />
+           {acceleration[acceleration.length - 1] != null ? <Text style={styles.runInfoValue}>{acceleration[acceleration.length - 1]}</Text> :<Text style={styles.runInfoValue}>-</Text> }
+            <Text style={styles.runInfoTitle}>%</Text>
+          </View>
+          <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
+          <Image
+          style={{width: 40, height: 40,marginLeft:40}}
+          source={require('./gas.png')}
+        />   
+            <Text style={styles.runInfoValue}>{fuelconsumption.toFixed(1)}</Text>
+            <Text style={styles.runInfoTitle}>KM/L</Text>
+          </View>
+          <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
+          <Image
+          style={{width: 40, height: 40,marginLeft:40}}
+          source={require('./carbon.png')}
+        />  
+             <Text style={styles.runInfoValue}>{parseFloat(co2 / 1000).toFixed(2)}</Text> 
+            <Text style={styles.runInfoTitle}>KG</Text>
+          </View>
+        </View>
+
+          <View style={styles.footer}>
+          <View style={{height:80,width:65,backgroundColor:'#6a83fb',alignItems:'center',justifyContent:'center'}}>
+      <Text style={{color:'white',fontSize:15, textAlign:'center'}}>Since Start</Text>
+      
+      </View>
+     
+      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
+      <Text style={styles.textfooterheader}>Duration</Text>
+      <Text style={styles.textfooter}>{this.state.durationtime}</Text>
+      </View>
+      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
+      <Text style={styles.textfooterheader}>Distance</Text>
+      <Text style={styles.textfooter}>{this.state.sum.toFixed(1)} KM</Text>
+      </View>
+      <View style={{flex:1,flexDirection:'column'}}>
+      <Text style={styles.textfooterheader}>Fuel Using</Text>
+      <Text style={styles.textfooter}>{parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) } L</Text>
+      </View>
+     
+            </View>
+
+
+
+
+
+
+          {/* { this.state.stop == false ?
             <View>
             <Button title='Start' onPress={this.start.bind(this)} />
             </View>:
             <View>
             <Button title='Stop' onPress={this.stop.bind(this)} />
             </View>
-          }
-          <SlidingUpPanel
+          } */}
+          {/* <SlidingUpPanel
           visible={true}
           startCollapsed
           showBackdrop={false}
@@ -814,8 +939,8 @@ this.durationtime = setInterval(()=>{
           draggableRange={this.props.draggableRange}
           onDrag={v => this._draggedValue.setValue(v)}
           allowMomentum
-          >
-          <View style={styles.panel}>
+          > */}
+          {/* <View style={styles.panel}>
            
             <View style={[this.changeColorPanelHeader()]}>
               
@@ -842,20 +967,21 @@ this.durationtime = setInterval(()=>{
             <Text style={this.changeColor()}>StartMap</Text>
           
           <ScrollView>
-            <Text>Date: {this.state.date} </Text>
+            <Text>Date: {this.parsedate(this.state.date)} </Text>
             <Text>Time: {this.state.durationtime}</Text>
             <Text>Distance: {this.state.sum.toFixed(1)} KM</Text>
-            <Text>FuelUse: {parseInt(totalfueluse[totalfueluse.length - 1])} L</Text>
+            <Text>FuelUse: {parseInt(totalfueluse[totalfueluse.length - 1])} L</Text> */}
             {/* <Text>CO2Emission: {JSON.stringify(this.props.CarSelect.FuelType.CO2Emission)}</Text> */}
             {/* {this.getDistance()} */}
             {/* <Text>{this.props.speed}</Text> */}
             {/* <Text>{this.state.distance+","}</Text> */}
             {/* <Text>CO2: {co2}</Text> */}
-          </ScrollView>
+          {/* </ScrollView>
             </View>
+          </View> */}
+        {/* </SlidingUpPanel> */}
           </View>
-        </SlidingUpPanel>
-          </View>}
+          }
 
         <Dialog 
           visible={this.state.dialogVisible}  
@@ -866,15 +992,15 @@ this.durationtime = setInterval(()=>{
         >
           <View>
             <Text style={{textAlign:'center'}}>Result</Text>
-            <Text>Time:{this.state.timestart}</Text>
+            <Text>Time:{this.state.timestart} - {this.state.timeend}</Text>
             <Text>Distance: {parseInt(this.state.summarydistance)} KM</Text>
             <Text>CO2: {this.state.summaryco2} KG</Text>
             <Text>Duration: {this.state.durationtime}</Text>
-            <Text>Fueluse: {parseInt(this.state.summaryfueluse)} L</Text>
+            <Text>Fueluse: {parseFloat(this.state.summaryfueluse).toFixed(1)} L</Text>
             <Text>Fuelrate: {parseInt(this.state.summaryfuelconsumtion)} KM/L</Text>
-            <Text>Date: {this.state.date}</Text>
+            <Text>Date: {this.parsedate(this.state.date)}</Text>
             <Text>Source: {this.state.summarysource}</Text>
-            <Text>Destination: {this.state.summarydestination}</Text>
+            <Text>Destination: {this.state.query}</Text>
       
             <Button title='OK' onPress={()=> this.AddHistory()}/>
           </View>
@@ -960,11 +1086,11 @@ const styles = StyleSheet.create({
   infoWrapper:{
     position:'absolute',
     left: 0,
-    bottom:0,
+    bottom:50,
     right:0,
     flexDirection: 'row',
     flex:1,
-    
+    backgroundColor: 'green', 
   },
   runInfoWrapper:{
     // backgroundColor: 'rgba(255,255,255,0.75)',
@@ -981,5 +1107,45 @@ runInfoValue:{
     fontWeight:'300',
     paddingVertical:5,
     color:'white'
+},
+footer:{
+  position: 'absolute',
+  flex:0.1,
+  left: 0,
+  right: 0,
+  bottom: -10,
+  backgroundColor:'white',
+  flexDirection:'row',
+  height:60,
+  alignItems:'center',
+  paddingBottom: 10,
+},
+textfooterheader:{
+  textAlign:'center',
+    color:'#6a83fb',
+    fontSize:10,
+    
+},
+textfooter:{
+  textAlign:'center',
+    color:'#6a83fb',
+    fontSize:10,
+},
+zoom:{
+  position:'absolute',
+    left: 0,
+    bottom:195,
+    right:0,
+    flexDirection: 'row',
+    flex:1,
+    backgroundColor: 'white', 
+    height:30,
+},
+zoomtext:{
+  textAlign:'center',
+    color:'#6a83fb',
+    fontSize:15,
+    fontWeight:'300',
+    paddingHorizontal: 5,
 }
 })
