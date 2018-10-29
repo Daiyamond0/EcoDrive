@@ -85,13 +85,13 @@ export class History extends React.Component {
       function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var his = childSnapshot.val()
-            
+            console.log(his.Car)
             historytrip.push(his)
             this.setState({historytrip:historytrip})
             historydate.push(his.Date)
             this.setState({historydate:historydate})
-            if(!historycar.includes(his.Make +' '+ his.Model) ){
-              historycar.push(his.Make +' '+ his.Model)
+            if(!historycar.includes(his.Car.Make +' '+ his.Car.Model) ){
+              historycar.push(his.Car.Make +' '+ his.Car.Model)
               this.setState({historycar:historycar})
             }
             if( his.Date == date.toISOString().split("T")[0] ){
@@ -159,7 +159,7 @@ export class History extends React.Component {
   }
   render() {
     // console.log(Object(this.state.historytrip[0]).Date)
-    // console.log(this.state.historytrip)
+    console.log(this.state.historytrip)
     // console.log(this.state.historydate)
     // console.log(this.state.historycar)
 // console.log(this.state.dayofweek)
@@ -223,7 +223,7 @@ export class History extends React.Component {
         </View>
         {this.state.historytrip.map((item, index) => {
           if(Object(item).Date == this.state.dateselect){
-            if(this.state.selected.includes(Object(item).Make + ' '+ Object(item).Model)== true ||this.state.selected == 'Allcar' ){
+            if(this.state.selected.includes(Object(item).Car.Make + ' '+ Object(item).Car.Model)== true ||this.state.selected == 'Allcar' ){
             return (
            
               <View>

@@ -137,7 +137,7 @@ export class CreateCar extends React.Component {
         .catch(error => {
           console.log(error)
         })
-      Actions.popTo('selectcar')
+      Actions.push('selectmycar')
     } if(checky.includes(model) === true ) {
       alert('เคยเพิ่มไปแล้ว')
     }
@@ -241,7 +241,7 @@ export class CreateCar extends React.Component {
           />
         </View>
         <View style={styles.submitText}>
-          <Button title='Create' onPress={() => this.AddData()} />
+          <Button title='Create' onPress={()=>this.AddData()} />
         </View>
       </View>
     )

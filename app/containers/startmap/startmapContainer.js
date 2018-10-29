@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
   markerPosition : state.HomeReducer.markerPosition,
   origin : state.HomeReducer.markerPosition,
   user: state.sessionReducer.user,
+  carconnect : state.HomeReducer.carconnect
 })
 const mapDispatchToProps = {
   // getDistance:getDistance

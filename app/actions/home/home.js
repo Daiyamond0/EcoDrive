@@ -1,5 +1,6 @@
 import * as types from './actionTypes'
 import firebaseService from '../../enviroments/firebase'
+import { Actions } from 'react-native-router-flux'
 
 const cardetail = detail => {
   return {
@@ -43,6 +44,25 @@ const origin = (positions) => {
   }
 }
 
+const carconnect = (car) => {
+  return {
+    type: types.CARCONNECT,
+    car
+  }
+}
+const popup = () => {
+  return {
+    type: types.POPUP,
+    
+  }
+}
+const popupfalse = () => {
+  return {
+    type: types.POPUPFALSE,
+    
+  }
+}
+
 
 
 export const getCar = () => dispatch => {
@@ -76,3 +96,25 @@ export const getCurrentLocation = () => dispatch => {
     
   )
 }
+
+export const CarConnect = (CarSelect,simumycar,connected) => dispatch => {
+  
+  const x = []
+  if(CarSelect == []){
+    dispatch(carconnect(simumycar[0]))
+  } if(simumycar.length == 0){
+    dispatch(carconnect(CarSelect))
+  } 
+  if(simumycar.length == 0 && CarSelect == []){
+    dispatch(carconnect(x))
+  } 
+  
+  
+}
+export const popupvisible = () => dispatch => {
+ dispatch(popup())
+}
+export const popupinvisible = () => dispatch => {
+  dispatch(popupfalse())
+ }
+ 

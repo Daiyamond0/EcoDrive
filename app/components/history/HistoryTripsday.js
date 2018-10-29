@@ -48,19 +48,13 @@ componentWillMount(){
 }
 
   render() {
-    var data = []
+   
     // console.log(this.props.trips.fuelraterealtime)
-    for(i = 0;i < this.props.trips.fuelraterealtime.length; i++ ){
-        if(this.props.trips.fuelraterealtime[i] < this.props.trips.Car.FuelConsumption){
-            data.push(this.props.trips.fuelraterealtime[i] / ((-this.props.trips.Car.FuelConsumption) +1 ))
-        }else{
-            data.push(this.props.trips.fuelraterealtime[i] / (this.props.trips.Car.FuelConsumption + 1))
-        }
-    }
-    console.log(data)
+   
+    
     const contentInset = { top: 20, bottom: 20 }
     const HiHorizontalLine = ({ y }) =>
-    <Line key={'zero-axis'} x1={'0%'} x2={'100%'} y1={y(0)} y2={y(0)} stroke={'orange'}  strokeWidth={3} />
+    <Line key={'zero-axis'} x1={'0%'} x2={'100%'} y1={y(this.props.trips.Car.FuelConsumption)} y2={y(this.props.trips.Car.FuelConsumption)} stroke={'orange'}  strokeWidth={3} />
     
 
     
@@ -88,18 +82,19 @@ componentWillMount(){
                     }}
                     numberOfTicks={ 3 }
                     formatLabel={ value => `${value} KM/L` }
-                    
+                    min={0}
                 />
                 
                 <AreaChart
                 style={{ flex: 1, marginLeft: 16 }}
-                data={ data }
+                data={this.props.trips.fuelraterealtime}
                 contentInset={{ top: 20, bottom: 20 }}
                 curve={ shape.curveNatural }
                 svg={{ fill: 'rgba(134, 65, 244, 0.8)' , 
                 
                         }
                 }
+                gridMin={0}
                 
             >
                 <Grid />

@@ -16,7 +16,9 @@ const initialState = {
   origin: {
     latitude: 0,
     longitude: 0
-  }
+  },
+  carconnect:[],
+  popup:false
 }
 
 const HomeReducer = (state = initialState, action) => {
@@ -53,7 +55,12 @@ const HomeReducer = (state = initialState, action) => {
           longitude: action.positions.coords.longitude
         }
       }
-
+      case types.CARCONNECT:
+      return { ...state, carconnect: action.car }
+      case types.POPUP:
+      return { ...state, popup: true  }
+      case types.POPUPFALSE:
+      return { ...state, popup: false  }
     default:
       return state
   }

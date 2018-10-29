@@ -16,6 +16,7 @@ import SelectMyCarContainer from '../../containers/selectcar/SelectMyCarContaine
 import EditCarContainer from '../../containers/selectcar/EditCarContainer'
 import EditContainer from '../../containers/selectcar/EditContainer'
 import HistorytripsdayContainer from '../../containers/history/HistorytripsdayContainer'
+import startnomapContainer from '../../containers/startmap/startnomapContainer';
 
 import { RouterRedux } from '../../containers/routes/routesContainer';
 import { configureStore } from '../../store/store';
@@ -41,6 +42,7 @@ export class Routes extends React.Component {
             <Scene key="editcar" component={EditCarContainer} title="EditCar" hideNavBar='true' />
             <Scene key="edit" component={EditContainer} title="Edit" hideNavBar='true' />
             <Scene key="historytripday" component={HistorytripsdayContainer} title="Historytripday" hideNavBar='true' />
+            <Scene key="startnomap" component={startnomapContainer} title="startNomap" hideNavBar='true' />
           </Scene>
         </RouterRedux>
       </ Provider>

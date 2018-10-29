@@ -29,8 +29,12 @@ export  class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isReady: false
+      isReady: false,
+      visible:false,
+      cardetail:[]
     };
+    this.ref = firebaseService.database().ref('SimulateCar/CarDetail');
+    this.unsubscribe = null;
   }
   
 
@@ -43,7 +47,7 @@ export  class HomeScreen extends React.Component {
 
   startmap(){
     if(this.props.CarSelect.Make === undefined &&
-      this.props.CarSelect.Model === undefined){
+      this.props.CarSelect.Model === undefined ){
         alert('Select Car First')
     }else{
       Actions.push('startmap')
@@ -53,21 +57,61 @@ export  class HomeScreen extends React.Component {
 
   componentWillMount () {
     this.props.getCurrentLocation()
+
+ 
+
+    
     // BluetoothSerial.on('bluetoothEnabled', () => Toast.showShortBottom('Bluetooth enabled'))
     // BluetoothSerial.on('bluetoothDisabled', () => Toast.showShortBottom('Bluetooth disabled'))
   }
   
-  componentDidMount () {}
+  componentDidMount () {
+    this.unsubscribe = this.ref.on('value', this.onCollectionUpdate)
+
+  
+  
+    
+  }
+componentWillUnmount(){
+   clearInterval(this.paring)
+}
+
+  
    closeDrawer(){
       this._drawer._root.close()
     };
     openDrawer(){
       this._drawer._root.open()
     };
-    
-    
-  render () {
    
+ 
+paringAuto(){
+    return(
+      <Text>{this.state.cardetail[3]+' '+this.state.cardetail[5]}</Text>
+     
+  )
+}
+
+onCollectionUpdate = (snapshot) => {
+    
+  var cardetail = []
+   snapshot.forEach(
+    function (childSnapshot) {
+      var childData = childSnapshot.val()
+      cardetail.push(childData)
+      this.setState({visible:true})
+        setTimeout(() => {
+          this.setState({visible:false})
+          this.setState({
+            cardetail:cardetail
+        })
+        }, 3000)
+    }.bind(this)
+    
+  )
+}
+  render () {
+  //  console.log(this.state.cardetail)
     return (
       <Drawer
         ref={(ref) => { this._drawer = ref; }}
@@ -104,12 +148,12 @@ export  class HomeScreen extends React.Component {
                 flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                
               }}
               >
               <TouchableOpacity onPress={Actions.bluetooth}>
-                <Text style={{ fontSize: 19, color: 'black' }}>
-                OBD2 is Connected
+                <Text style={{ fontSize: 19, color: 'black',marginLeft:100 }}>OBD2 is Connected
                   </Text>
               </TouchableOpacity>
               <Drawer/>
@@ -130,12 +174,18 @@ export  class HomeScreen extends React.Component {
             </View>}
         </View>
             {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/} 
+            <View style={{flexDirection:'row'}}>
+              <View style={{justifyContent:'center',alignItems:'center',marginVertical:-30}}>
+                {this.state.visible === true ? <ActivityIndicator animating={this.state.visible}/>:null}
+                </View>
             <View style={styles.s2}> 
-            <Text onPress={Actions.selectmycar} style={{color:'white',fontSize:15}}>{this.props.CarSelect.Make === undefined &&
-                this.props.CarSelect.Model === undefined
-                ? 'Select Car'
-                : this.props.CarSelect.Make + ' ' + this.props.CarSelect.Model}</Text>
+            {Platform.OS === 'android' && this.props.connected
+            ?  this.paringAuto()
+            :  <Text onPress={Actions.selectmycar} style={{color:'white',fontSize:15}}>
+            {this.props.CarSelect.Make === undefined && this.props.CarSelect.Model === undefined ? 
+            'Select Car' : this.props.CarSelect.Make + ' ' + this.props.CarSelect.Model}</Text>}
       </View>
+     </View>
       <View style={{width:'90%'}}>
           <Card >
           <CardItem >
@@ -190,7 +240,10 @@ export  class HomeScreen extends React.Component {
             </Button>
                 </CardItem>
             </Card>
+            
           </View>
+        
+       
       
         <Footer style={{position:'absolute',left: 0,bottom: 0}}>
           <FooterTab>

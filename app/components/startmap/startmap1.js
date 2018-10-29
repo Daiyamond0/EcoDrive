@@ -170,7 +170,7 @@ export  class StartMap1 extends Component {
 
     
 
-      const {CarSelect ,initialPosition ,origin ,draggableRange} = this.props
+      const {carconnect ,initialPosition ,origin ,draggableRange} = this.props
     if (this.state.speed !== nextState.speed ) {
       return true
     }
@@ -220,7 +220,7 @@ export  class StartMap1 extends Component {
       if (this.state.acceleration !== nextState.acceleration ) {
         return true
       }
-      if (this.props.CarSelect  !== nextProps.CarSelect.FuelType.CO2Emission ) {
+      if (this.props.carconnect  !== nextProps.carconnect.FuelType.CO2Emission ) {
         return true
       }
       if (this.state.totalfueluse !== nextState.totalfueluse ) {
@@ -301,7 +301,7 @@ this.intervalId = setInterval(()=>{
 
   var num = this.state.result.Number
   var distance = Number.parseFloat(this.state.sum);
-  var co2 =((100 / this.props.CarSelect.FuelConsumption) * this.props.CarSelect.FuelType.CO2Emission) * Number.parseFloat(this.state.sum.toFixed(2))
+  var co2 =((100 / this.props.carconnect.FuelConsumption) * this.props.carconnect.FuelType.CO2Emission) * Number.parseFloat(this.state.sum.toFixed(2))
   if( distance > this.state.sumdistance1 && this.state.i < this.state.result.way[num].length ){
     if(this.state.i == 2){
       var d = new Date()
@@ -451,7 +451,7 @@ if(seconds<10){
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
     const acceleration = this.state.acceleration
-     if( fuelconsumption < this.props.CarSelect.FuelConsumption- (this.props.CarSelect.FuelConsumption * 0.2)){
+     if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)){
         // Vibration.vibrate(2000)
         // Vibration.cancel()
       return{
@@ -463,7 +463,7 @@ if(seconds<10){
         flex:1,
         backgroundColor: 'orange'
       }
-      }if(fuelconsumption < this.props.CarSelect.FuelConsumption - (this.props.CarSelect.FuelConsumption * 0.3)){
+      }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.3)){
       // Vibration.vibrate(2000)
       // Vibration.cancel()
       return{
@@ -716,7 +716,7 @@ if(seconds<10){
     const uid = this.props.user.uid
   
     firebaseService.database().ref(`History/${uid}/${this.state.historylength++}`).set({
-            Car:this.props.CarSelect,
+            Car:this.props.carconnect,
             Distance: parseInt(this.state.summarydistance),
             CO2: this.state.summaryco2 ,
             Duration: this.state.durationtime,
@@ -745,8 +745,8 @@ if(seconds<10){
     
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
-    // const co2 = totalfueluse[totalfueluse.length - 1] * this.props.CarSelect.FuelType.CO2Emission
-    const co2 =((100 / this.props.CarSelect.FuelConsumption) * this.props.CarSelect.FuelType.CO2Emission) * Number.parseFloat(this.state.sum.toFixed(2))
+    // const co2 = totalfueluse[totalfueluse.length - 1] * this.props.carconnect.FuelType.CO2Emission
+    const co2 =((100 / this.props.carconnect.FuelConsumption) * this.props.carconnect.FuelType.CO2Emission) * Number.parseFloat(this.state.sum.toFixed(2))
     const acceleration = this.state.acceleration
     
     const data = this.state.place
@@ -800,8 +800,8 @@ if(seconds<10){
             hidebubble={this.state.hidebubble}
             hideway={this.state.hideway}
             reduceArr={this.state.markerPosition}
-            co2={this.props.CarSelect.FuelType.CO2Emission}
-            fuelconsumption={this.props.CarSelect.FuelConsumption}
+            co2={this.props.carconnect.FuelType.CO2Emission}
+            fuelconsumption={this.props.carconnect.FuelConsumption}
           />
         </MapView>
         {this.state.hideinitmarker == false ?
@@ -865,7 +865,7 @@ if(seconds<10){
   </TouchableOpacity>
 </View>
 <View style={{flex:1,flexDirection:'column',borderColor:'#6a83fb', borderWidth: 2,}}>
-  <Text style={{textAlign:'center',color:'#6a83fb',fontSize:10,fontWeight:'300',paddingHorizontal: 5,}}>FuelConsumtion Standard: {this.props.CarSelect.FuelConsumption} KM/L</Text>
+  <Text style={{textAlign:'center',color:'#6a83fb',fontSize:10,fontWeight:'300',paddingHorizontal: 5,}}>FuelConsumtion Standard: {this.props.carconnect.FuelConsumption} KM/L</Text>
 </View>
 </View>
 <View style={this.Notification()}>
@@ -971,7 +971,7 @@ if(seconds<10){
             <Text>Time: {this.state.durationtime}</Text>
             <Text>Distance: {this.state.sum.toFixed(1)} KM</Text>
             <Text>FuelUse: {parseInt(totalfueluse[totalfueluse.length - 1])} L</Text> */}
-            {/* <Text>CO2Emission: {JSON.stringify(this.props.CarSelect.FuelType.CO2Emission)}</Text> */}
+            {/* <Text>CO2Emission: {JSON.stringify(this.props.carconnect.FuelType.CO2Emission)}</Text> */}
             {/* {this.getDistance()} */}
             {/* <Text>{this.props.speed}</Text> */}
             {/* <Text>{this.state.distance+","}</Text> */}

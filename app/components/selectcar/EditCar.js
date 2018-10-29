@@ -45,6 +45,7 @@ export class EditCar extends React.Component {
     
     Actions.replace('editcar')
     Actions.refresh('editcar')
+   
   }
 
   editCar (item, key) {
