@@ -6,6 +6,12 @@ const mycar = yourcar => ({
   value: yourcar
 })
 
+const carinfo = item => ({
+  type:  types.CARINFO,
+  value: item
+})
+
+
 export const MyCarlist = uid => dispatch => {
   const car = []
   firebaseService.database().ref(`user/${uid}/`).once(
@@ -24,4 +30,8 @@ export const MyCarlist = uid => dispatch => {
       console.log(error)
     }
   )
+}
+
+export const carDetail = (item) => dispatch =>{
+  dispatch(carinfo(item))
 }

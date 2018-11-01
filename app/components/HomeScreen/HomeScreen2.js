@@ -24,7 +24,7 @@ import Toast from '@remobile/react-native-toast'
 import firebaseService from '../../enviroments/firebase.js'
 import {DrawerNavigator} from 'react-navigation';
 
-
+let date = new Date()
 export  class HomeScreen extends React.Component {
    
   constructor(props) {
@@ -40,12 +40,21 @@ export  class HomeScreen extends React.Component {
       ,speed: [],
       distance: [],
       sum: 0,
+      TodayCO2:[],
+      TodayDistance:[],
+      TodayFuelrate:[],
+      sumCo2:0,
+      sumDistance:0,
+      sumFuelrate:0
     };
     this.ref = firebaseService.database().ref('SimulateCar/CarDetail');
     this.unsubscribe = null;
 
     this.speed = firebaseService.database().ref('Speed');
     this.getspeed = null;
+
+    this.loading= null
+    this.time=null
   }
   
 
@@ -68,7 +77,10 @@ export  class HomeScreen extends React.Component {
     if(this.props.carconnect.length == 0 && this.props.connected == true){
       alert('Pls Connect Car')
     }if(this.props.carconnect.length != 0 && this.props.connected == true){
+      // this.props.popupinvisible()
+      this.speed.off()
       Actions.push('startmap')
+      // Actions.refresh('home')
     }
     if(this.props.connected == false){
       alert('Pls Connect Bluetooth')
@@ -102,17 +114,53 @@ export  class HomeScreen extends React.Component {
     
     // BluetoothSerial.on('bluetoothEnabled', () => Toast.showShortBottom('Bluetooth enabled'))
     // BluetoothSerial.on('bluetoothDisabled', () => Toast.showShortBottom('Bluetooth disabled'))
+    var TodayCO2 = []
+    var TodayDistance = []
+    var TodayFuelrate = []
+    firebaseService.database().ref(`History/${uid}`).once(
+      'value',
+      function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            var his = childSnapshot.val()
+           
+            if( his.Date == date.toISOString().split("T")[0] ){
+              TodayCO2.push(parseFloat(his.CO2))
+              this.setState({TodayCO2: TodayCO2})
+              this.setState({sumCo2: TodayCO2.reduce((a, b) => a + b)})
+              TodayDistance.push(his.Distance)
+              this.setState({TodayDistance:TodayDistance})
+              this.setState({sumDistance:TodayDistance.reduce((a, b) => a + b)})
+              TodayFuelrate.push(his.Fuelrate)
+              this.setState({TodayFuelrate:TodayFuelrate})
+              this.setState({sumFuelrate: TodayFuelrate.reduce((a, b) => a + b / TodayFuelrate.length )})
+            }
+            
+            
+        }.bind(this))
+        
+      }.bind(this),
+      function (error) {
+        console.log(error)
+      }
+      
+    )
+    
+    
   }
   
   componentDidMount () {
   
+    
       this.unsubscribe = this.ref.on('value', this.onCollectionUpdate)
-      this.getspeed = this.speed.on('value', this.getdataspeed)
+      
 
+      
+          this.getspeed = this.speed.on('value', this.getdataspeed.bind(this))
+      
       this.loading = setInterval(()=>{
         if(Platform.OS === 'android' && this.props.connected){
           this.setState({visible:true})
-            setTimeout(() => {
+            this.time = setTimeout(() => {
               this.setState({visible:false})
              clearInterval(this.loading)
              this.props.CarConnect(this.props.CarSelect,this.state.simumycar,this.props.connected)
@@ -137,8 +185,9 @@ export  class HomeScreen extends React.Component {
 
   }
 componentWillUnmount(){
-  
+  clearInterval(this.loading)
 }
+
 
   
    closeDrawer(){
@@ -215,7 +264,7 @@ const uid = this.props.user.uid
       var simumycar = []
       
       const uid = this.props.user.uid
-      firebaseService.database().ref(`user/${uid}/`).once(
+      firebaseService.database().ref(`user/${uid}/`).on(
         'value',
         function (snapshot) {
           snapshot.forEach(function (childSnapshot) {
@@ -244,6 +293,7 @@ CarConnect(){
   if(this.props.carconnect.length == 0 && this.props.connected == true){
     alert('Pls Connect Car')
   }if(this.props.carconnect.length != 0 && this.props.connected == true){
+    
     this.props.popupinvisible()
     Actions.push('startnomap')
   }
@@ -280,6 +330,8 @@ getdataspeed = (snapshot) => {
  
   if(this.state.sum > 0 && this.props.connected == true && this.props.carconnect.length != 0){
     this.props.popupvisible()
+    this.speed.off()
+    clearInterval(this.getspeedtimmer)
     Actions.push('startnomap')
   }
 }
@@ -303,9 +355,14 @@ getdataspeed = (snapshot) => {
   render () {
   // console.log(this.state.cardetail[3]+' '+this.state.cardetail[5])
   // console.log(this.props.carconnect.length == 0)
-  console.log(this.state.simumycar)
-  console.log(this.props.CarSelect)
+  // console.log(this.state.simumycar)
+  // console.log(this.props.CarSelect)
   // console.log(this.props.carconnect)
+  // console.log(this.state.sumCo2)
+  // console.log(this.state.sumDistance)
+  // console.log(this.state.TodayDistance)
+  // console.log(this.state.sumFuelrate)
+  // console.log(this.state.TodayFuelrate)
     return (
       <Drawer
         ref={(ref) => { this._drawer = ref; }}
@@ -334,10 +391,11 @@ getdataspeed = (snapshot) => {
       >
         
        
-        <View style={styles.footer1}>
+        
          
           {Platform.OS === 'android' && this.props.connected
-            ? <View
+            ? <View style={styles.footer2}>
+            <View
               style={{
                 flex: 1,
                 flexDirection: 'row',
@@ -347,12 +405,14 @@ getdataspeed = (snapshot) => {
               }}
               >
               <TouchableOpacity onPress={Actions.bluetooth}>
-                <Text style={{ fontSize: 19, color: 'black',marginLeft:100 }}>OBD2 is Connected
+                <Text style={{ fontSize: 19, color: 'white',marginLeft:100 }}>OBD2 is Connected
                   </Text>
               </TouchableOpacity>
               <Drawer/>
             </View>
-            : <View
+            </View>
+            :<View style={styles.footer1}> 
+            <View
               style={{
                 flex: 1,
                 flexDirection: 'row',
@@ -365,8 +425,9 @@ getdataspeed = (snapshot) => {
                 OBD2 is not connected
                   </Text>
               </TouchableOpacity>
+            </View>
             </View>}
-        </View>
+        
             {/*<Text style={styles.title}>Welcome {this.props.user.email}</Text>*/} 
             <View style={{flexDirection:'row'}}>
               <View style={{justifyContent:'center',alignItems:'center',marginVertical:-30}}>
@@ -381,7 +442,9 @@ getdataspeed = (snapshot) => {
            
       </View>
      </View>
+     { this.state.sumCo2 != 0 &&this.state.sumDistance != 0 &&this.state.sumFuelrate != 0 ? 
       <View style={{width:'90%'}}>
+      <TouchableOpacity onPress={Actions.history}>
           <Card >
           <CardItem >
             <Text> Today </Text>
@@ -397,7 +460,7 @@ getdataspeed = (snapshot) => {
           style={{width: 40, height: 40}}
           source={require('./gas.png')}
         />
-        <Text style={{}}>38</Text>
+        <Text style={{}}>{this.state.sumFuelrate}</Text>
         <Text style={{fontSize:15}}>KM/L</Text>    
           </View>
           <View style={{flexDirection:'column',marginHorizontal: 15}}> 
@@ -405,15 +468,15 @@ getdataspeed = (snapshot) => {
           style={{width: 40, height: 40}}
           source={require('./co2.png')}
         />
-        <Text style={{}}>69</Text>
-        <Text style={{fontSize:15}}>G/KM</Text>
+        <Text style={{}}>{parseFloat(this.state.sumCo2).toFixed(2)}</Text>
+        <Text style={{fontSize:15}}>KG</Text>
         </View>
         <View style={{flexDirection:'column',marginHorizontal: 15}}> 
         <Image
           style={{width: 40, height: 40,}}
           source={require('./road.png')}
         />
-        <Text style={{}}>10</Text>
+        <Text style={{}}>{this.state.sumDistance}</Text>
         <Text style={{fontSize:15}}>KM</Text>
         </View>
         <Image
@@ -422,7 +485,27 @@ getdataspeed = (snapshot) => {
         />
         </CardItem>
           </Card>
+          </TouchableOpacity>
         </View>
+        : 
+        <View style={{width:'90%'}}>
+          <Card >
+          <CardItem >
+            <Text> Today </Text>
+            </CardItem>
+            <CardItem style={{
+    left: 0,
+    bottom:0,
+    right:0,
+    flexDirection: 'row',
+    }}>
+          <View style={{flexDirection:'column',marginHorizontal: 15}}> 
+          <Text>Not Drive today yet!!</Text>
+        </View>
+        </CardItem>
+          </Card>
+        </View>
+     }
         <View style={{width:'90%'}}>
           <Card>
             <CardItem>

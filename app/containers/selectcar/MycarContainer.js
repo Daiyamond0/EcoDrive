@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { MyCar } from '../../components/selectcar/Mycar'
 
 import { MyCarlist } from '../../actions/selectcar/Mycar'
-
+import {carDetail } from '../../actions/selectcar/Mycar';
 const mapStateToProps = state => ({
   user: state.sessionReducer.user,
   mycar: state.MycarReducer.mycar,
@@ -10,7 +10,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  MyCarlist: MyCarlist
+  MyCarlist: MyCarlist,
+  carDetail:carDetail
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyCar)

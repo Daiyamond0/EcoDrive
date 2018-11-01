@@ -25,3 +25,6 @@ export const MYCAR = 'MYCAR'
 /// //EditCar.js
 export const EDITCAR = 'EDITCAR'
 export const EDIT = 'EDIT'
+
+export const CARINFO = 'CARINFO'
+

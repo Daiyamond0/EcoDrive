@@ -10,6 +10,7 @@ import {
   ScrollView,
   Dimensions,
   ImageBackground,
+  TouchableOpacity
 } from 'react-native'
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -48,40 +49,45 @@ export class MyCar extends React.Component {
   onContentSizeChange = (contentWidth, contentHeight)=>{
     this.setState({screenHeight:contentHeight});
   }
+  MycarDetail(item){
+    this.props.carDetail(item)
+    Actions.push('mycardetail')
+  }
+
   render () {
     // console.log(this.props.mycar)
     // console.log(this.state.carselected)
     const scrollEnabled = false;
     return (
       <View style={styles.mainviewStyle}>
-      <ImageBackground
-      style={styles.container}
-      source={require('../Image/home.png')}
-      imageStyle={{ resizeMode: 'cover' }}
-    >
+      
         {/* <Text>{JSON.stringify(this.props.mycar)}</Text> */}
-          </ImageBackground>
         <View>
           <List
             dataArray={Object.values(this.props.mycar)}
             renderRow={item => {
               return (
+              
                 <ImageBackground
-      style={styles.container}
-      source={require('../Image/Car.png')}
-      imageStyle={{ resizeMode: 'cover' }}
-    >
-                <TouchableHighlight>
-                  <ListItem>
+                style={styles.container}
+                source={require('../Image/Car.png')}
+                imageStyle={{ resizeMode: 'cover' }}
+                
+              >
+                
+                  <ListItem onPress={()=>this.MycarDetail(item)}>
+                    <View style={{flexDirection:'column'}}>
                     <View>
-                    <Text>Make: {item.Make}</Text>
-                    <Text>Model: {item.Model}</Text>
-                    <Text>Speed:{item.Speed} </Text>
-                    <Text>Fueltype: {item.FuelType.FuelType}</Text>
+                    <Text style={{fontSize:24}}>{item.Make}  {item.Model}</Text>
+                    </View> 
+                    <View >
+                    <Text style={{textDecorationLine:'underline'}}>Detail..</Text>
+                    </View> 
                     </View>
                   </ListItem>
-                </TouchableHighlight>
-                </ImageBackground>  
+               
+                </ImageBackground>
+                  
               )
             }}
           />
@@ -100,7 +106,13 @@ export class MyCar extends React.Component {
                 return (< Picker.Item label={item.Make+" "+item.Model} value={item}  key={index} />);
               })}
             </Picker> */}
-
+<ImageBackground
+      style={styles.container}
+      source={require('../Image/home.png')}
+      imageStyle={{ resizeMode: 'cover' }}
+    >
+        {/* <Text>{JSON.stringify(this.props.mycar)}</Text> */}
+          </ImageBackground>
             {/* Rest of the app comes ABOVE the action button component !*/}
         <ActionButton buttonColor="rgba(231,76,60,1)">
           <ActionButton.Item buttonColor='green' title="Select Car" onPress={Actions.selectmycar}>

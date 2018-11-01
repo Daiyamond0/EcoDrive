@@ -62,7 +62,8 @@ export const styles = StyleSheet.create({
   icon:{
     width:24,
     height:24
-  }, footer1: {
+  },
+   footer1: {
     shadowColor: "#000000",
     shadowOpacity: 0.8,
     shadowRadius: 2,
@@ -71,6 +72,19 @@ export const styles = StyleSheet.create({
       width: 1
     },
     backgroundColor: 'yellow',
+    flexDirection: 'row',
+    height: 70,
+    alignItems: 'center'
+  },
+  footer2: {
+    shadowColor: "#000000",
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 1
+    },
+    backgroundColor: 'green',
     flexDirection: 'row',
     height: 70,
     alignItems: 'center'

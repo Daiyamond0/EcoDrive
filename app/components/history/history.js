@@ -226,9 +226,9 @@ export class History extends React.Component {
             if(this.state.selected.includes(Object(item).Car.Make + ' '+ Object(item).Car.Model)== true ||this.state.selected == 'Allcar' ){
             return (
            
-              <View>
+              <View >
                 
-                <Card>
+                <Card > 
                   {/* <CardItem header>
                   <Text>Date: { this.parsedate(Object(item).Date) }</Text>
                   

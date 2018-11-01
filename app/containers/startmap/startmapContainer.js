@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = {
   // getDistance:getDistance
+ 
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartMap1)

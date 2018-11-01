@@ -111,7 +111,7 @@ export  class StartNoMap extends Component {
         snapshot.forEach(function (childSnapshot) {
             const his = childSnapshot.val()
             history.push(his)
-            this.setState({historylength:history.length})
+            this.setState({historylength:history.length + 1})
         }.bind(this))
         
       }.bind(this),
@@ -120,17 +120,17 @@ export  class StartNoMap extends Component {
       }
     )
     
-    if(this.props.popup == true){
-      this.setState({Modalkeepdata:true})
-    }else{
-      this.setState({Modalkeepdata:false})
-    }
+  
 
   }
   
 
   componentDidMount (){
-    
+      if(this.props.popup == true){
+      this.setState({Modalkeepdata:true})
+    }else{
+      this.setState({Modalkeepdata:false})
+    }
     this.unsubscribe = this.ref.on('value', this.onCollectionUpdate)
     var totalSeconds = 0;
 this.durationtime = setInterval(()=>{
@@ -199,7 +199,7 @@ if(seconds<10){
   }
 
   componentWillUnmount() {
-    
+    this.unsubscribe = null
     clearInterval(this.intervalId)
     clearInterval(this.durationtime)
   }
@@ -313,7 +313,7 @@ if(seconds<10){
   this.setState({timeend:d.getHours()+':'+d.getMinutes()})
   this.setState({dialogVisible: true})
   clearInterval(this.durationtime)
-
+  this.ref.off()
   }
   AddHistory(){
     this.setState({dialogVisible: false})
@@ -342,7 +342,11 @@ if(seconds<10){
       <Text>{d.toDateString()}</Text>
     )
   }
-
+  Startmap(){
+    
+    Actions.replace('startmap')
+    this.ref.off()
+  }
  
   render () {
 console.log(this.props.popup)
@@ -371,7 +375,7 @@ console.log(this.props.popup)
   <Button title='SaveTrips' onPress={()=>this.SaveTrip()}/>
   </View>
 <View style={{flex:1,flexDirection:'column',borderColor:'#6a83fb', borderWidth: 2,}}>
-<TouchableOpacity onPress={Actions.startmap}>
+<TouchableOpacity onPress={()=>this.Startmap()}>
   <Text style={styles.zoomtext}>Go navigate</Text>
   </TouchableOpacity>
 </View>
@@ -470,7 +474,7 @@ console.log(this.props.popup)
           </View>
           <View>
            <Button title='No' onPress={()=>{this.setState({Modalkeepdata:false})
-                                            Actions.popTo('home')
+                                            Actions.pop()
           }}/>
          </View>
         </Dialog>

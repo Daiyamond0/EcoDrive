@@ -45,7 +45,6 @@ export class EditCar extends React.Component {
     
     Actions.replace('editcar')
     Actions.refresh('editcar')
-   
   }
 
   editCar (item, key) {
@@ -60,12 +59,6 @@ export class EditCar extends React.Component {
 
     return (
       <View style={styles.mainviewStyle}>
-      <ImageBackground
-      style={styles.container}
-      source={require('../Image/backgroundEdit.png')}
-      imageStyle={{ resizeMode: 'cover' }}
-    >
-     </ImageBackground>
         {/* <Text>{JSON.stringify(this.props.mycar)}</Text> */}
         <View>
           <List
@@ -100,7 +93,12 @@ export class EditCar extends React.Component {
             }}
           />
         </View>
-
+        <ImageBackground
+      style={styles.container}
+      source={require('../Image/backgroundEdit.png')}
+      imageStyle={{ resizeMode: 'cover' }}
+    >
+     </ImageBackground>
         {/* <View>
             <List dataArray={this.props.editcar}
             renderRow={(item,index) =>{

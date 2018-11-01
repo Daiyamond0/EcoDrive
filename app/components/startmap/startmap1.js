@@ -127,6 +127,7 @@ export  class StartMap1 extends Component {
   }
 
   componentWillMount =()=> {
+    
     this.state.markerPosition = this.props.markerPosition;
     firebaseService.database().ref('Speed').remove()
     var dd = date.getDate();
@@ -148,7 +149,7 @@ export  class StartMap1 extends Component {
         snapshot.forEach(function (childSnapshot) {
             const his = childSnapshot.val()
             history.push(his)
-            this.setState({historylength:history.length})
+            this.setState({historylength:history.length + 1})
         }.bind(this))
         
       }.bind(this),
@@ -401,7 +402,7 @@ if(seconds<10){
   }
 
   componentWillUnmount() {
-    
+    this.unsubscribe = null
     clearInterval(this.intervalId)
     clearInterval(this.durationtime)
   }
@@ -741,7 +742,7 @@ if(seconds<10){
 
   render () {
     
-  console.log('fuelrate realtime',this.state.fuelraterealtime)
+  // console.log('fuelrate realtime',this.state.fuelraterealtime)
     
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
