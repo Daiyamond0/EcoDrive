@@ -340,7 +340,7 @@ var d = new Date()
       // this.setState({date:date.toLocaleDateString()})
       this.setState({dialogVisible:true})
       this.setState({timeend:d.getHours()+':'+d.getMinutes()})
-      
+      this.ref.off()
 
    }
     // this.map.animateToCoordinate(this.state.markerPosition);
@@ -367,6 +367,32 @@ if(seconds<10){
 }
   this.setState({durationtime: hour + ":" + minute + ":" + seconds })}},1000)
 
+
+
+  /////////////////////////////////////////////////
+  this.noti= setInterval(()=>{
+    const totalfueluse = this.state.totalfueluse
+    const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
+    const acceleration = this.state.acceleration
+    if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
+      this.setState({red:true})
+      if(this.state.orange == true){
+        this.setState({orange:false})
+          Vibration.vibrate(2000) 
+        }
+    }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25) && fuelconsumption > 0){
+      this.setState({orange:true})
+      if(this.state.red == true){
+        this.setState({red:false})
+          Vibration.vibrate(2000) 
+          
+        }
+
+    } if( fuelconsumption > this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) ){
+      this.setState({orange:true})
+
+    }
+    },2000)
   }
   onCollectionUpdate = (snapshot) => {
     
@@ -452,7 +478,7 @@ if(seconds<10){
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
     const acceleration = this.state.acceleration
-     if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)){
+     if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
         // Vibration.vibrate(2000)
         // Vibration.cancel()
       return{
@@ -464,7 +490,7 @@ if(seconds<10){
         flex:1,
         backgroundColor: 'orange'
       }
-      }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.3)){
+      }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
       // Vibration.vibrate(2000)
       // Vibration.cancel()
       return{

@@ -76,7 +76,10 @@ export  class StartNoMap extends Component {
 
       historylength : 0,
 
-      Modalkeepdata:false
+      Modalkeepdata:false,
+
+      orange:true,
+      red:true
     }
    
    
@@ -192,10 +195,38 @@ if(seconds<10){
    
     
     
+    /////////////////////////////////////////////////////////////////////////////////
     
     
+
+   this.noti= setInterval(()=>{
+    const totalfueluse = this.state.totalfueluse
+    const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
+    const acceleration = this.state.acceleration
+    if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
+      this.setState({red:true})
+      if(this.state.orange == true){
+        this.setState({orange:false})
+          Vibration.vibrate(2000) 
+        }
+    }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25) && fuelconsumption > 0){
+      this.setState({orange:true})
+      if(this.state.red == true){
+        this.setState({red:false})
+          Vibration.vibrate(2000) 
+          
+        }
+
+    } if( fuelconsumption > this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) ){
+      this.setState({orange:true})
+
+    }
+    },2000)
+
     
-   // this.setState({co2:[...this.state.co2,100/(this.state.sum.toFixed(1) / this.state.totalfueluse[this.state.totalfueluse.length - 1])]})
+    
+          
+
   }
 
   componentWillUnmount() {
@@ -249,9 +280,10 @@ if(seconds<10){
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
     const acceleration = this.state.acceleration
-     if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)){
-        // Vibration.vibrate(2000)
-        // Vibration.cancel()
+    
+     if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
+      
+      
       return{
         position:'absolute',
         left: 0,
@@ -261,7 +293,7 @@ if(seconds<10){
         flex:1,
         backgroundColor: 'orange'
       }
-      }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.3)){
+      }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25) && fuelconsumption > 0){
       // Vibration.vibrate(2000)
       // Vibration.cancel()
       return{
@@ -274,27 +306,28 @@ if(seconds<10){
         backgroundColor: 'red',
       }
     } 
-      if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
-       return{
-        position:'absolute',
-        left: 0,
-        bottom:50,
-        right:0,
-        flexDirection: 'row',
-        flex:1,
-        backgroundColor: 'orange'
-      }
-    } if(acceleration[acceleration.length - 1] >= 70){
-        return{
-        position:'absolute',
-        left: 0,
-        bottom:50,
-        right:0,
-        flexDirection: 'row',
-        flex:1,
-        backgroundColor: 'red',
-      }
-    }
+    //   if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
+    //    return{
+    //     position:'absolute',
+    //     left: 0,
+    //     bottom:50,
+    //     right:0,
+    //     flexDirection: 'row',
+    //     flex:1,
+    //     backgroundColor: 'orange'
+    //   }
+    // } if(acceleration[acceleration.length - 1] >= 70){
+    //     return{
+    //     position:'absolute',
+    //     left: 0,
+    //     bottom:50,
+    //     right:0,
+    //     flexDirection: 'row',
+    //     flex:1,
+    //     backgroundColor: 'red',
+    //   }
+    // }
+          
         return {
         position:'absolute',
         left: 0,
@@ -303,7 +336,8 @@ if(seconds<10){
         flexDirection: 'row',
         flex:1,
         backgroundColor: 'green'
-    }
+    
+  }
      
   }
 
@@ -349,7 +383,7 @@ if(seconds<10){
   }
  
   render () {
-console.log(this.props.popup)
+console.log(this.state.orange)
     
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]

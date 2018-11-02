@@ -460,7 +460,7 @@ getdataspeed = (snapshot) => {
           style={{width: 40, height: 40}}
           source={require('./gas.png')}
         />
-        <Text style={{}}>{this.state.sumFuelrate}</Text>
+        <Text style={{}}>{parseFloat(this.state.sumFuelrate).toFixed(2) }</Text>
         <Text style={{fontSize:15}}>KM/L</Text>    
           </View>
           <View style={{flexDirection:'column',marginHorizontal: 15}}> 
