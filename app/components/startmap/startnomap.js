@@ -36,7 +36,7 @@ import { Dialog } from 'react-native-simple-dialogs';
 import Geocoder from 'react-native-geocoding';
 import { Actions } from 'react-native-router-flux'
 import firebaseService from '../../enviroments/firebase'
-
+var Sound = require('react-native-sound');
 
 export  class StartNoMap extends Component {
 
@@ -79,7 +79,10 @@ export  class StartNoMap extends Component {
       Modalkeepdata:false,
 
       orange:true,
-      red:true
+      red:true,
+      green:true,
+
+      speedavg:0
     }
    
    
@@ -90,8 +93,15 @@ export  class StartNoMap extends Component {
   }
 
   componentWillMount =()=> {
+    
+
     var d = new Date()
-    this.setState({timestart:d.getHours()+':'+d.getMinutes()})
+    var hr = d.getHours()
+    var min = d.getMinutes()
+    if(min<10) {
+      min='0'+min;
+    } 
+    this.setState({timestart:hr+':'+min})
 
     this.state.markerPosition = this.props.markerPosition;
     firebaseService.database().ref('Speed').remove()
@@ -134,7 +144,7 @@ export  class StartNoMap extends Component {
     }else{
       this.setState({Modalkeepdata:false})
     }
-    this.unsubscribe = this.ref.on('value', this.onCollectionUpdate)
+    this.unsubscribe = this.ref.on('value', this.onCollectionUpdate.bind(this))
     var totalSeconds = 0;
 this.durationtime = setInterval(()=>{
   var totalfueluse = this.state.totalfueluse
@@ -184,13 +194,17 @@ if(seconds<10){
     
     this.getDistance()
     var sum = 0
+    var speedavg = 0
     const numbers = this.state.distance
     for (const i = 0; i < numbers.length; i++) {
       sum += Number.parseFloat(numbers[i], 10)
-      
+      speedavg += Number.parseFloat(numbers[i], 10)
     }
     this.setState({
       sum: sum / 1000
+    })
+    this.setState({
+      speedavg: speedavg 
     })
    
     
@@ -203,23 +217,37 @@ if(seconds<10){
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
     const acceleration = this.state.acceleration
-    if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
+    if( fuelconsumption < (this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)) -0.5 && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
       this.setState({red:true})
+      this.setState({green:true})
       if(this.state.orange == true){
         this.setState({orange:false})
           Vibration.vibrate(2000) 
+          var whoosh = new Sound('orange.mp3', Sound.MAIN_BUNDLE,()=>{
+             whoosh.play()
+          })
+          
+          
         }
-    }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25) && fuelconsumption > 0){
+    }if(fuelconsumption  < (this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)) -0.5 && fuelconsumption > 0){
       this.setState({orange:true})
       if(this.state.red == true){
         this.setState({red:false})
           Vibration.vibrate(2000) 
-          
+          var whoosh = new Sound('red.mp3', Sound.MAIN_BUNDLE,()=>{
+            whoosh.play()
+        })
         }
 
-    } if( fuelconsumption > this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) ){
-      this.setState({orange:true})
-
+    } if( fuelconsumption > (this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)) ){
+     this.setState({orange:true})
+      if(this.state.green == true){
+        
+        this.setState({green:false})
+          var whoosh = new Sound('green.mp3', Sound.MAIN_BUNDLE,()=>{
+            whoosh.play()
+        })
+        }
     }
     },2000)
 
@@ -230,7 +258,7 @@ if(seconds<10){
   }
 
   componentWillUnmount() {
-    this.unsubscribe = null
+    // this.unsubscribe = null
     clearInterval(this.intervalId)
     clearInterval(this.durationtime)
   }
@@ -287,7 +315,7 @@ if(seconds<10){
       return{
         position:'absolute',
         left: 0,
-        bottom:50,
+        bottom:0,
         right:0,
         flexDirection: 'row',
         flex:1,
@@ -299,7 +327,7 @@ if(seconds<10){
       return{
         position:'absolute',
         left: 0,
-        bottom:50,
+        bottom:0,
         right:0,
         flexDirection: 'row',
         flex:1,
@@ -331,7 +359,7 @@ if(seconds<10){
         return {
         position:'absolute',
         left: 0,
-        bottom:50,
+        bottom:0,
         right:0,
         flexDirection: 'row',
         flex:1,
@@ -365,7 +393,8 @@ if(seconds<10){
             Destination: 'Unknown',
             Time:this.state.timestart,
             Timeend:this.state.timeend,
-            fuelraterealtime:this.state.fuelraterealtime
+            fuelraterealtime:this.state.fuelraterealtime,
+            speedavg: (this.state.speedavg/this.state.distance.length).toFixed(1)
      })
     Actions.popTo('home')
   }
@@ -383,7 +412,7 @@ if(seconds<10){
   }
  
   render () {
-console.log(this.state.orange)
+// console.log(this.state.speedavg/this.state.distance.length)
     
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
@@ -396,14 +425,59 @@ console.log(this.state.orange)
     const pic = '.././Image/carmap.png'
     return (
       <View style={styles.container}>
-        
-       
-       
+      <View style={{marginTop:60,width:310,height:230,alignSelf:'center',borderColor:'#ffb3cc',borderWidth:0.5,borderRadius:8,backgroundColor:'white'}}>
+<View style={{flexDirection:'row',marginTop:60}}>
+<Text style={styles.box}>Date</Text>
+<Text style={{marginLeft:92,color:'#6a83fb'}}>{this.parsedate(this.state.date)}</Text>
+</View>
+<View style={{flexDirection:'row',marginTop:10}}>
+<Text style={styles.box}>Start Time</Text>
+<Text style={{marginLeft:56,color:'#6a83fb'}}>{this.state.timestart}</Text>
+</View>
+<View style={{flexDirection:'row',marginTop:10}}>
+<Text style={styles.box}>End Time</Text>
+<Text style={{marginLeft:62,color:'#6a83fb'}}>Still driving</Text>
+</View>
+<View style={{flexDirection:'row',marginTop:10}}>
+<Text style={styles.box}>Duration</Text>
+<Text style={{marginLeft:70,color:'#6a83fb'}}>{this.state.durationtime} (still counting)</Text>
+</View>
+<View style={{flexDirection:'row',marginTop:10}}>
+<Text style={styles.box}>FuelConsumption Standard</Text>
+<Text style={{marginLeft:40,color:'#6a83fb'}}>{this.props.carconnect.FuelConsumption} KM/L</Text>
+</View>
+<View style={{flexDirection:'row',marginTop:10}}>
+<Text style={styles.box}>Speed</Text>
+{this.state.distance.length == 0
+  ? <Text style={{marginLeft:85,color:'#6a83fb'}}>- KM/H</Text>  
+  : <Text style={{marginLeft:85,color:'#6a83fb'}}>{this.state.distance[this.state.distance.length -1]} KM/H</Text>}
 
-          
+</View>
+</View>
+        <View style={styles.headerbox}>
+<Text style={{color:'white',fontSize:20,marginBottom:5}}>{this.props.carconnect.Make + ' '+this.props.carconnect.Model}</Text>
+<Text style={{color:'white',fontSize:15}}>This trip is automatically starts</Text>
+</View>          
+<View style={{flexDirection:'row',flex:1,marginTop:35}}>
+<View style={{height:80,width:65,backgroundColor:'#6a83fb',alignItems:'center',justifyContent:'center'}}>
+      <Text style={{color:'white',fontSize:15, textAlign:'center'}}>Since Start</Text>
+      
+      </View>
+     
+      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
+      <Text style={styles.textfooterheader}>Duration</Text>
+      <Text style={styles.textfooter}>{this.state.durationtime}</Text>
+      </View>
+      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
+      <Text style={styles.textfooterheader}>Distance</Text>
+      <Text style={styles.textfooter}>{this.state.sum.toFixed(1)} KM</Text>
+      </View>
+      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
+      <Text style={styles.textfooterheader}>Fuel Using</Text>
+      <Text style={styles.textfooter}>{parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) } L</Text>
+      </View>
+</View>
       <View style={{flexDirection:'row',flex:1}}>
-
-
 <View style={styles.zoom}>
 <View>
   <Button title='SaveTrips' onPress={()=>this.SaveTrip()}/>
@@ -446,7 +520,7 @@ console.log(this.state.orange)
           </View>
         </View>
 
-          <View style={styles.footer}>
+          {/* <View style={styles.footer}>
           <View style={{height:80,width:65,backgroundColor:'#6a83fb',alignItems:'center',justifyContent:'center'}}>
       <Text style={{color:'white',fontSize:15, textAlign:'center'}}>Since Start</Text>
       
@@ -465,7 +539,7 @@ console.log(this.state.orange)
       <Text style={styles.textfooter}>{parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) } L</Text>
       </View>
      
-            </View>
+            </View> */}
 
 
           </View>
@@ -489,6 +563,7 @@ console.log(this.state.orange)
             <Text>Date: {this.parsedate(this.state.date)}</Text>
             <Text>Source: Unknown</Text>
             <Text>Destination: UnKnown</Text>
+            <Text>speedavg: {(this.state.speedavg/this.state.distance.length).toFixed(1)} KM/H</Text>
       
             <Button title='OK' onPress={()=> this.AddHistory()}/>
           </View>
@@ -640,12 +715,12 @@ textfooter:{
 zoom:{
   position:'absolute',
     left: 0,
-    bottom:195,
+    bottom:145,
     right:0,
     flexDirection: 'row',
     flex:1,
     backgroundColor: 'white', 
-    height:30,
+    height:40,
 },
 zoomtext:{
   textAlign:'center',
@@ -653,5 +728,22 @@ zoomtext:{
     fontSize:15,
     fontWeight:'300',
     paddingHorizontal: 5,
-}
+    
+},
+headerbox:{
+  position:'absolute',
+  marginBottom:30,
+  height:95,
+  justifyContent:'center',
+  backgroundColor:'#6a83fb',
+  alignItems:'center',
+  alignSelf:'center',
+  width:230,
+  borderBottomLeftRadius:15,
+  borderBottomRightRadius:15
+  },
+  box:{
+    marginLeft:25,
+    color:'#6a83fb'
+  },
 })

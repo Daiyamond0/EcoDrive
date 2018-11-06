@@ -58,6 +58,7 @@ export class CreateCar extends React.Component {
     }
     /// //// เมื่อเข้ามาหน้านี้จะดึงรถที่ add ไปแล้วของ user ที่ login อยู่
     const uid = this.props.user.uid
+    var checkcer = []
     firebaseService.database().ref(`user/${uid}`).once('value', function (
       snapshot
     ) {
@@ -66,8 +67,9 @@ export class CreateCar extends React.Component {
           childSnapshot.forEach(
             function (childchildSnapshot) {
               const childData = Object.values(childchildSnapshot.val())[5] /// ถ้าเพิ่ม document ต้องแก้ให้เลือกที่ model car
-              this.setState({ checkcar: [...this.state.checkcar, childData] })
-              // console.log(JSON.stringify(this.state.checkcar));
+              checkcer.push(childData)
+              this.setState({ checkcar: checkcer })
+              console.log(JSON.stringify(this.state.checkcar));
             }.bind(this)
           )
         }.bind(this)
@@ -138,6 +140,7 @@ export class CreateCar extends React.Component {
           console.log(error)
         })
       Actions.push('selectmycar')
+      Actions.refresh('createcar')
     } if(checky.includes(model) === true ) {
       alert('เคยเพิ่มไปแล้ว')
     }

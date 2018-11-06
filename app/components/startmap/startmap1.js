@@ -34,6 +34,7 @@ import SlidingUpPanel from 'rn-sliding-up-panel'
 import TimerMixin from 'react-timer-mixin'
 import { Dialog } from 'react-native-simple-dialogs';
 import Geocoder from 'react-native-geocoding';
+var Sound = require('react-native-sound');
 
 import firebaseService from '../../enviroments/firebase'
 
@@ -115,7 +116,13 @@ export  class StartMap1 extends Component {
       timeend:'',
       fuelraterealtime:[],
 
-      historylength : 0
+      historylength : 0,
+
+      orange:true,
+      red:true,
+      green:true,
+
+      speedavg:0
     }
     const {width, height} = Dimensions.get('window');
     this.aspectRatio = width / height;
@@ -374,29 +381,44 @@ if(seconds<10){
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
     const acceleration = this.state.acceleration
-    if( fuelconsumption < this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
+    if( fuelconsumption < (this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)) -0.5 && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
       this.setState({red:true})
+      this.setState({green:true})
       if(this.state.orange == true){
         this.setState({orange:false})
           Vibration.vibrate(2000) 
+          var whoosh = new Sound('orange.mp3', Sound.MAIN_BUNDLE,()=>{
+             whoosh.play()
+          })
+          
+          
         }
-    }if(fuelconsumption < this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25) && fuelconsumption > 0){
+    }if(fuelconsumption  < (this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)) -0.5 && fuelconsumption > 0){
       this.setState({orange:true})
       if(this.state.red == true){
         this.setState({red:false})
           Vibration.vibrate(2000) 
-          
+          var whoosh = new Sound('red.mp3', Sound.MAIN_BUNDLE,()=>{
+            whoosh.play()
+        })
         }
 
-    } if( fuelconsumption > this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2) ){
-      this.setState({orange:true})
-
+    } if( fuelconsumption > (this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)) ){
+     this.setState({orange:true})
+      if(this.state.green == true){
+        
+        this.setState({green:false})
+          var whoosh = new Sound('green.mp3', Sound.MAIN_BUNDLE,()=>{
+            whoosh.play()
+        })
+        }
     }
     },2000)
   }
   onCollectionUpdate = (snapshot) => {
     
     var speed = []
+    
      snapshot.forEach(
       function (childSnapshot) {
         var childData = childSnapshot.val()
@@ -410,15 +432,18 @@ if(seconds<10){
     
     this.getDistance()
     var sum = 0
+    var speedavg = 0
     const numbers = this.state.distance
     for (const i = 0; i < numbers.length; i++) {
       sum += Number.parseFloat(numbers[i], 10)
-      
+      speedavg += Number.parseFloat(numbers[i], 10)
     }
     this.setState({
       sum: sum / 1000
     })
-   
+    this.setState({
+      speedavg: speedavg 
+    })
     
     
     
@@ -503,27 +528,27 @@ if(seconds<10){
         backgroundColor: 'red',
       }
     } 
-      if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
-       return{
-        position:'absolute',
-        left: 0,
-        bottom:50,
-        right:0,
-        flexDirection: 'row',
-        flex:1,
-        backgroundColor: 'orange'
-      }
-    } if(acceleration[acceleration.length - 1] >= 70){
-        return{
-        position:'absolute',
-        left: 0,
-        bottom:50,
-        right:0,
-        flexDirection: 'row',
-        flex:1,
-        backgroundColor: 'red',
-      }
-    }
+    //   if(acceleration[acceleration.length - 1]>=50 &&acceleration[acceleration.length - 1]<70){
+    //    return{
+    //     position:'absolute',
+    //     left: 0,
+    //     bottom:50,
+    //     right:0,
+    //     flexDirection: 'row',
+    //     flex:1,
+    //     backgroundColor: 'orange'
+    //   }
+    // } if(acceleration[acceleration.length - 1] >= 70){
+    //     return{
+    //     position:'absolute',
+    //     left: 0,
+    //     bottom:50,
+    //     right:0,
+    //     flexDirection: 'row',
+    //     flex:1,
+    //     backgroundColor: 'red',
+    //   }
+    // }
         return {
         position:'absolute',
         left: 0,
@@ -754,7 +779,8 @@ if(seconds<10){
             Destination: this.state.query,
             Time:this.state.timestart,
             Timeend:this.state.timeend,
-            fuelraterealtime:this.state.fuelraterealtime
+            fuelraterealtime:this.state.fuelraterealtime,
+            speedavg: (this.state.speedavg/this.state.distance.length).toFixed(1)
      })
 
   }
@@ -1028,6 +1054,7 @@ if(seconds<10){
             <Text>Date: {this.parsedate(this.state.date)}</Text>
             <Text>Source: {this.state.summarysource}</Text>
             <Text>Destination: {this.state.query}</Text>
+            <Text>speedavg: {(this.state.speedavg/this.state.distance.length).toFixed(1)} KM/H</Text>
       
             <Button title='OK' onPress={()=> this.AddHistory()}/>
           </View>

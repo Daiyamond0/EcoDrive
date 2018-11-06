@@ -47,6 +47,7 @@
     "react-native-simple-dialogs": "^1.0.0",
     "react-native-simple-radio-button": "^2.7.2",
     "react-native-sliding-up-down-panels": "^1.0.0",
+    "react-native-sound": "^0.10.9",
     "react-native-svg": "^7.1.2",
     "react-native-svg-charts": "^5.2.0",
     "react-native-vector-icons": "4.6.0",

@@ -60,11 +60,7 @@ export class Edit extends React.Component {
       '2': ['E85', 2360]
     }
     return (
-      <ImageBackground
-                style={styles.container}
-                source={require('../Image/Edit.png')}
-                imageStyle={{ resizeMode: 'cover' }}
-              >
+     
       <View style={styles.mainviewStyle}>
 
         {/* <Text>{this.props.index}</Text> */}
@@ -105,7 +101,7 @@ export class Edit extends React.Component {
             onPress={() => this.edit()} title='OK'></Button>
       </View>
       </View>
-      </ImageBackground>
+     
     )
   }
 }
@@ -141,5 +137,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF'
+    
   },
 })

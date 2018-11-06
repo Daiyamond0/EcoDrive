@@ -117,13 +117,22 @@ export  class HomeScreen extends React.Component {
     var TodayCO2 = []
     var TodayDistance = []
     var TodayFuelrate = []
+    var dd = date.getDate();
+    var mm = date.getMonth()+1; 
+    var yyyy = date.getFullYear();
+    if(dd<10) {
+      dd='0'+dd;
+    } 
+    if(mm<10) {
+    mm='0'+mm;
+    }
     firebaseService.database().ref(`History/${uid}`).once(
       'value',
       function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var his = childSnapshot.val()
            
-            if( his.Date == date.toISOString().split("T")[0] ){
+            if( his.Date == yyyy+'-'+mm+'-'+dd ){
               TodayCO2.push(parseFloat(his.CO2))
               this.setState({TodayCO2: TodayCO2})
               this.setState({sumCo2: TodayCO2.reduce((a, b) => a + b)})
@@ -296,6 +305,7 @@ CarConnect(){
     
     this.props.popupinvisible()
     Actions.push('startnomap')
+    this.speed.off()
   }
   if(this.props.connected == false){
     alert('Pls Connect Bluetooth')
@@ -363,6 +373,7 @@ getdataspeed = (snapshot) => {
   // console.log(this.state.TodayDistance)
   // console.log(this.state.sumFuelrate)
   // console.log(this.state.TodayFuelrate)
+ 
     return (
       <Drawer
         ref={(ref) => { this._drawer = ref; }}
