@@ -98,15 +98,16 @@ export const getCurrentLocation = () => dispatch => {
 }
 
 export const CarConnect = (CarSelect,simumycar,connected) => dispatch => {
-  
   const x = []
-  if(CarSelect == []){
+  if(CarSelect == [] && connected == true){
     dispatch(carconnect(simumycar[0]))
-  } if(simumycar.length == 0){
+  } if(simumycar.length == 0 && connected == true){
     dispatch(carconnect(CarSelect))
   } 
   if(simumycar.length == 0 && CarSelect == []){
     dispatch(carconnect(x))
+  } if(simumycar.length != 0 && CarSelect != []){
+    dispatch(carconnect(simumycar[0]))
   } 
   
   

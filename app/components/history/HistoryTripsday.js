@@ -446,7 +446,7 @@ console.log(this.state.avgspeed)
                         data={this.props.trips.fuelraterealtime}
                         contentInset={{ top: 20, bottom: 20 }}
                         curve={ shape.curveNatural }
-                        svg={{ fill: 'rgba(134, 65, 244, 0.8)' , }}
+                        svg={{ fill: 'green' , }}
                         gridMin={0}  
                         gridMax={40}
                     >
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
     circle:{
         width: 20,
         height: 20,
-        backgroundColor: 'rgba(134, 65, 244, 0.8)',
+        backgroundColor: 'green',
         borderRadius: 10,
         marginLeft:10
     }

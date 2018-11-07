@@ -10,19 +10,48 @@ import {
 import { ListItem, List } from 'native-base'
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 import { Actions } from 'react-native-router-flux'
-
+import firebaseService from '../../enviroments/firebase.js'
 export class SelectMyCar extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      mycar:[]
+    }
   }
 
   componentWillMount () {
     const uid = this.props.user.uid
     this.props.MyCarlist(uid)
+    const car = []
+ this.car = firebaseService.database().ref(`user/${uid}/`).once(
+    'value',
+    function (snapshot) {
+      snapshot.forEach(function (childSnapshot) {
+        childSnapshot.forEach(function (childchildSnapshot) {
+          const yourcar = childchildSnapshot.val()
+          car.push(yourcar)
+          
+        })
+      })
+      this.setState({mycar:car})
+    }.bind(this),
+    function (error) {
+      console.log(error)
+    }
+  )
   }
 
+  componentWillUnmount(){
+    this.car = null
+  }
+  gohome(){
+    Actions.pop('createcar')
+    Actions.replace('home')
+    Actions.refresh('selectmycar')
+  }
   render () {
+    // console.log(this.state.mycar)
+    console.log(this.props.mycar)
     return (
       <View style={styles.mainviewStyle}>
       <ImageBackground
@@ -34,7 +63,7 @@ export class SelectMyCar extends React.Component {
           <RadioGroup
             onSelect={(index, value) => this.props.onSelect(index, value)}
           style={{marginBottom:60}}>
-            {this.props.mycar.map((item, index) => {
+            {this.state.mycar.map((item, index) => {
               return (
                 <RadioButton value={item} key={index}>
                   <Text>{item.Make + ' ' + item.Model}</Text>
@@ -47,7 +76,7 @@ export class SelectMyCar extends React.Component {
         <View style={styles.footer}>
           <TouchableHighlight
             style={styles.bottomButtons}
-            onPress={() => Actions.popTo('home')}
+            onPress={() => this.gohome()}
           >
             <Text style={styles.footerText}>Select</Text>
           </TouchableHighlight>

@@ -55,6 +55,8 @@ export  class HomeScreen extends React.Component {
 
     this.loading= null
     this.time=null
+    this.props.carconnect = null
+    
   }
   
 
@@ -169,17 +171,19 @@ export  class HomeScreen extends React.Component {
       this.loading = setInterval(()=>{
         if(Platform.OS === 'android' && this.props.connected){
           this.setState({visible:true})
+          
             this.time = setTimeout(() => {
-              this.setState({visible:false})
+              this.setState({visible:false}) 
+              this.props.CarConnect(this.props.CarSelect,this.state.simumycar,this.props.connected)
              clearInterval(this.loading)
-             this.props.CarConnect(this.props.CarSelect,this.state.simumycar,this.props.connected)
+            
             }, 3000)
             
        }
        
      },2000)
 
-  
+    
 
 
 
@@ -195,6 +199,10 @@ export  class HomeScreen extends React.Component {
   }
 componentWillUnmount(){
   clearInterval(this.loading)
+  this.ref = null
+  this.speed = null
+  
+  this.props.clearCarselect()
 }
 
 
@@ -271,7 +279,7 @@ const uid = this.props.user.uid
     this.setState({simumycar:[]})
     if(this.state.mycar.includes(cardetail[3]+' '+cardetail[5]) == true){
       var simumycar = []
-      
+     
       const uid = this.props.user.uid
       firebaseService.database().ref(`user/${uid}/`).on(
         'value',
@@ -294,7 +302,7 @@ const uid = this.props.user.uid
         }
       )
     }
-
+    this.props.CarConnect(this.props.CarSelect,this.state.simumycar,this.props.connected)
 }
 
 CarConnect(){
@@ -365,15 +373,15 @@ getdataspeed = (snapshot) => {
   render () {
   // console.log(this.state.cardetail[3]+' '+this.state.cardetail[5])
   // console.log(this.props.carconnect.length == 0)
-  // console.log(this.state.simumycar)
-  // console.log(this.props.CarSelect)
+  console.log('จำลองรถ',this.state.simumycar)
+  console.log(this.props.CarSelect)
   // console.log(this.props.carconnect)
   // console.log(this.state.sumCo2)
   // console.log(this.state.sumDistance)
   // console.log(this.state.TodayDistance)
   // console.log(this.state.sumFuelrate)
   // console.log(this.state.TodayFuelrate)
- 
+    console.log('รถที่เลือกมาจำลอง',this.props.carconnect)
     return (
       <Drawer
         ref={(ref) => { this._drawer = ref; }}
@@ -445,7 +453,7 @@ getdataspeed = (snapshot) => {
                 {this.state.visible === true  ? <ActivityIndicator animating={this.state.visible} />:null}
                 </View>
             <View style={styles.s2}> 
-            {Platform.OS === 'android' && this.props.connected && this.state.visible === false 
+            {Platform.OS === 'android' && this.props.connected  && this.state.visible === false 
             ?  this.paringAuto()
             :  <Text onPress={Actions.createcar} style={{color:'white',fontSize:15}}>
             {this.props.CarSelect.Make === undefined && this.props.CarSelect.Model === undefined ? 

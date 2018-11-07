@@ -41,7 +41,7 @@ export class MyCar extends React.Component {
   componentWillMount () {
     const uid = this.props.user.uid
     this.props.MyCarlist(uid)
-
+    this.props.EditMyCar(uid)
    
     var count = []
     firebaseService.database().ref(`user/${uid}/`).once(

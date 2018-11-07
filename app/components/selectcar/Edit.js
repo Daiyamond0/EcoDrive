@@ -7,7 +7,8 @@ import {
   Button,
   ImageBackground,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from 'react-native'
 import {
   ListItem,
@@ -23,7 +24,8 @@ export class Edit extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      selected: ''
+      selected: '',
+      text:this.props.editdetail.Nickname
     }
   }
 
@@ -34,31 +36,39 @@ export class Edit extends React.Component {
   }
   edit () {
     const fueltype = {
-      '0': ['Diesel', 2600],
-      '1': ['E20', 2300],
-      '2': ['E85', 2360]
+      '0': ['Diesel', 26],
+      '1': ['E20', 23],
+      '2': ['E85', 23.6]
     }
     const x = this.state.selected
     const select = fueltype[x]
 
     const id = this.props.editcar[this.props.index]
+    
     const uid = this.props.user.uid
+    firebaseService.database().ref(`user/${uid}/${id}/car/`).update({
+      // CO2Emission: select[1],
+      // FuelType: select[0],
+      Nickname:this.state.text
+    })
     firebaseService.database().ref(`user/${uid}/${id}/car/FuelType`).update({
       CO2Emission: select[1],
-      FuelType: select[0]
+      FuelType: select[0],   
     })
     Actions.pop('edit')
-    Actions.replace('editcar')
+    Actions.replace('mycar')
     Actions.refresh('edit')
     
   }
 
   render () {
     const fueltype = {
-      '0': ['Diesel', 2600],
-      '1': ['E20', 2300],
-      '2': ['E85', 2360]
+      '0': ['Diesel', 26],
+      '1': ['E20', 23],
+      '2': ['E85', 23.6]
     }
+   console.log(this.state.selected)
+
     return (
      
       <View style={styles.mainviewStyle}>
@@ -67,13 +77,13 @@ export class Edit extends React.Component {
         {/* <Text>{JSON.stringify(this.props.editdetail)}</Text> */}
         <View>
           <List>
-            <ListItem><Text>Make: {this.props.editdetail.Make}</Text></ListItem>
             <ListItem>
-              <Text>Model: {this.props.editdetail.Model}</Text>
-            </ListItem>
-            <ListItem>
-              <Text>Speed: {this.props.editdetail.Speed}</Text>
-            </ListItem>
+              <Text>Nickname:</Text>
+              <TextInput
+              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+             onChangeText={(text) => this.setState({text})}
+             value={this.state.text}></TextInput></ListItem>
+            
             <ListItem>
               <Text>FuelType: </Text>
               <Picker

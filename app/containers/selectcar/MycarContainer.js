@@ -3,7 +3,7 @@ import { MyCar } from '../../components/selectcar/Mycar'
 
 import { MyCarlist } from '../../actions/selectcar/Mycar'
 import {carDetail } from '../../actions/selectcar/Mycar';
-import { EditDetail } from '../../actions/selectcar/EditCar'
+import { EditMyCar, EditDetail } from '../../actions/selectcar/EditCar'
 const mapStateToProps = state => ({
   user: state.sessionReducer.user,
   mycar: state.MycarReducer.mycar,
@@ -13,7 +13,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   MyCarlist: MyCarlist,
   carDetail:carDetail,
-  EditDetail:EditDetail
+  EditDetail:EditDetail,
+  EditMyCar: EditMyCar,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyCar)

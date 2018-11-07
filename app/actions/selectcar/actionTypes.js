@@ -28,3 +28,4 @@ export const EDIT = 'EDIT'
 
 export const CARINFO = 'CARINFO'
 
+export const CLEARCAR = 'CLEARCAR'

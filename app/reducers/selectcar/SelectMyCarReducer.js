@@ -8,6 +8,8 @@ const SelectMyCarReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.MYCAR:
       return { ...state, CarSelect: action.value }
+    case types.CLEARCAR:
+      return { ...state, CarSelect: ''}
 
     default:
       return state

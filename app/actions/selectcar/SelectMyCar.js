@@ -8,7 +8,18 @@ const mycar = (index, value) => {
     index: index
   }
 }
+const clearcar = () => {
+  return {
+    type: types.CLEARCAR,
+    
+  }
+}
+
 
 export const onSelect = (index, value) => dispatch => {
   dispatch(mycar(index, value))
+}
+
+export const clearCarselect = () => dispatch =>{
+  dispatch(clearcar())
 }

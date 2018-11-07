@@ -4,7 +4,7 @@ import { HomeScreen} from '../../components/HomeScreen/HomeScreen2'
 
 import { logoutUser } from '../../actions/session/actions'
 import { getCar,getCurrentLocation ,CarConnect ,popupvisible,popupinvisible} from '../../actions/home/home';
-
+import {clearCarselect}  from '../../actions/selectcar/SelectMyCar'
 
 
 const mapStateToProps = state => ({
@@ -23,7 +23,8 @@ const mapDispatchToProps = {
   getCurrentLocation:getCurrentLocation,
   CarConnect:CarConnect,
   popupvisible:popupvisible,
-  popupinvisible:popupinvisible
+  popupinvisible:popupinvisible,
+  clearCarselect:clearCarselect
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

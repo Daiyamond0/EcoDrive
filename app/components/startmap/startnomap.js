@@ -164,10 +164,11 @@ if(seconds<10){
   seconds='0'+seconds
 }
   this.setState({durationtime: hour + ":" + minute + ":" + seconds })
+  if(this.state.sum > 0.1){
   this.setState({
     fuelraterealtime: [...this.state.fuelraterealtime,this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]]
   })
-  
+}
    
     var co2 =((100 / this.props.carconnect.FuelConsumption) * this.props.carconnect.FuelType.CO2Emission) * Number.parseFloat(this.state.sum.toFixed(2))
     var distance = Number.parseFloat(this.state.sum);
@@ -372,7 +373,11 @@ if(seconds<10){
   
  SaveTrip(){
   var d = new Date()
-  this.setState({timeend:d.getHours()+':'+d.getMinutes()})
+  var min = d.getMinutes()
+  if(min<10) {
+    min='0'+min;
+  } 
+  this.setState({timeend:d.getHours()+':'+min})
   this.setState({dialogVisible: true})
   clearInterval(this.durationtime)
   this.ref.off()
@@ -413,7 +418,7 @@ if(seconds<10){
  
   render () {
 // console.log(this.state.speedavg/this.state.distance.length)
-    
+    console.log(this.props.carconnect)
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
     // const co2 = totalfueluse[totalfueluse.length - 1] * this.props.carconnect.FuelType.CO2Emission
