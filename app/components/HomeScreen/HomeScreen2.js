@@ -45,7 +45,9 @@ export  class HomeScreen extends React.Component {
       TodayFuelrate:[],
       sumCo2:0,
       sumDistance:0,
-      sumFuelrate:0
+      sumFuelrate:0,
+      lastest:[],
+      lastestcar:[]
     };
     this.ref = firebaseService.database().ref('SimulateCar/CarDetail');
     this.unsubscribe = null;
@@ -128,6 +130,8 @@ export  class HomeScreen extends React.Component {
     if(mm<10) {
     mm='0'+mm;
     }
+    var lastest = []
+    var lastestcar = [] 
     firebaseService.database().ref(`History/${uid}`).once(
       'value',
       function (snapshot) {
@@ -144,8 +148,12 @@ export  class HomeScreen extends React.Component {
               TodayFuelrate.push(his.Fuelrate)
               this.setState({TodayFuelrate:TodayFuelrate})
               this.setState({sumFuelrate: TodayFuelrate.reduce((a, b) => a + b / TodayFuelrate.length )})
+              lastest.push(his)
+              this.setState({lastest:lastest[lastest.length-1]})
+              lastestcar.push(his.Car)
+              this.setState({lastestcar:lastestcar[lastestcar.length-1]})
             }
-            
+           
             
         }.bind(this))
         
@@ -373,15 +381,17 @@ getdataspeed = (snapshot) => {
   render () {
   // console.log(this.state.cardetail[3]+' '+this.state.cardetail[5])
   // console.log(this.props.carconnect.length == 0)
-  console.log('จำลองรถ',this.state.simumycar)
-  console.log(this.props.CarSelect)
+  // console.log('จำลองรถ',this.state.simumycar)
+  // console.log(this.props.CarSelect)
   // console.log(this.props.carconnect)
   // console.log(this.state.sumCo2)
   // console.log(this.state.sumDistance)
   // console.log(this.state.TodayDistance)
   // console.log(this.state.sumFuelrate)
   // console.log(this.state.TodayFuelrate)
-    console.log('รถที่เลือกมาจำลอง',this.props.carconnect)
+    // console.log('รถที่เลือกมาจำลอง',this.props.carconnect)
+    console.log(this.state.lastest.CO2)
+    const lastdrive = this.state.lastest
     return (
       <Drawer
         ref={(ref) => { this._drawer = ref; }}
@@ -466,7 +476,10 @@ getdataspeed = (snapshot) => {
       <TouchableOpacity onPress={Actions.history}>
           <Card >
           <CardItem >
-            <Text> Today </Text>
+            <View style={{flexDirection:'row',marginHorizontal:10}}>
+              <Text style={{fontWeight:'bold'}}> Lastest </Text>   
+              <Text> {this.state.lastestcar.Make+' '+this.state.lastestcar.Model}</Text>
+            </View>
             </CardItem>
             <CardItem style={{
     left: 0,
@@ -479,7 +492,8 @@ getdataspeed = (snapshot) => {
           style={{width: 40, height: 40}}
           source={require('./gas.png')}
         />
-        <Text style={{}}>{parseFloat(this.state.sumFuelrate).toFixed(2) }</Text>
+        {/* <Text style={{}}>{parseFloat(this.state.sumFuelrate).toFixed(2) }</Text> */}
+        <Text style={{}}>{this.state.lastest.Fuelrate }</Text>
         <Text style={{fontSize:15}}>KM/L</Text>    
           </View>
           <View style={{flexDirection:'column',marginHorizontal: 15}}> 
@@ -487,7 +501,8 @@ getdataspeed = (snapshot) => {
           style={{width: 40, height: 40}}
           source={require('./co2.png')}
         />
-        <Text style={{}}>{parseFloat(this.state.sumCo2).toFixed(2)}</Text>
+        {/* <Text style={{}}>{parseFloat(this.state.sumCo2).toFixed(2)}</Text> */}
+        <Text style={{}}>{this.state.lastest.CO2}</Text>
         <Text style={{fontSize:15}}>KG</Text>
         </View>
         <View style={{flexDirection:'column',marginHorizontal: 15}}> 
@@ -495,7 +510,8 @@ getdataspeed = (snapshot) => {
           style={{width: 40, height: 40,}}
           source={require('./road.png')}
         />
-        <Text style={{}}>{this.state.sumDistance}</Text>
+        {/* <Text style={{}}>{this.state.sumDistance}</Text> */}
+        <Text style={{}}>{this.state.lastest.Distance}</Text>
         <Text style={{fontSize:15}}>KM</Text>
         </View>
         <Image

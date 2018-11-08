@@ -67,16 +67,18 @@ componentWillMount(){
                 sumFueluse.push(parseFloat(car.Fueluse))
                 avgCo2.push(parseFloat(car.CO2))
                 avgfuelrate.push(car.Fuelrate)
-                avgspeed.push(car.speedavg)
+                avgspeed.push(parseFloat(car.speedavg))
                 this.setState({sumDistance: sumDistance.reduce((a, b) => a + b)})
                 this.setState({sumFueluse: sumFueluse.reduce((a, b) => a + b)})
-                this.setState({avgCo2: avgCo2.reduce((a, b) => a + b  / avgCo2.length)})
-                this.setState({avgfuelrate: avgfuelrate.reduce((a, b) => a + b / avgfuelrate.length )})
-                this.setState({avgspeed: avgspeed.reduce((a, b) => a + b / avgspeed.length )})
-
+                this.setState({avgCo2: avgCo2.reduce((a, b) => a + b  )})
+                this.setState({avgfuelrate: avgfuelrate.reduce((a, b) => a + b )})
+                this.setState({avgspeed: avgspeed.reduce((a, b) => a + b )})
+                this.setState({avgCo2: this.state.avgCo2/avgCo2.length})
+                this.setState({avgfuelrate: this.state.avgfuelrate/avgfuelrate.length})
+                this.setState({avgspeed: this.state.avgspeed/avgspeed.length})
               }
-            console.log(avgspeed)
               
+              console.log(avgspeed)
               
           }.bind(this))
           
@@ -96,7 +98,7 @@ componentWillMount(){
 // console.log(this.state.avgCo2)
 // console.log(this.state.sumFueluse)
 // console.log(this.state.sumDistance)
-console.log(this.state.avgspeed)
+// console.log(this.state.avgspeed)
 
     const contentInset = { top: 20, bottom: 20 }
     const HiHorizontalLine = ({ y }) =>
@@ -211,7 +213,7 @@ console.log(this.state.avgspeed)
                                             </View>
                                             <View style={{flexDirection:'column',marginLeft:35}}>
                                             <Text style={{fontSize:15,color:'#ff4d88'}}>{this.props.trips.CO2}</Text>
-                                            <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>G/KM</Text>
+                                            <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>KG</Text>
                                             </View>
                                             </View>
                                         </View>
@@ -290,7 +292,7 @@ console.log(this.state.avgspeed)
                                             <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{this.props.trips.CO2} KG</Text>
                                         </View>
                                         <View style={{flexDirection:'column',marginLeft:25}}>
-                                            <Text style={{fontSize:10,color:'#6a83fb'}}>Total trips</Text>
+                                            <Text style={{fontSize:10,color:'#6a83fb'}}>Average trips</Text>
                                             <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgCo2).toFixed(1)} KG</Text>
                                         </View>
                                         </View>

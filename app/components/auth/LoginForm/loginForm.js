@@ -30,10 +30,10 @@ export class LoginFormComponent extends Component {
     return (
       <KeyboardAwareScrollView style={styles.scrollView}>
         <View style={styles.imageBox}>
-          <Image style={styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-whXBCDVxIto/Vz2Rsyz-UjI/AAAAAAAAiJc/UjvR-M2b9tY5SyKFkDY6Q_MbusEINRXkQ/w530-h530-n/Firebase_16-logo.png' }}/>
+          <Image style={styles.image} source={require('./ecodrive.png')}/>
         </View>
         <View style={styles.loginBox}>
-          {loading ? <LoadingIndicator color="#ffffff"
+          {loading ? <LoadingIndicator color="#009900"
                                        size="large"/> :
             <BasicFormComponent buttonTitle={'login'}
                                 onButtonPress={login} /> }

@@ -25,11 +25,12 @@ export const styles = StyleSheet.create({
     marginTop: 20
   },
   image: {
-    width: 120,
-    height: 120,
+    width: 150,
+    height: 150,
   },
   scrollView: {
-    backgroundColor: '#2299ec',
+    backgroundColor: '#99ff99',
+    justifyContent:'center'
   },
 
     container : {

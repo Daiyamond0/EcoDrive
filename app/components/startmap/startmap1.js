@@ -35,7 +35,7 @@ import TimerMixin from 'react-timer-mixin'
 import { Dialog } from 'react-native-simple-dialogs';
 import Geocoder from 'react-native-geocoding';
 var Sound = require('react-native-sound');
-
+import { Actions } from 'react-native-router-flux'
 import firebaseService from '../../enviroments/firebase'
 
 const DEFAULT_PADDING = { top: 500, right:500 , bottom: 500, left: 500 }
@@ -176,9 +176,9 @@ export  class StartMap1 extends Component {
     ,summaryco2,summaryduration,durationtime,summaryfueluse,summaryfuelconsumtion,date
   ,summarysource,summarydestination,dialogVisible} = this.state
 
-    
-
       const {carconnect ,initialPosition ,origin ,draggableRange} = this.props
+
+     
     if (this.state.speed !== nextState.speed ) {
       return true
     }
@@ -228,7 +228,7 @@ export  class StartMap1 extends Component {
       if (this.state.acceleration !== nextState.acceleration ) {
         return true
       }
-      if (this.props.carconnect  !== nextProps.carconnect.FuelType.CO2Emission ) {
+      if (this.props.carconnect  !== nextProps.carconnect ) {
         return true
       }
       if (this.state.totalfueluse !== nextState.totalfueluse ) {
@@ -782,7 +782,7 @@ if(seconds<10){
             fuelraterealtime:this.state.fuelraterealtime,
             speedavg: (this.state.speedavg/this.state.distance.length).toFixed(1)
      })
-
+     Actions.popTo('home')
   }
   parsedate(date){
     
@@ -794,7 +794,7 @@ if(seconds<10){
 
   render () {
     
-  // console.log('fuelrate realtime',this.state.fuelraterealtime)
+  console.log(this.props.carconnect)
     
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]

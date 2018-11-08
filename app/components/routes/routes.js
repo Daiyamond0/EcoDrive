@@ -30,7 +30,7 @@ export class Routes extends React.Component {
       <Provider store={store}>
         <RouterRedux navigationBarStyle={styles.navBar} tintColor='#ffffff' titleStyle={styles.barButtonTextStyle}>
           <Scene key="root">
-            <Scene key="login" component={SessionContainer} title="Login" initial={true}/>
+            <Scene key="login" component={SessionContainer} title="Login" initial={true} hideNavBar='true'/>
             <Scene key="signup" component={SignupContainer} title="Signup"/>
             <Scene key="home" component={HomeContainer} title="Home" hideNavBar='true'/>
             <Scene key="startmap" component={startmapContainer} title="Startmap" hideNavBar='true'/>

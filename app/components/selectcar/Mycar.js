@@ -112,7 +112,7 @@ export class MyCar extends React.Component {
               
               return (
                   <ListItem onPress={()=>this.MycarDetail(item)}>
-                    <View style={{marginTop:20,width:320,height:250,backgroundColor:'white',alignSelf:'center'}}>
+                    <View style={{marginTop:20,width:320,height:250,backgroundColor:'white',alignSelf:'center',borderRadius:7}}>
                       <View style={{flexDirection:'row',marginTop:15}}>
                         <View>
                           <Text style={{marginLeft:15,fontSize:20,color:'black',paddingRight:30}}>{item.Nickname}</Text>
