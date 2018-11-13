@@ -57,9 +57,6 @@ export  class StartNoMap extends Component {
       intervalId:null,
       sumdistance1:0,
       sumdistance2:0,
-      i:0,
-      j:1,
-      k:2,
       summarydistance:[],
       summaryco2:[],
       summaryduration:'',
@@ -91,6 +88,103 @@ export  class StartNoMap extends Component {
     this.intervalId = null;
     
   }
+  shouldComponentUpdate(nextProps, nextState){
+    const { speed,distance,sum, totalfueluse,speedId,acceleration,distancedrive, intervalId,sumdistance1,sumdistance2,
+      summarydistance,summaryco2,summaryduration,durationtime,summaryfueluse,summaryfuelconsumtion, date,
+      summarysource,summarydestination,dialogVisible,timestart,timeend,fuelraterealtime,historylength,
+      Modalkeepdata,orange,red,green,speedavg} = this.state
+    if (this.state.speed !== nextState.speed ) {
+      return true
+    }
+    if (this.state.speed !== nextState.speed ) {
+      return true
+    }
+    if (this.state.distance !== nextState.distance ) {
+      return true
+    }
+    if (this.state.sum !== nextState.sum ) {
+      return true
+    }
+    if (this.state.totalfueluse !== nextState.totalfueluse ) {
+      return true
+    }
+    if (this.state.speedId !== nextState.speedId ) {
+      return true
+    }
+    if (this.state.acceleration !== nextState.acceleration ) {
+      return true
+    }
+    if (this.state.distancedrive !== nextState.distancedrive ) {
+      return true
+    }
+    if (this.state.intervalId !== nextState.intervalId ) {
+      return true
+    }
+    if (this.state.sumdistance1 !== nextState.sumdistance1 ) {
+      return true
+    }
+    if (this.state.sumdistance2 !== nextState.sumdistance2 ) {
+      return true
+    }
+    if (this.state.summarydistance !== nextState.summarydistance ) {
+      return true
+    }
+    if (this.state.summaryco2 !== nextState.summaryco2 ) {
+      return true
+    }
+    if (this.state.summaryduration !== nextState.summaryduration ) {
+      return true
+    }
+    if (this.state.durationtime !== nextState.durationtime ) {
+      return true
+    }
+    if (this.state.summaryfueluse !== nextState.summaryfueluse ) {
+      return true
+    }
+    if (this.state.summaryfuelconsumtion !== nextState.summaryfuelconsumtion ) {
+      return true
+    }
+    if (this.state.date !== nextState.date ) {
+      return true
+    }
+    if (this.state.summarysource !== nextState.summarysource ) {
+      return true
+    }
+    if (this.state.summarydestination !== nextState.summarydestination ) {
+      return true
+    }
+    if (this.state.dialogVisible !== nextState.dialogVisible ) {
+      return true
+    }
+    if (this.state.timestart !== nextState.timestart ) {
+      return true
+    }
+    if (this.state.timeend !== nextState.timeend ) {
+      return true
+    }
+    if (this.state.fuelraterealtime !== nextState.fuelraterealtime ) {
+      return true
+    }
+    if (this.state.historylength !== nextState.historylength ) {
+      return true
+    }
+    if (this.state.Modalkeepdata !== nextState.Modalkeepdata ) {
+      return true
+    }
+    if (this.state.orange !== nextState.orange ) {
+      return true
+    }
+    if (this.state.red !== nextState.red ) {
+      return true
+    }
+    if (this.state.green !== nextState.green ) {
+      return true
+    }
+    if (this.state.speedavg !== nextState.speedavg ) {
+      return true
+    }
+    return false
+}
 
   componentWillMount =()=> {
     
@@ -262,6 +356,9 @@ if(seconds<10){
     // this.unsubscribe = null
     clearInterval(this.intervalId)
     clearInterval(this.durationtime)
+    this.unsubscribe = null;
+    this.intervalId = null;
+    this.ref = null
   }
 
   getDistance () {
@@ -394,8 +491,8 @@ if(seconds<10){
             Fueluse: parseFloat(this.state.summaryfueluse).toFixed(1), 
             Fuelrate: parseInt(this.state.summaryfuelconsumtion),
             Date: this.state.date,
-            Source: 'Unknown',
-            Destination: 'Unknown',
+            Source: 'Unspecified',
+            Destination: 'Unspecified',
             Time:this.state.timestart,
             Timeend:this.state.timeend,
             fuelraterealtime:this.state.fuelraterealtime,
@@ -418,7 +515,7 @@ if(seconds<10){
  
   render () {
 // console.log(this.state.speedavg/this.state.distance.length)
-    console.log(this.props.carconnect)
+    // console.log(this.props.carconnect)
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]
     // const co2 = totalfueluse[totalfueluse.length - 1] * this.props.carconnect.FuelType.CO2Emission
@@ -566,8 +663,8 @@ if(seconds<10){
             <Text>Fueluse: {parseFloat(this.state.summaryfueluse).toFixed(1)} L</Text>
             <Text>Fuelrate: {parseInt(this.state.summaryfuelconsumtion)} KM/L</Text>
             <Text>Date: {this.parsedate(this.state.date)}</Text>
-            <Text>Source: Unknown</Text>
-            <Text>Destination: UnKnown</Text>
+            <Text>Source: Unspecified</Text>
+            <Text>Destination: Unspecified</Text>
             <Text>speedavg: {(this.state.speedavg/this.state.distance.length).toFixed(1)} KM/H</Text>
       
             <Button title='OK' onPress={()=> this.AddHistory()}/>

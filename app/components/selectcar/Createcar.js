@@ -69,7 +69,7 @@ export class CreateCar extends React.Component {
               const childData = Object.values(childchildSnapshot.val())[5] /// ถ้าเพิ่ม document ต้องแก้ให้เลือกที่ model car
               checkcer.push(childData)
               this.setState({ checkcar: checkcer })
-              console.log(JSON.stringify(this.state.checkcar));
+              // console.log(JSON.stringify(this.state.checkcar));
             }.bind(this)
           )
         }.bind(this)
@@ -127,7 +127,7 @@ export class CreateCar extends React.Component {
     const model = this.state.cardetail.Model
     const checky = this.state.checkcar
     const cardetail = this.state.cardetail;
-    console.log(checky)
+    // console.log(checky)
     if (checky.includes(model) === false && cardetail.length != 0) {
       /// ///เช็คว่าเคยเพิ่มรถคันนี้ไปยัง
       firebaseService
@@ -161,7 +161,7 @@ export class CreateCar extends React.Component {
   }
 
   render () {
-    console.log(this.state.cardetail)
+    // console.log(this.state.cardetail)
     return (
       <View style={{}}>
         <View style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:400,height:50}}>      

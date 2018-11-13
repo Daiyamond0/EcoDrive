@@ -170,44 +170,27 @@ export  class StartMap1 extends Component {
   }
   shouldComponentUpdate(nextProps, nextState){
     
-    const { speed , sum ,hideinitmarker,stop,query,place ,markerPosition,
-      destinationplace,initail,destinate,result,hidebubble,hideway,acceleration,totalfueluse,
-      distance,speedId,distancedrive,sumdistance1,i,j,k,sumdistance2,summarydistance
-    ,summaryco2,summaryduration,durationtime,summaryfueluse,summaryfuelconsumtion,date
-  ,summarysource,summarydestination,dialogVisible} = this.state
+    const {
+      place,query,markerPosition,destinationplace,
+      initail,destinate,result,hideinitmarker,hidebubble,hideway,stop, speed,distance,sum,totalfueluse,
+      speedId,acceleration,distancedrive,intervalId,sumdistance1,sumdistance2,i,j,k,summarydistance,
+      summaryco2,summaryduration,durationtime,summaryfueluse,summaryfuelconsumtion,date,summarysource,
+      summarydestination,dialogVisible,timestart,timeend,fuelraterealtime,historylength ,orange,
+      red,green,speedavg} = this.state
 
       const {carconnect ,initialPosition ,origin ,draggableRange} = this.props
 
      
-    if (this.state.speed !== nextState.speed ) {
+    if (this.state.place !== nextState.place ) {
       return true
     }
-    if (this.state.sum !== nextState.sum ) {
+    if (this.state.query !== nextState.query ) {
         return true
       }
-      if (this.state.hideinitmarker !== nextState.hideinitmarker ) {
-        return true
-      }
-      if (this.state.stop !== nextState.stop ) {
-        return true
-      }
-      if (this.state.query !== nextState.query ) {
-        return true
-      }
-      if (this.state.place !== nextState.place ) {
-        return true
-      }
-      
       if (this.state.markerPosition !== nextState.markerPosition ) {
         return true
       }
-      if (this.props.markerPosition !== nextProps.markerPosition ) {
-        return true
-      }
       if (this.state.destinationplace !== nextState.destinationplace ) {
-        return true
-      }
-      if (this.props.origin !== nextProps.origin) {
         return true
       }
       if (this.state.initail !== nextState.initail ) {
@@ -216,31 +199,50 @@ export  class StartMap1 extends Component {
       if (this.state.destinate !== nextState.destinate ) {
         return true
       }
-      if (this.state.result !== nextState.result  ) {
+      
+      if (this.state.result !== nextState.result ) {
+        return true
+      }
+      if (this.state.hideinitmarker !== nextState.hideinitmarker ) {
         return true
       }
       if (this.state.hidebubble !== nextState.hidebubble ) {
         return true
       }
-      if (this.state.hideway !== nextState.hideway ) {
+      if (this.state.hideway !== nextState.hideway) {
         return true
       }
-      if (this.state.acceleration !== nextState.acceleration ) {
+      if (this.state.stop !== nextState.stop ) {
         return true
       }
-      if (this.props.carconnect  !== nextProps.carconnect ) {
+      if (this.state.speed !== nextState.speed ) {
+        return true
+      }
+      if (this.state.distance !== nextState.distance  ) {
+        return true
+      }
+      if (this.state.sum !== nextState.sum ) {
         return true
       }
       if (this.state.totalfueluse !== nextState.totalfueluse ) {
         return true
       }
-      if (this.state.distance !== nextState.distance) {
+      if (this.state.speedId !== nextState.speedId ) {
         return true
       }
-      if (this.props.initialPosition !== nextProps.initialPosition) {
+      if (this.state.acceleration  !== nextState.acceleration ) {
         return true
       }
-      if (this.props.draggableRange !== nextProps.draggableRange) {
+      if (this.state.distancedrive !== nextState.distancedrive ) {
+        return true
+      }
+      if (this.state.intervalId !== nextState.intervalId) {
+        return true
+      }
+      if (this.state.sumdistance1 !== nextState.sumdistance1) {
+        return true
+      }
+      if (this.state.sumdistance2 !== nextState.sumdistance2) {
         return true
       }
       if (this.state.speedId !== nextState.speedId) {
@@ -264,7 +266,7 @@ export  class StartMap1 extends Component {
       if (this.state.k !== nextState.k) {
         return true
       }
-      if (this.state.summarydistancek !== nextState.summarydistance) {
+      if (this.state.summarydistance !== nextState.summarydistance) {
         return true
       }
       if (this.state.summaryco2 !== nextState.summaryco2) {
@@ -272,6 +274,9 @@ export  class StartMap1 extends Component {
         return true
       }
       if (this.state.durationtime !== nextState.durationtime) {
+        return true
+      }
+      if (this.state.summaryduration !== nextState.summaryduration) {
         return true
       }
       if (this.state.summaryfueluse !== nextState.summaryfueluse) {
@@ -292,6 +297,31 @@ export  class StartMap1 extends Component {
       if (this.state.dialogVisible !== nextState.dialogVisible) {
         return true
       }
+      if (this.state.timestart !== nextState.timestart) {
+        return true
+      }
+      if (this.state.timeend !== nextState.timeend) {
+        return true
+      }
+      if (this.state.fuelraterealtime !== nextState.fuelraterealtime) {
+        return true
+      }
+      if (this.state.historylength !== nextState.historylength) {
+        return true
+      }
+      if (this.state.orange !== nextState.orange) {
+        return true
+      }
+      if (this.state.red !== nextState.red) {
+        return true
+      }
+      if (this.state.green !== nextState.green) {
+        return true
+      }
+      if (this.state.speedavg !== nextState.speedavg) {
+        return true
+      }
+
     
     return false
 }
@@ -313,7 +343,11 @@ this.intervalId = setInterval(()=>{
   if( distance > this.state.sumdistance1 && this.state.i < this.state.result.way[num].length ){
     if(this.state.i == 2){
       var d = new Date()
-      this.setState({timestart:d.getHours()+':'+d.getMinutes()})
+      var min = d.getMinutes()
+        if(min<10) {
+          min='0'+min;
+        } 
+      this.setState({timestart:d.getHours()+':'+min})
     }
     this.setState({
           markerPosition: {
@@ -337,6 +371,10 @@ this.intervalId = setInterval(()=>{
     
    if(this.state.i == this.state.result.way[num].length -1){
 var d = new Date()
+var min = d.getMinutes()
+  if(min<10) {
+    min='0'+min;
+  } 
       clearInterval(this.intervalId)
       clearInterval(this.durationtime)
       this.setState({summarydistance:distance}) 
@@ -346,7 +384,7 @@ var d = new Date()
       this.setState({summaryfuelconsumtion:this.state.sum.toFixed(1) / this.state.totalfueluse[this.state.totalfueluse.length - 1]})
       // this.setState({date:date.toLocaleDateString()})
       this.setState({dialogVisible:true})
-      this.setState({timeend:d.getHours()+':'+d.getMinutes()})
+      this.setState({timeend:d.getHours()+':'+min})
       this.ref.off()
 
    }
@@ -664,7 +702,7 @@ if(seconds<10){
 		.then(json => {
         		var addressComponent = json.results[0].address_components[0].short_name;
       this.setState({summarydestination:addressComponent})
-      console.log(this.state.summarydestination)
+      // console.log(this.state.summarydestination)
 		})
 		.catch(error => console.warn(error));
    
@@ -738,7 +776,7 @@ if(seconds<10){
   }
 
   convertlatlongtodistance(way,number){
-    console.log(way[number])
+    // console.log(way[number])
     var Distance = []
     var i = 0;
     var j = 1;
@@ -794,7 +832,7 @@ if(seconds<10){
 
   render () {
     
-  console.log(this.props.carconnect)
+  // console.log(this.props.carconnect)
     
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1]

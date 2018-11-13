@@ -51,7 +51,7 @@ export class SelectMyCar extends React.Component {
   }
   render () {
     // console.log(this.state.mycar)
-    console.log(this.props.mycar)
+    // console.log(this.props.mycar)
     return (
       <View style={styles.mainviewStyle}>
       <ImageBackground

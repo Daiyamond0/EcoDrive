@@ -9,12 +9,15 @@ export  class MycarDetail extends Component {
       sumDistance:[],
       sumFueluse:[],
       sumCo2:[],
+      sumFuelrate:[],
+      Fuelratelength:0
     };
   }
 componentWillMount = () => {
   var sumDistance = []
     var sumFueluse = []
     var sumCo2 =[]
+    var sumFuelrate = []
     const uid = this.props.user.uid
     
     firebaseService.database().ref(`History/${uid}/`).once(
@@ -26,10 +29,12 @@ componentWillMount = () => {
                 sumDistance.push(car.Distance)
                 sumFueluse.push(parseFloat(car.Fueluse))
                 sumCo2.push(parseFloat(car.CO2))
+                sumFuelrate.push(car.Fuelrate)
                 this.setState({sumDistance: sumDistance.reduce((a, b) => a + b)})
                 this.setState({sumFueluse: sumFueluse.reduce((a, b) => a + b)})
                 this.setState({sumCo2: sumCo2.reduce((a, b) => a + b)})
-
+                this.setState({sumFuelrate: sumFuelrate.reduce((a, b) => a + b )})
+                this.setState({Fuelratelength: sumFuelrate.length })
               }
             
               
@@ -56,7 +61,7 @@ componentWillMount = () => {
     />
   <Text style={{marginBottom:10,fontSize:20,color:'black',alignSelf:'center'}}>{this.props.carinfo.Nickname}</Text>
   </View>
-   <View style={{marginTop:10,width:320,height:200,backgroundColor:'white',alignSelf:'center',borderBottomWidth:0.25,borderColor:'#888888',backgroundColor:'#fcfcfc'}}>
+   <View style={{marginTop:10,width:320,height:180,backgroundColor:'white',alignSelf:'center',borderBottomWidth:0.25,borderColor:'#888888',backgroundColor:'#fcfcfc'}}>
    <View style={{flexDirection:'row',marginTop:15}}>
    <Text style={{marginLeft:15,fontSize:20,color:'black'}}>Brand & Model</Text>
    </View>
@@ -76,16 +81,8 @@ componentWillMount = () => {
    <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.props.carinfo.Model}</Text>
    </View>
    </View>
-   <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
-   <View style={styles.box1}>
-   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Max Speed</Text>
    </View>
-   <View style={styles.box2}>    
-   <Text style={{fontSize:15,color:'white',marginLeft:10}}>{this.props.carinfo.MaximumSpeed} KM/H</Text>
-   </View>
-   </View>
-   </View>
-   <View style={{marginTop:10,width:320,height:250,backgroundColor:'white',alignSelf:'center',borderBottomWidth:0.25,borderColor:'#888888',backgroundColor:'#fcfcfc'}}>
+   <View style={{marginTop:10,width:320,height:300,backgroundColor:'white',alignSelf:'center',borderBottomWidth:0.25,borderColor:'#888888',backgroundColor:'#fcfcfc'}}>
    <View style={{flexDirection:'row',marginTop:15}}>
    <Text style={{marginLeft:15,fontSize:20,color:'black'}}>Fuel</Text>
    </View>
@@ -107,10 +104,18 @@ componentWillMount = () => {
    </View>
    <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
    <View style={styles.box1}>
-   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Fuel Consumtion</Text>
+   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Fuel Consumption</Text>
    </View>
    <View style={styles.box2}>
-   <Text style={{fontSize:15,color:'white',marginLeft:10}}>{this.props.carinfo.FuelConsumption} KM/L</Text>
+   <Text style={{fontSize:15,color:'white',marginLeft:10}}>{this.props.carinfo.FuelConsumption} km/L</Text>
+   </View>
+   </View>
+   <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
+   <View style={styles.box3}>
+   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Accual rate</Text>
+   </View>
+   <View style={styles.box4}>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{parseFloat(this.state.sumFuelrate / this.state.Fuelratelength).toFixed(2)} km/L</Text>
    </View>
    </View>
    <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>

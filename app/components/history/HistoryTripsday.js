@@ -18,13 +18,19 @@ export  class HistoryTripsday extends Component {
             avgCo2 :[],
             avgfuelrate : [],
             avgspeed: [],
+            Co2 :0,
+            fuelrate : 0,
+            speed: 0,
+            lengthCo2 :0,
+            lengthfuelrate : 0,
+            lengthspeed: 0,
         }
       }
 
 componentWillMount(){
     const uid = this.props.user.uid
     var history = []
-    firebaseService.database().ref(`History/${uid}/`).once(
+    this.history = firebaseService.database().ref(`History/${uid}/`).once(
       'value',
       function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
@@ -57,7 +63,7 @@ componentWillMount(){
     var avgfuelrate = []
     var avgspeed = []
     
-    firebaseService.database().ref(`History/${uid}/`).once(
+    this.history2 = firebaseService.database().ref(`History/${uid}/`).once(
         'value',
         function (snapshot) {
           snapshot.forEach(function (childSnapshot) {
@@ -73,12 +79,13 @@ componentWillMount(){
                 this.setState({avgCo2: avgCo2.reduce((a, b) => a + b  )})
                 this.setState({avgfuelrate: avgfuelrate.reduce((a, b) => a + b )})
                 this.setState({avgspeed: avgspeed.reduce((a, b) => a + b )})
-                this.setState({avgCo2: this.state.avgCo2/avgCo2.length})
-                this.setState({avgfuelrate: this.state.avgfuelrate/avgfuelrate.length})
-                this.setState({avgspeed: this.state.avgspeed/avgspeed.length})
+                this.setState({lengthCo2: avgCo2.length})
+                this.setState({lengthfuelrate: avgfuelrate.length})
+                this.setState({lengthspeed: avgspeed.length })
+                
               }
               
-              console.log(avgspeed)
+            //   console.log(avgspeed)
               
           }.bind(this))
           
@@ -87,7 +94,51 @@ componentWillMount(){
           console.log(error)
         }
       )
-
+    //   this.setState({Co2: this.state.avgCo2/avgCo2.length})
+    //   this.setState({fuelrate: this.state.avgfuelrate/avgfuelrate.length})
+    //   this.setState({speed: this.state.avgspeed/avgspeed.length})
+}
+componentWillUnmount(){
+    this.history =null
+    this. history2 = null
+}
+colornoti(){
+    if(this.props.trips.Fuelrate > this.props.trips.Car.FuelConsumption - (this.props.trips.Car.FuelConsumption * 0.2)){
+        return{
+            width:142.5,
+            marginLeft:25,
+            height:60,
+            backgroundColor:'white',
+            justifyContent:'center',
+            borderRadius:5,
+            borderWidth:2,
+            borderColor:'#6a83fb'
+        }
+    }
+    if(this.props.trips.Fuelrate < this.props.trips.Car.FuelConsumption - (this.props.trips.Car.FuelConsumption * 0.2) && this.props.trips.Fuelrate >= this.props.trips.Car.FuelConsumption - (this.props.trips.Car.FuelConsumption * 0.25)){
+        return{
+            width:142.5,
+            marginLeft:25,
+            height:60,
+            backgroundColor:'white',
+            justifyContent:'center',
+            borderRadius:5,
+            borderWidth:2,
+            borderColor:'orange'
+        }
+    }
+    if(this.props.trips.Fuelrate < this.props.trips.Car.FuelConsumption - (this.props.trips.Car.FuelConsumption * 0.25)){
+        return{
+            width:142.5,
+            marginLeft:25,
+            height:60,
+            backgroundColor:'white',
+            justifyContent:'center',
+            borderRadius:5,
+            borderWidth:2,
+            borderColor:'red'
+        }
+    }
 }
 
   render() {
@@ -98,7 +149,9 @@ componentWillMount(){
 // console.log(this.state.avgCo2)
 // console.log(this.state.sumFueluse)
 // console.log(this.state.sumDistance)
-// console.log(this.state.avgspeed)
+// console.log(this.state.avgfuelrate)
+// console.log(this.state.lengthfuelrate)
+// console.log(this.state.avgfuelrate / this.state.lengthfuelrate)
 
     const contentInset = { top: 20, bottom: 20 }
     const HiHorizontalLine = ({ y }) =>
@@ -134,7 +187,7 @@ componentWillMount(){
                                 </View>
                             </View>
                             <View style={{flex:1,marginTop:65}}>
-                                <View style={{width:290,height:60,backgroundColor:'white',justifyContent:'center',alignSelf:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
+                                <View style={{width:290,height:140,backgroundColor:'white',justifyContent:'center',alignSelf:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb',flexDirection:'column'}}>
                                     <View style={{flex:1,flexDirection:'row',marginLeft:40,marginTop:10}}>
                                         <View style={{flexDirection:'column'}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:5}}>Brand</Text>
@@ -149,9 +202,31 @@ componentWillMount(){
                                             <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:50}}>{this.props.trips.Car.Model}</Text>
                                         </View>
                                     </View>
-                                </View>        
+                                    <View style={{flex:1,flexDirection:'row',marginLeft:28,marginTop:10}}>
+                                    <Image
+                                            style={{width: 25, height: 25,marginTop:12}}
+                                            source={require('./gas.png')}
+                                        />
+                                        <View style={{flexDirection:'column'}}>
+                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:5}}>Standard</Text>
+                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:15}}>{this.props.trips.Car.FuelConsumption}</Text>
+                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:15}}>km/L</Text>
+                                        </View>
+                                       
+                                        <Image
+                                            style={{width: 25, height: 25,marginLeft: 60,marginTop:12}}
+                                            source={require('./co2.png')}
+                                        />
+                                        <View style={{flexDirection:'column'}}>
+                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:15}}>Standard</Text>
+                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:15}}>{((this.props.trips.Car.FuelType.CO2Emission/this.props.trips.Car.FuelConsumption)*100).toFixed(0)}</Text>
+                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:15}}>g/km</Text>
+                                        </View>
+                                    </View>
+                                </View>   
+                                    
                             </View>
-                            <View style={{flex:1,marginTop:65}}>
+                            <View style={{flex:1,marginTop:145}}>
                                 <View style={{flexDirection:'row'}}>
                                     <View style={{width:142.5,marginLeft:25,height:60,backgroundColor:'white',justifyContent:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
                                         <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:10}}>
@@ -187,7 +262,7 @@ componentWillMount(){
                             </View>
                             <View style={{flex:1,marginTop:65}}>
                                     <View style={{flexDirection:'row'}}>
-                                        <View style={{width:142.5,marginLeft:25,height:60,backgroundColor:'white',justifyContent:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
+                                        <View style={this.colornoti()}>
                                             <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:10}}>
                                             <View style={{flexDirection:'column',marginLeft:2}}>        
                                             <Image
@@ -272,7 +347,7 @@ componentWillMount(){
                                     </View>
                                     <View style={{flexDirection:'column',marginLeft:30}}>
                                     <Text style={{fontSize:10,color:'#6a83fb'}}>Average trips</Text>
-                                    <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgfuelrate).toFixed(2)} KM/L</Text>
+                                    <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgfuelrate / this.state.lengthfuelrate).toFixed(2)} KM/L</Text>
                                     </View>
                                     </View>
                                     </View>        
@@ -293,7 +368,7 @@ componentWillMount(){
                                         </View>
                                         <View style={{flexDirection:'column',marginLeft:25}}>
                                             <Text style={{fontSize:10,color:'#6a83fb'}}>Average trips</Text>
-                                            <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgCo2).toFixed(1)} KG</Text>
+                                            <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgCo2 / this.state.lengthCo2).toFixed(1)} KG</Text>
                                         </View>
                                         </View>
                                     </View>        
@@ -314,12 +389,12 @@ componentWillMount(){
                                         </View>
                                         <View style={{flexDirection:'column',marginLeft:30}}>
                                             <Text style={{fontSize:10,color:'#6a83fb'}}>Average trips</Text>
-                                            <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgspeed).toFixed(1) } KM/H</Text>
+                                            <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgspeed / this.state.lengthspeed).toFixed(1) } KM/H</Text>
                                         </View>
                                     </View>
                                     </View>        
                                 </View>
-                                <View style={{marginLeft:25,marginTop:70}}>
+                                {/* <View style={{marginLeft:25,marginTop:70}}>
                                     <Text style={{fontSize:15,color:'black'}}>Standard Comparing</Text>
                                 </View>
                                 <View style={{flex:1,marginTop:10}}>
@@ -363,7 +438,7 @@ componentWillMount(){
                                     </View>
                                     </View>
                                     </View>        
-                                </View>
+                                </View> */}
                                 <View style={{marginLeft:25,marginTop:70}}>
                                     <Text style={{fontSize:15,color:'black'}}>Driving Trend</Text>
                                     <Text style={{fontSize:10,color:'black'}}>Do I drive better than before?</Text>

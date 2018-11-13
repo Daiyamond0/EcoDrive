@@ -79,10 +79,10 @@ export class MyCar extends React.Component {
     Actions.push('edit')
   }
   removeCar (car) {
-   console.log(JSON.stringify(car))
+  //  console.log(JSON.stringify(car))
     const x = Object.values(this.state.count)[car] /// ตำแหน่ง uid ที่จะลบ
     const uid = this.props.user.uid
-    console.log(x)
+    // console.log(x)
     firebaseService.database().ref(`user/${uid}/`).child(x).remove()
     
     Actions.replace('mycar')
@@ -154,10 +154,10 @@ export class MyCar extends React.Component {
                       </View>
                       <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
                       <View style={{justifyContent:'center',width:90,height:40,backgroundColor:'white',borderColor:'#6a83fb',borderWidth:0.5,borderTopLeftRadius:5,borderBottomLeftRadius:5}}>
-                      <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Max Speed</Text>
+                      <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Fuelrate</Text>
                       </View>
                       <View style={{justifyContent:'center',width:180,height:40,backgroundColor:'#6a83fb',borderColor:'#6a83fb',borderWidth:0.5,borderTopRightRadius:5,borderBottomRightRadius:5}}>
-                      <Text style={{fontSize:15,color:'white',marginLeft:10}}>{item.MaximumSpeed} km/h</Text>
+                      <Text style={{fontSize:15,color:'white',marginLeft:10}}>{item.FuelConsumption} km/L</Text>
                       </View>
                       </View>
                       <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>

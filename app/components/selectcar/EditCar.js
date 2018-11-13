@@ -37,10 +37,10 @@ export class EditCar extends React.Component {
   }
 
   removeCar (car) {
-    console.log(JSON.stringify(car))
+    // console.log(JSON.stringify(car))
     const x = Object.values(this.props.editcar)[car] /// ตำแหน่ง uid ที่จะลบ
     const uid = this.props.user.uid
-    console.log(x)
+    // console.log(x)
     firebaseService.database().ref(`user/${uid}/`).child(x).remove()
     
     Actions.replace('editcar')

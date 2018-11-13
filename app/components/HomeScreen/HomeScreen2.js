@@ -390,28 +390,10 @@ getdataspeed = (snapshot) => {
   // console.log(this.state.sumFuelrate)
   // console.log(this.state.TodayFuelrate)
     // console.log('รถที่เลือกมาจำลอง',this.props.carconnect)
-    console.log(this.state.lastest.CO2)
+    // console.log(this.state.lastest.CO2)
     const lastdrive = this.state.lastest
     return (
-      <Drawer
-        ref={(ref) => { this._drawer = ref; }}
-        content={<SideBar navigator={this._navigator} />}
-        onClose={() => this.closeDrawer()} >
-      
-        <Header>
-          <Left>
-            <Button
-              transparent
-              onPress={() => this.openDrawer()}>
-              <Icon name="menu" />
-             
-            </Button>
-          </Left>
-          <Body>
-            <Title>HomeScreen</Title>
-          </Body>
-          <Right />
-        </Header>
+    
         
                 <ImageBackground
       style={styles.container}
@@ -434,10 +416,10 @@ getdataspeed = (snapshot) => {
               }}
               >
               <TouchableOpacity onPress={Actions.bluetooth}>
-                <Text style={{ fontSize: 19, color: 'white',marginLeft:100 }}>OBD2 is Connected
+                <Text style={{ fontSize: 19, color: 'white'}}>OBD2 is Connected
                   </Text>
               </TouchableOpacity>
-              <Drawer/>
+              {/* <Drawer/> */}
             </View>
             </View>
             :<View style={styles.footer1}> 
@@ -477,7 +459,7 @@ getdataspeed = (snapshot) => {
           <Card >
           <CardItem >
             <View style={{flexDirection:'row',marginHorizontal:10}}>
-              <Text style={{fontWeight:'bold'}}> Lastest </Text>   
+              <Text style={{fontWeight:'bold',color:'red'}}> Lastest </Text>   
               <Text> {this.state.lastestcar.Make+' '+this.state.lastestcar.Model}</Text>
             </View>
             </CardItem>
@@ -494,7 +476,7 @@ getdataspeed = (snapshot) => {
         />
         {/* <Text style={{}}>{parseFloat(this.state.sumFuelrate).toFixed(2) }</Text> */}
         <Text style={{}}>{this.state.lastest.Fuelrate }</Text>
-        <Text style={{fontSize:15}}>KM/L</Text>    
+        <Text style={{fontSize:15}}>km/L</Text>    
           </View>
           <View style={{flexDirection:'column',marginHorizontal: 15}}> 
         <Image
@@ -503,7 +485,7 @@ getdataspeed = (snapshot) => {
         />
         {/* <Text style={{}}>{parseFloat(this.state.sumCo2).toFixed(2)}</Text> */}
         <Text style={{}}>{this.state.lastest.CO2}</Text>
-        <Text style={{fontSize:15}}>KG</Text>
+        <Text style={{fontSize:15}}>kg</Text>
         </View>
         <View style={{flexDirection:'column',marginHorizontal: 15}}> 
         <Image
@@ -512,7 +494,7 @@ getdataspeed = (snapshot) => {
         />
         {/* <Text style={{}}>{this.state.sumDistance}</Text> */}
         <Text style={{}}>{this.state.lastest.Distance}</Text>
-        <Text style={{fontSize:15}}>KM</Text>
+        <Text style={{fontSize:15}}>km</Text>
         </View>
         <Image
           style={{width: 40, height: 40}}
@@ -535,7 +517,7 @@ getdataspeed = (snapshot) => {
     flexDirection: 'row',
     }}>
           <View style={{flexDirection:'column',marginHorizontal: 15}}> 
-          <Text>Not Drive today yet!!</Text>
+          <Text style={{marginLeft:50}}>Not Drive today yet!!</Text>
         </View>
         </CardItem>
           </Card>
@@ -547,16 +529,16 @@ getdataspeed = (snapshot) => {
               <Text>Do you want to drive?</Text>
               </CardItem>
               <CardItem>
-                <View style={{flexDirection:'column',flex:1}}>
+                <View style={{flexDirection:'column',flex:1,marginLeft:20}}>
                   <View>
               <Button onPress={this.startmap.bind(this)} style={{height:40,width:250,justifyContent:'center',backgroundColor:'#6a83fb'}} iconLeft>
-            <Text>Start Driving</Text>
+            <Text>Enter Destination</Text>
             <Icon name='paper-plane' />
             </Button>
             </View>
-            <View>
+            <View style={{marginTop:10}}>
             <Button onPress={this.CarConnect.bind(this)} style={{height:40,width:250,justifyContent:'center',backgroundColor:'#6a83fb'}} iconLeft>
-            <Text>Start Driving No map</Text>
+            <Text>Just Drive</Text>
             <Icon name='paper-plane' />
             </Button>
               </View>
@@ -565,9 +547,7 @@ getdataspeed = (snapshot) => {
             </Card>
             
           </View>
-        
-       
-      
+ 
         <Footer style={{position:'absolute',left: 0,bottom: 0}}>
           <FooterTab>
             <Button vertical onPress={Actions.mycar}>
@@ -592,9 +572,7 @@ getdataspeed = (snapshot) => {
         </Footer>
 </ImageBackground>
 
-      {/* Rest of the app comes ABOVE the action button component !*/}
-     
-      </Drawer>
+    
             )
   }
 }

@@ -67,7 +67,7 @@ export class Edit extends React.Component {
       '1': ['E20', 23],
       '2': ['E85', 23.6]
     }
-   console.log(this.state.selected)
+  //  console.log(this.state.selected)
 
     return (
      

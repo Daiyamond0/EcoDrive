@@ -85,7 +85,7 @@ export class History extends React.Component {
       function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var his = childSnapshot.val()
-            console.log(his.Car)
+            // console.log(his.Car)
             historytrip.push(his)
             this.setState({historytrip:historytrip})
             historydate.push(his.Date)
@@ -157,9 +157,30 @@ export class History extends React.Component {
       <Text>{d.toDateString()}</Text>
     )
   }
+  colornoti(item){
+    console.log(item)
+    if(item.Fuelrate > item.Car.FuelConsumption - (item.Car.FuelConsumption * 0.2)){
+      return{
+        borderLeftWidth: 15 ,
+        borderLeftColor: 'green',
+      }
+    }
+    if(item.Fuelrate < item.Car.FuelConsumption - (item.Car.FuelConsumption * 0.2) && item.Fuelrate >= item.Car.FuelConsumption - (item.Car.FuelConsumption * 0.25)){
+      return{
+        borderLeftWidth: 15 ,
+        borderLeftColor: 'orange',
+      }
+    }
+    if(item.Fuelrate < item.Car.FuelConsumption - (item.Car.FuelConsumption * 0.25)){
+      return{
+        borderLeftWidth: 15 ,
+        borderLeftColor: 'red',
+      }
+    }
+  }
   render() {
     // console.log(Object(this.state.historytrip[0]).Date)
-    console.log(this.state.historytrip)
+    // console.log(this.state.historytrip)
     // console.log(this.state.historydate)
     // console.log(this.state.historycar)
 // console.log(this.state.dayofweek)
@@ -196,7 +217,7 @@ export class History extends React.Component {
         </Picker>
       <View>
          <TouchableOpacity onPress={this.toggleModal.bind(this)}>
-       <Image style={{width: 50, height: 50}} source={require('./calendar.png')}/>
+       <Image style={{width: 40, height: 40}} source={require('./calendar1.png')}/>
          </TouchableOpacity>
          </View>
    <Modal isVisible={this.state.isModalVisible} onBackButtonPress={this.toggleModal.bind(this)} onBackdropPress={this.toggleModal.bind(this)}>
@@ -218,8 +239,8 @@ export class History extends React.Component {
             </View>
           </Modal>
         </View>
-      <View>
-        <Text style={{textAlign:'center'}}>{this.parsedate(this.state.dateselect)}</Text>
+      <View style={{justifyContent:'center',alignItems:'center',alignSelf:'center',marginTop:20,height:40,width:250,borderRadius:5,backgroundColor:'#6a83fb'}}>
+        <Text style={{color:'white',fontSize:13,fontWeight:'bold',justifyContent:'center'}}>{this.parsedate(this.state.dateselect)}</Text>
         </View>
         {this.state.historytrip.map((item, index) => {
           if(Object(item).Date == this.state.dateselect){
@@ -233,9 +254,122 @@ export class History extends React.Component {
                   <Text>Date: { this.parsedate(Object(item).Date) }</Text>
                   
                   </CardItem> */}<TouchableHighlight onPress={()=>this.Historyday(item,index)}>
-                  <CardItem >
-                    <View>
-                  <Text>Time: {Object(item).Time} - {Object(item).Timeend}</Text>
+                  <CardItem style={this.colornoti(item)}>
+                  <View style={{width:340,marginTop:10,height:450}}>
+                  <Text style={{color:'black',fontSize:20,marginLeft:5,marginTop:5}}>{Object(item).Time} - {Object(item).Timeend}</Text>
+                  <View>
+          <View style={{flex:1,flexDirection:'row'}}>
+                <Image
+                style={{width: 25, height: 25,marginLeft: 25,marginTop:12}}
+                source={require('./place.png')}
+              />
+              <View style={{height:30,width:240,marginLeft:10,marginTop:10,backgroundColor:'white',borderColor:'#cccccc',borderRadius:5,borderWidth:0.5}}>
+              <Text style={{fontSize:15,color:'#6a83fb',alignItems:'center',alignContent:'center'}}>{Object(item).Source}</Text>
+              </View>
+              </View>
+              <View style={{flex:1,flexDirection:'row',marginTop:50}}>
+              <Image
+                style={{width: 25, height: 25,marginLeft: 25,marginTop:12}}
+                source={require('./gps.png')}
+              />
+              <View style={{height:30,width:240,marginLeft:10,marginTop:10,backgroundColor:'white',borderColor:'#cccccc',borderRadius:5,borderWidth:0.5}}>
+              <Text style={{fontSize:15,color:'#6a83fb',alignItems:'center',alignContent:'center'}}>{Object(item).Destination}</Text>
+              </View>
+              </View>
+              <View style={{flex:1,marginTop:65}}>
+                                <View style={{width:290,height:60,backgroundColor:'white',justifyContent:'center',alignSelf:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb',marginRight:18,}}>
+                                    <View style={{flex:1,flexDirection:'row',marginLeft:15,marginTop:10}}>
+                                        <View style={{flexDirection:'column'}}>
+                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:5}}>Brand</Text>
+                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5}}>{Object(item).Car.Make}</Text>
+                                        </View>
+                                        <Image
+                                            style={{width: 25, height: 25,marginLeft: 55,marginTop:12}}
+                                            source={require('./cars.png')}
+                                        />
+                                        <View style={{flexDirection:'column'}}>
+                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:60}}>Model</Text>
+                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:50}}>{Object(item).Car.Model}</Text>
+                                        </View>
+                                    </View>
+                                </View>        
+                </View>
+              <View style={{flex:1,marginTop:65}}>
+              <View style={{flexDirection:'row'}}>
+              <View style={{width:142.5,marginLeft:15,height:60,backgroundColor:'white',justifyContent:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
+              <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:10}}>
+              <View style={{flexDirection:'column',marginLeft:15}}>        
+              <Image
+                style={{width: 25, height: 25,marginTop:1,marginLeft:5}}
+                source={require('./road.png')}
+              />
+              <Text style={{fontSize:10,color:'#6a83fb'}}>Distance</Text>
+              </View>
+              <View style={{flexDirection:'column',marginLeft:35}}>
+              <Text style={{fontSize:15,color:'#ff4d88'}}>{Object(item).Distance}</Text>
+              <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>km</Text>
+              </View>
+              </View>        
+              </View>
+              <View style={{width:142.5,marginLeft:5,height:60,backgroundColor:'white',justifyContent:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
+              <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:10}}>
+              <View style={{flexDirection:'column',marginLeft:15}}>        
+              <Image
+                style={{width: 25, height: 25,marginTop:1,marginLeft:5}}
+                source={require('./time.png')}
+              />
+              <Text style={{fontSize:10,color:'#6a83fb'}}>Duration</Text>
+              </View>
+              <View style={{flexDirection:'column',marginLeft:20}}>
+              <Text style={{fontSize:15,color:'#ff4d88'}}>{Object(item).Duration}</Text>
+              <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>mins</Text>
+              </View>
+              </View>
+              </View>
+              </View>        
+              </View>
+              <View style={{flex:1,marginTop:65}}>
+              <View style={{flexDirection:'row'}}>
+              <View style={{width:142.5,marginLeft:15,height:60,backgroundColor:'white',justifyContent:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
+              <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:10}}>
+              <View style={{flexDirection:'column',marginLeft:2}}>        
+              <Image
+                style={{width: 25, height: 25,marginTop:1,marginLeft:18}}
+                source={require('./gas.png')}
+              />
+              <Text style={{fontSize:8,color:'#6a83fb'}}>Fuel Consumption</Text>
+              </View>
+              <View style={{flexDirection:'column',marginLeft:20}}>
+              <Text style={{fontSize:15,color:'#ff4d88'}}>{Object(item).Fuelrate}</Text>
+              <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>km/L</Text>
+              </View>
+              </View>        
+              </View>
+              <View style={{width:142.5,marginLeft:5,height:60,backgroundColor:'white',justifyContent:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
+              <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:10}}>
+              <View style={{flexDirection:'column',marginLeft:15}}>        
+              <Image
+                style={{width: 25, height: 25,marginTop:1,marginLeft:5}}
+                source={require('./co2.png')}
+              />
+              <Text style={{fontSize:10,color:'#6a83fb',marginLeft:8}}>CO2</Text>
+              </View>
+              <View style={{flexDirection:'column',marginLeft:35}}>
+              <Text style={{fontSize:15,color:'#ff4d88'}}>{Object(item).CO2}</Text>
+              <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>kg</Text>
+              </View>
+              </View>
+              </View>
+              </View>        
+              </View>
+              
+            <View style={{justifyContent:'center',alignItems:'center',alignSelf:'center',marginTop:75,height:40,width:250,borderRadius:5,backgroundColor:'#6a83fb',marginRight:15}}>
+              <Text style={{color:'white'}}>See more details ></Text>
+              
+            </View>
+            </View>
+                  
+                  {/* <Text>Time: {Object(item).Time} - {Object(item).Timeend}</Text>
                   <Text>Source: {Object(item).Source}</Text> 
                   <Text>Source: {Object(item).Destination}</Text> 
                   <Text>Fueluse: {Object(item).Fueluse} L  </Text>
@@ -243,7 +377,7 @@ export class History extends React.Component {
                   <Text>Distance: {Object(item).Distance} KM  </Text>
                   </View>
                   <View>
-                  <Text>Car: {Object(item).Car.Make + '' + Object(item).Car.Model}    </Text>
+                  <Text>Car: {Object(item).Car.Make + '' + Object(item).Car.Model}    </Text> */}
                   </View>
                 </CardItem> 
                 </TouchableHighlight>
