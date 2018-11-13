@@ -101,7 +101,8 @@ export class MyCar extends React.Component {
     return (
       <View style={styles.mainviewStyle}>
          <View style={{height:80,backgroundColor:'yellow',justifyContent:'center',alignItems:'center'}}>
-      <Text style={{fontSize:20,color:'black'}}>Hi, {this.props.user.email} These are your cars</Text>
+      <Text style={{fontSize:23,color:'black'}}>Hi, {this.props.user.email}</Text>
+      <Text style={{fontSize:20,color:'black'}}>These are your cars</Text>
          </View>
       <ScrollView >   
         <View>
@@ -115,14 +116,14 @@ export class MyCar extends React.Component {
                     <View style={{marginTop:20,width:320,height:250,backgroundColor:'white',alignSelf:'center',borderRadius:7}}>
                       <View style={{flexDirection:'row',marginTop:15}}>
                         <View>
-                          <Text style={{marginLeft:15,fontSize:20,color:'black',paddingRight:30}}>{item.Nickname}</Text>
+                          <Text style={{marginLeft:15,fontSize:15,color:'black',paddingRight:30}}>{item.Nickname}</Text>
                         </View>
                         <View style={{flexDirection:'row'}}>
                           <TouchableOpacity onPress={() => this.editCar(item, key)}>
                           {/* <TouchableOpacity onPress={Actions.editcar}> */}
                             <Image
                                 style={{width: 30, height: 30,alignItems:'center',paddingLeft:20}}
-                                source={require('../Image/edit.png')}
+                                source={require('../Image/Edit.png')}
                                   
                             />
                           </TouchableOpacity>
@@ -154,7 +155,7 @@ export class MyCar extends React.Component {
                       </View>
                       <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
                       <View style={{justifyContent:'center',width:90,height:40,backgroundColor:'white',borderColor:'#6a83fb',borderWidth:0.5,borderTopLeftRadius:5,borderBottomLeftRadius:5}}>
-                      <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Fuelrate</Text>
+                      <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Fuel Rate</Text>
                       </View>
                       <View style={{justifyContent:'center',width:180,height:40,backgroundColor:'#6a83fb',borderColor:'#6a83fb',borderWidth:0.5,borderTopRightRadius:5,borderBottomRightRadius:5}}>
                       <Text style={{fontSize:15,color:'white',marginLeft:10}}>{item.FuelConsumption} km/L</Text>
@@ -162,7 +163,7 @@ export class MyCar extends React.Component {
                       </View>
                       <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
                       <View style={{justifyContent:'center',width:90,height:40,backgroundColor:'white',borderColor:'#6a83fb',borderWidth:0.5,borderTopLeftRadius:5,borderBottomLeftRadius:5}}>
-                      <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>FuelType</Text>
+                      <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Fuel Type</Text>
                       </View>
                       <View style={{justifyContent:'center',width:180,height:40,backgroundColor:'#6a83fb',borderColor:'#6a83fb',borderWidth:0.5,borderTopRightRadius:5,borderBottomRightRadius:5}}>
                       <Text style={{fontSize:13,color:'white',marginLeft:10}}>{item.FuelType.FuelType}</Text>

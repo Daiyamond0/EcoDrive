@@ -471,33 +471,33 @@ getdataspeed = (snapshot) => {
     }}>
           <View style={{flexDirection:'column',marginHorizontal: 15}}> 
         <Image
-          style={{width: 40, height: 40}}
+          style={{width: 30, height: 30,marginLeft:10}}
           source={require('./gas.png')}
         />
         {/* <Text style={{}}>{parseFloat(this.state.sumFuelrate).toFixed(2) }</Text> */}
-        <Text style={{}}>{this.state.lastest.Fuelrate }</Text>
-        <Text style={{fontSize:15}}>km/L</Text>    
+        <Text style={{marginLeft:10}}>{this.state.lastest.Fuelrate }</Text>
+        <Text style={{fontSize:15,marginLeft:5}}>km/L</Text>    
           </View>
           <View style={{flexDirection:'column',marginHorizontal: 15}}> 
         <Image
-          style={{width: 40, height: 40}}
+          style={{width: 40, height: 40,marginLeft:10}}
           source={require('./co2.png')}
         />
         {/* <Text style={{}}>{parseFloat(this.state.sumCo2).toFixed(2)}</Text> */}
-        <Text style={{}}>{this.state.lastest.CO2}</Text>
-        <Text style={{fontSize:15}}>kg</Text>
+        <Text style={{marginLeft:5}}>{this.state.lastest.CO2}</Text>
+        <Text style={{fontSize:15,marginLeft:20}}>kg</Text>
         </View>
         <View style={{flexDirection:'column',marginHorizontal: 15}}> 
         <Image
-          style={{width: 40, height: 40,}}
+          style={{width: 40, height: 40,marginLeft:5}}
           source={require('./road.png')}
         />
         {/* <Text style={{}}>{this.state.sumDistance}</Text> */}
-        <Text style={{}}>{this.state.lastest.Distance}</Text>
-        <Text style={{fontSize:15}}>km</Text>
+        <Text style={{marginLeft:17}}>{this.state.lastest.Distance}</Text>
+        <Text style={{fontSize:15,marginLeft:12}}>km</Text>
         </View>
         <Image
-          style={{width: 40, height: 40}}
+          style={{marginLeft:20,width: 40, height: 40}}
           source={require('./arrow.png')}
         />
         </CardItem>
@@ -531,16 +531,17 @@ getdataspeed = (snapshot) => {
               <CardItem>
                 <View style={{flexDirection:'column',flex:1,marginLeft:20}}>
                   <View>
-              <Button onPress={this.startmap.bind(this)} style={{height:40,width:250,justifyContent:'center',backgroundColor:'#6a83fb'}} iconLeft>
-            <Text>Enter Destination</Text>
+              <Button onPress={this.startmap.bind(this)} style={{height:70,width:250,justifyContent:'center',backgroundColor:'#2bbb00'}} iconLeft>
+            <Text style={{fontSize:15}}>Enter Destination</Text>
             <Icon name='paper-plane' />
             </Button>
             </View>
             <View style={{marginTop:10}}>
-            <Button onPress={this.CarConnect.bind(this)} style={{height:40,width:250,justifyContent:'center',backgroundColor:'#6a83fb'}} iconLeft>
-            <Text>Just Drive</Text>
+            <Button onPress={this.CarConnect.bind(this)} style={{height:70,width:250,justifyContent:'center',backgroundColor:'#2bbb00'}} iconLeft>
+            <Text style={{fontSize:15}}>Just Drive</Text>
             <Icon name='paper-plane' />
             </Button>
+            <Text/>
               </View>
             </View>
                 </CardItem>

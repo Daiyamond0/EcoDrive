@@ -474,10 +474,15 @@ if(seconds<10){
   if(min<10) {
     min='0'+min;
   } 
-  this.setState({timeend:d.getHours()+':'+min})
-  this.setState({dialogVisible: true})
-  clearInterval(this.durationtime)
-  this.ref.off()
+  if(this.state.sum.toFixed(1) == 0.0){
+    alert('Can not save trip')
+  }else{
+    this.setState({timeend:d.getHours()+':'+min})
+    this.setState({dialogVisible: true})
+    clearInterval(this.durationtime)
+    this.ref.off()
+  }
+  
   }
   AddHistory(){
     this.setState({dialogVisible: false})
@@ -528,31 +533,34 @@ if(seconds<10){
     return (
       <View style={styles.container}>
       <View style={{marginTop:60,width:310,height:230,alignSelf:'center',borderColor:'#ffb3cc',borderWidth:0.5,borderRadius:8,backgroundColor:'white'}}>
-<View style={{flexDirection:'row',marginTop:60}}>
+<View style={{flexDirection:'row',marginTop:30}}>
 <Text style={styles.box}>Date</Text>
-<Text style={{marginLeft:92,color:'#6a83fb'}}>{this.parsedate(this.state.date)}</Text>
+<Text style={{marginLeft:92}}>{this.parsedate(this.state.date)}</Text>
 </View>
 <View style={{flexDirection:'row',marginTop:10}}>
 <Text style={styles.box}>Start Time</Text>
-<Text style={{marginLeft:56,color:'#6a83fb'}}>{this.state.timestart}</Text>
+<Text style={{marginLeft:56}}>{this.state.timestart}</Text>
 </View>
 <View style={{flexDirection:'row',marginTop:10}}>
 <Text style={styles.box}>End Time</Text>
-<Text style={{marginLeft:62,color:'#6a83fb'}}>Still driving</Text>
+<Text style={{marginLeft:62}}>Still driving</Text>
 </View>
 <View style={{flexDirection:'row',marginTop:10}}>
 <Text style={styles.box}>Duration</Text>
-<Text style={{marginLeft:70,color:'#6a83fb'}}>{this.state.durationtime} (still counting)</Text>
+<Text style={{marginLeft:70}}>{this.state.durationtime} (still counting)</Text>
 </View>
 <View style={{flexDirection:'row',marginTop:10}}>
-<Text style={styles.box}>FuelConsumption Standard</Text>
-<Text style={{marginLeft:40,color:'#6a83fb'}}>{this.props.carconnect.FuelConsumption} KM/L</Text>
+<View style={{flexDirection:'column'}}>
+<Text style={{color:'#6a83fb',fontSize:10,marginLeft:25}}>Fuel Consumption</Text>
+<Text style={{color:'#6a83fb',fontSize:10,marginLeft:25}}>Standard</Text>
+</View>
+<Text style={{marginLeft:40,marginTop:10}}>{this.props.carconnect.FuelConsumption} km/L</Text>
 </View>
 <View style={{flexDirection:'row',marginTop:10}}>
 <Text style={styles.box}>Speed</Text>
 {this.state.distance.length == 0
-  ? <Text style={{marginLeft:85,color:'#6a83fb'}}>- KM/H</Text>  
-  : <Text style={{marginLeft:85,color:'#6a83fb'}}>{this.state.distance[this.state.distance.length -1]} KM/H</Text>}
+  ? <Text style={{marginLeft:85}}>0.0 km/h</Text>  
+  : <Text style={{marginLeft:85}}>{this.state.distance[this.state.distance.length -1]} km/h</Text>}
 
 </View>
 </View>
@@ -560,48 +568,47 @@ if(seconds<10){
 <Text style={{color:'white',fontSize:20,marginBottom:5}}>{this.props.carconnect.Make + ' '+this.props.carconnect.Model}</Text>
 <Text style={{color:'white',fontSize:15}}>This trip is automatically starts</Text>
 </View>          
-<View style={{flexDirection:'row',flex:1,marginTop:35}}>
-<View style={{height:80,width:65,backgroundColor:'#6a83fb',alignItems:'center',justifyContent:'center'}}>
-      <Text style={{color:'white',fontSize:15, textAlign:'center'}}>Since Start</Text>
-      
-      </View>
-     
-      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
-      <Text style={styles.textfooterheader}>Duration</Text>
-      <Text style={styles.textfooter}>{this.state.durationtime}</Text>
-      </View>
-      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
-      <Text style={styles.textfooterheader}>Distance</Text>
-      <Text style={styles.textfooter}>{this.state.sum.toFixed(1)} KM</Text>
-      </View>
-      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
-      <Text style={styles.textfooterheader}>Fuel Using</Text>
-      <Text style={styles.textfooter}>{parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) } L</Text>
-      </View>
-</View>
-      <View style={{flexDirection:'row',flex:1}}>
+<View style={{flexDirection:'row',flex:1,marginTop:50}}>
 <View style={styles.zoom}>
-<View>
-  <Button title='SaveTrips' onPress={()=>this.SaveTrip()}/>
-  </View>
 <View style={{flex:1,flexDirection:'column',borderColor:'#6a83fb', borderWidth: 2,}}>
 <TouchableOpacity onPress={()=>this.Startmap()}>
   <Text style={styles.zoomtext}>Go navigate</Text>
   </TouchableOpacity>
 </View>
 <View style={{flex:1,flexDirection:'column',borderColor:'#6a83fb', borderWidth: 2,}}>
-  <Text style={{textAlign:'center',color:'#6a83fb',fontSize:10,fontWeight:'300',paddingHorizontal: 5,}}>FuelConsumtion Standard: {this.props.carconnect.FuelConsumption} KM/L</Text>
+<TouchableOpacity onPress={()=>this.SaveTrip()}>
+  <Text style={styles.zoomtext}>Save Trip</Text>
+  </TouchableOpacity>
 </View>
 </View>
+<View style={{height:80,width:65,backgroundColor:'#6a83fb',alignItems:'center',justifyContent:'center',marginTop:30}}>
+      <Text style={{color:'white',fontSize:15, textAlign:'center'}}>Since Start</Text>
+      
+      </View>
+     
+      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column',marginTop:40}]}>
+      <Text style={styles.textfooterheader}>Duration</Text>
+      <Text style={styles.textfooter}>{this.state.durationtime}</Text>
+      </View>
+      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column',marginTop:40}]}>
+      <Text style={styles.textfooterheader}>Distance</Text>
+      <Text style={styles.textfooter}>{this.state.sum.toFixed(1)} km</Text>
+      </View>
+      <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column',marginTop:40}]}>
+      <Text style={styles.textfooterheader}>Fuel Using</Text>
+      <Text style={styles.textfooter}>{parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) == 'NaN' ? '0.0':parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) } L</Text>
+      </View>
+</View>
+      <View style={{flexDirection:'row',flex:1}}>
 <View style={this.Notification()}>
 {/* <View style={{}}> */}
    {/* <View style={styles.infoWrapper}> */}
           <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
           <Image
           style={{width: 35, height: 35,marginLeft: 40}}
-          source={require('./car.png')}
+          source={require('./break.png')}
         />
-           {acceleration[acceleration.length - 1] != null ? <Text style={styles.runInfoValue}>{acceleration[acceleration.length - 1]}</Text> :<Text style={styles.runInfoValue}>-</Text> }
+           {acceleration[acceleration.length - 1] != null ? <Text style={styles.runInfoValue}>{acceleration[acceleration.length - 1]}</Text> :<Text style={styles.runInfoValue}>0</Text> }
             <Text style={styles.runInfoTitle}>%</Text>
           </View>
           <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
@@ -609,8 +616,8 @@ if(seconds<10){
           style={{width: 40, height: 40,marginLeft:40}}
           source={require('./gas.png')}
         />   
-            <Text style={styles.runInfoValue}>{fuelconsumption.toFixed(1)}</Text>
-            <Text style={styles.runInfoTitle}>KM/L</Text>
+            <Text style={styles.runInfoValue}>{fuelconsumption.toFixed(1)=='NaN' ? '0.0' : fuelconsumption.toFixed(1)}</Text>
+            <Text style={styles.runInfoTitle}>km/L</Text>
           </View>
           <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
           <Image
@@ -618,7 +625,7 @@ if(seconds<10){
           source={require('./carbon.png')}
         />  
              <Text style={styles.runInfoValue}>{parseFloat(co2 / 1000).toFixed(2)}</Text> 
-            <Text style={styles.runInfoTitle}>KG</Text>
+            <Text style={styles.runInfoTitle}>kg</Text>
           </View>
         </View>
 
@@ -680,7 +687,7 @@ if(seconds<10){
           // onTouchOutside={() => this.setState({dialogVisible: false})} 
 
         >
-          <View>
+          <View style={{marginBottom:20}}>
             <Button title='Yes' onPress={()=>this.setState({Modalkeepdata:false})}/>
           </View>
           <View>
@@ -811,13 +818,12 @@ textfooterheader:{
 },
 textfooter:{
   textAlign:'center',
-    color:'#6a83fb',
-    fontSize:10,
+    fontSize:15,
 },
 zoom:{
   position:'absolute',
     left: 0,
-    bottom:145,
+    bottom:98,
     right:0,
     flexDirection: 'row',
     flex:1,
@@ -828,6 +834,7 @@ zoomtext:{
   textAlign:'center',
     color:'#6a83fb',
     fontSize:15,
+    marginTop:5,
     fontWeight:'300',
     paddingHorizontal: 5,
     

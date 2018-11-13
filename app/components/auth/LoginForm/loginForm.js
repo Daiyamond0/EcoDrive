@@ -28,7 +28,7 @@ export class LoginFormComponent extends Component {
   render() {
     const { login, loading } = this.props;
     return (
-      <KeyboardAwareScrollView style={styles.scrollView}>
+      <View>
         <View style={styles.imageBox}>
           <Image style={styles.image} source={require('./ecodrive.png')}/>
         </View>
@@ -45,7 +45,7 @@ export class LoginFormComponent extends Component {
                  
                   ></Button> }
         </View>
-      </KeyboardAwareScrollView>
+        </View>
     );
   }
   

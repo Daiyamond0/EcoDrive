@@ -929,9 +929,9 @@ if(seconds<10){
         
   { this.state.destinate.latitude != 0 && this.state.destinate.longitude != 0 && this.state.hideinitmarker == false
   ? 
-  <View style={{ flexDirection: 'row' }}>
+  <View style={{ flexDirection: 'row',width:200 }}>
   <Button
-            title='ZoomIN'
+            title='ZoomINN'
             onPress={() => this.fitBottomMarkers()}
             style={[styles.bubble, styles.button]}
           />
@@ -965,9 +965,9 @@ if(seconds<10){
           <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
           <Image
           style={{width: 35, height: 35,marginLeft: 40}}
-          source={require('./car.png')}
+          source={require('./break.png')}
         />
-           {acceleration[acceleration.length - 1] != null ? <Text style={styles.runInfoValue}>{acceleration[acceleration.length - 1]}</Text> :<Text style={styles.runInfoValue}>-</Text> }
+           {acceleration[acceleration.length - 1] != null ? <Text style={styles.runInfoValue}>{acceleration[acceleration.length - 1]}</Text> :<Text style={styles.runInfoValue}>0</Text> }
             <Text style={styles.runInfoTitle}>%</Text>
           </View>
           <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
@@ -975,8 +975,8 @@ if(seconds<10){
           style={{width: 40, height: 40,marginLeft:40}}
           source={require('./gas.png')}
         />   
-            <Text style={styles.runInfoValue}>{fuelconsumption.toFixed(1)}</Text>
-            <Text style={styles.runInfoTitle}>KM/L</Text>
+            <Text style={styles.runInfoValue}>{fuelconsumption.toFixed(1) == 'NaN' ? '0.0' : fuelconsumption.toFixed(1)}</Text>
+            <Text style={styles.runInfoTitle}>km/L</Text>
           </View>
           <View style={[styles.runInfoWrapper,{flex:1,flexDirection:'column'}]}>
           <Image
@@ -984,7 +984,7 @@ if(seconds<10){
           source={require('./carbon.png')}
         />  
              <Text style={styles.runInfoValue}>{parseFloat(co2 / 1000).toFixed(2)}</Text> 
-            <Text style={styles.runInfoTitle}>KG</Text>
+            <Text style={styles.runInfoTitle}>kg</Text>
           </View>
         </View>
 
@@ -1004,7 +1004,7 @@ if(seconds<10){
       </View>
       <View style={{flex:1,flexDirection:'column'}}>
       <Text style={styles.textfooterheader}>Fuel Using</Text>
-      <Text style={styles.textfooter}>{parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) } L</Text>
+      <Text style={styles.textfooter}>{parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) == 'NaN' ? '0.0' : parseFloat(totalfueluse[totalfueluse.length - 1]).toFixed(1) } L</Text>
       </View>
      
             </View>
@@ -1137,13 +1137,13 @@ const styles = StyleSheet.create({
   },
   bubble: {
     backgroundColor: 'rgba(255,255,255,0.7)',
-    paddingHorizontal: 18,
+    paddingHorizontal: 50,
     paddingVertical: 12,
     borderRadius: 20
   },
   button: {
     marginTop: 12,
-    paddingHorizontal: 12,
+    paddingHorizontal: 50,
     alignItems: 'center',
     marginHorizontal: 10
   },

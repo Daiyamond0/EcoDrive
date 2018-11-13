@@ -90,13 +90,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   s2:{
-    
     marginLeft:30,
     marginRight:30,
     marginTop: 10,
    width:'70%',
     borderRadius:10,
-    backgroundColor: '#6a83fb',
+    backgroundColor: '#7a7a7a',
     flexDirection: 'row',
     height: 33,
     alignItems: 'center',

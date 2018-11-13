@@ -78,7 +78,7 @@ componentWillMount = () => {
    <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Model</Text>
    </View>
    <View style={styles.box2}>    
-   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.props.carinfo.Model}</Text>
+   <Text style={{fontSize:11,color:'white',marginLeft:10}}>{this.props.carinfo.Model}</Text>
    </View>
    </View>
    </View>
@@ -88,7 +88,7 @@ componentWillMount = () => {
    </View>
    <View style={{flexDirection:'row',marginTop:15,alignSelf:'center'}}>
    <View style={styles.box1}>
-   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>FuelType</Text>
+   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Type</Text>
    </View>
    <View style={styles.box2}>
    <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.props.carinfo.FuelType.FuelType}</Text>
@@ -96,7 +96,7 @@ componentWillMount = () => {
    </View>
    <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
    <View style={styles.box1}>
-   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Fuel Capacity</Text>
+   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Capacity</Text>
    </View>
    <View style={styles.box2}>
    <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.props.carinfo.FuelCapacity} L</Text>
@@ -104,15 +104,15 @@ componentWillMount = () => {
    </View>
    <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
    <View style={styles.box1}>
-   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Fuel Consumption</Text>
+   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Consumption</Text>
    </View>
    <View style={styles.box2}>
-   <Text style={{fontSize:15,color:'white',marginLeft:10}}>{this.props.carinfo.FuelConsumption} km/L</Text>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.props.carinfo.FuelConsumption} km/L</Text>
    </View>
    </View>
    <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
    <View style={styles.box3}>
-   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Accual rate</Text>
+   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Actucal Rate</Text>
    </View>
    <View style={styles.box4}>
    <Text style={{fontSize:13,color:'white',marginLeft:10}}>{parseFloat(this.state.sumFuelrate / this.state.Fuelratelength).toFixed(2)} km/L</Text>
@@ -120,7 +120,7 @@ componentWillMount = () => {
    </View>
    <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
    <View style={styles.box3}>
-   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total Fuel used</Text>
+   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total Used</Text>
    </View>
    <View style={styles.box4}>
    <Text style={{fontSize:13,color:'white',marginLeft:10}}>{parseFloat(this.state.sumFueluse).toFixed(2) } L</Text>
@@ -133,18 +133,18 @@ componentWillMount = () => {
    </View>
    <View style={{flexDirection:'row',marginTop:15,alignSelf:'center'}}>
    <View style={styles.box1}>
-   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>CO2 Emission</Text>
+   <Text style={{fontSize:13,color:'#6a83fb',marginLeft:15}}>Emission</Text>
    </View>
    <View style={styles.box2}>       
-   <Text style={{fontSize:13,color:'white',marginLeft:10}}> {((this.props.carinfo.FuelType.CO2Emission/this.props.carinfo.FuelConsumption)*100).toFixed(0)} G/KM</Text>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}> {((this.props.carinfo.FuelType.CO2Emission/this.props.carinfo.FuelConsumption)*100).toFixed(0)} g/km</Text>
    </View>
    </View>
    <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
    <View style={styles.box3}>       
-   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total CO2 Emission</Text>
+   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total Emission</Text>
    </View>
    <View style={styles.box4}>       
-   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{ parseFloat(this.state.sumCo2).toFixed(2) } KG</Text>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{ parseFloat(this.state.sumCo2).toFixed(2) } kg</Text>
    </View>
    </View>
    </View>
@@ -154,10 +154,10 @@ componentWillMount = () => {
    </View>
    <View style={{flexDirection:'row',marginTop:15,alignSelf:'center'}}>
    <View style={styles.box3}>       
-   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total Travel Distance</Text>
+   <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total Distance</Text>
    </View>
    <View style={styles.box4}>      
-   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.state.sumDistance} KM</Text>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.state.sumDistance} km</Text>
    </View>
    </View>
    </View>

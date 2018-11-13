@@ -165,7 +165,7 @@ colornoti(){
                     <View style={{justifyContent:'center',alignItems:'center',alignSelf:'center',marginTop:20,height:40,width:250,borderRadius:5,backgroundColor:'#6a83fb'}}>
                         <Text style={{color:'white',fontSize:13}}>{this.props.trips.Date}</Text>
                     </View>
-                    <View style={{marginLeft:10,width:340,marginTop:10,height:1115,backgroundColor:'#f2f2f2'}}>
+                    <View style={{marginLeft:10,width:340,marginTop:10,height:1060,backgroundColor:'#f2f2f2'}}>
                         <Text style={{color:'black',fontSize:20,marginLeft:20,marginTop:10}}>{this.props.trips.Time} - {this.props.trips.Timeend}</Text>
                         <View>
                             <View style={{flex:1,flexDirection:'row'}}>
@@ -174,7 +174,7 @@ colornoti(){
                                     source={require('./place.png')}
                                     />
                                 <View style={{height:30,width:240,marginLeft:10,marginTop:10,backgroundColor:'white',borderColor:'#cccccc',borderRadius:5,borderWidth:0.5}}>
-                                <Text style={{fontSize:15,color:'#6a83fb',alignItems:'center',alignContent:'center'}}>{this.props.trips.Source}</Text>
+                                <Text style={{fontSize:15,color:'#6a83fb',marginLeft:10,marginTop:5,alignItems:'center',alignContent:'center'}}>{this.props.trips.Source}</Text>
                                 </View>
                             </View>
                             <View style={{flex:1,flexDirection:'row',marginTop:50}}>
@@ -183,7 +183,7 @@ colornoti(){
                                     source={require('./gps.png')}
                                 />
                                 <View style={{height:30,width:240,marginLeft:10,marginTop:10,backgroundColor:'white',borderColor:'#cccccc',borderRadius:5,borderWidth:0.5}}>
-                                <Text style={{fontSize:15,color:'#6a83fb',alignItems:'center',alignContent:'center'}}>{this.props.trips.Destination}</Text>
+                                <Text style={{fontSize:15,color:'#6a83fb',alignItems:'center',marginLeft:10,marginTop:5,alignContent:'center'}}>{this.props.trips.Destination}</Text>
                                 </View>
                             </View>
                             <View style={{flex:1,marginTop:65}}>
@@ -191,7 +191,7 @@ colornoti(){
                                     <View style={{flex:1,flexDirection:'row',marginLeft:40,marginTop:10}}>
                                         <View style={{flexDirection:'column'}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:5}}>Brand</Text>
-                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5}}>{this.props.trips.Car.Make}</Text>
+                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5}}>{this.props.trips.Car.Make}</Text>
                                         </View>
                                         <Image
                                             style={{width: 25, height: 25,marginLeft: 55,marginTop:12}}
@@ -199,7 +199,7 @@ colornoti(){
                                         />
                                         <View style={{flexDirection:'column'}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:60}}>Model</Text>
-                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:50}}>{this.props.trips.Car.Model}</Text>
+                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:50}}>{this.props.trips.Car.Model}</Text>
                                         </View>
                                     </View>
                                     <View style={{flex:1,flexDirection:'row',marginLeft:28,marginTop:10}}>
@@ -209,18 +209,18 @@ colornoti(){
                                         />
                                         <View style={{flexDirection:'column'}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:5}}>Standard</Text>
-                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:15}}>{this.props.trips.Car.FuelConsumption}</Text>
-                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:15}}>km/L</Text>
+                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:15}}>{this.props.trips.Car.FuelConsumption}</Text>
+                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:15}}>km/L</Text>
                                         </View>
                                        
                                         <Image
-                                            style={{width: 25, height: 25,marginLeft: 60,marginTop:12}}
+                                            style={{width: 25, height: 25,marginLeft: 80,marginTop:12}}
                                             source={require('./co2.png')}
                                         />
                                         <View style={{flexDirection:'column'}}>
-                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:15}}>Standard</Text>
-                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:15}}>{((this.props.trips.Car.FuelType.CO2Emission/this.props.trips.Car.FuelConsumption)*100).toFixed(0)}</Text>
-                                            <Text style={{fontSize:11,color:'#ff4d88',marginTop:5,marginLeft:15}}>g/km</Text>
+                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:10}}>Standard</Text>
+                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:15}}>{((this.props.trips.Car.FuelType.CO2Emission/this.props.trips.Car.FuelConsumption)*100).toFixed(0)}</Text>
+                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:15}}>g/km</Text>
                                         </View>
                                     </View>
                                 </View>   
@@ -238,8 +238,8 @@ colornoti(){
                                                 <Text style={{fontSize:10,color:'#6a83fb'}}>Distance</Text>
                                             </View>
                                             <View style={{flexDirection:'column',marginLeft:35}}>
-                                                <Text style={{fontSize:15,color:'#ff4d88'}}>{this.props.trips.Distance}</Text>
-                                                <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>KM</Text>
+                                                <Text style={{fontSize:15,color:'#f000ba'}}>{this.props.trips.Distance}</Text>
+                                                <Text style={{fontSize:10,color:'#f000ba',marginTop:5}}>KM</Text>
                                             </View>
                                         </View>        
                                     </View>
@@ -253,8 +253,8 @@ colornoti(){
                                             <Text style={{fontSize:10,color:'#6a83fb'}}>Duration</Text>
                                         </View>
                                         <View style={{flexDirection:'column'}}>
-                                            <Text style={{fontSize:15,color:'#ff4d88',marginLeft:5}}>{this.props.trips.Duration}</Text>
-                                            <Text style={{fontSize:10,color:'#ff4d88',marginTop:5,marginLeft:25}}>mins</Text>
+                                            <Text style={{fontSize:15,color:'#f000ba',marginLeft:5}}>{this.props.trips.Duration}</Text>
+                                            <Text style={{fontSize:10,color:'#f000ba',marginTop:5,marginLeft:25}}>mins</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -263,32 +263,33 @@ colornoti(){
                             <View style={{flex:1,marginTop:65}}>
                                     <View style={{flexDirection:'row'}}>
                                         <View style={this.colornoti()}>
-                                            <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:10}}>
+                                            <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:5}}>
                                             <View style={{flexDirection:'column',marginLeft:2}}>        
                                             <Image
                                             style={{width: 25, height: 25,marginTop:1,marginLeft:18}}
                                             source={require('./gas.png')}
                                             />
                                             <Text style={{fontSize:8,color:'#6a83fb'}}>Fuel Consumption</Text>
+                                            <Text style={{fontSize:8,color:'#6a83fb',marginLeft:20}}>Rate</Text>                                            
                                             </View>
                                             <View style={{flexDirection:'column',marginLeft:20}}>
-                                            <Text style={{fontSize:15,color:'#ff4d88'}}>{this.props.trips.Fuelrate}</Text>
-                                            <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>KM/L</Text>
+                                            <Text style={{fontSize:15,color:'#f000ba'}}>{this.props.trips.Fuelrate}</Text>
+                                            <Text style={{fontSize:10,color:'#f000ba',marginTop:5}}>KM/L</Text>
                                             </View>
                                             </View>        
                                         </View>
                                         <View style={{width:142.5,marginLeft:5,height:60,backgroundColor:'white',justifyContent:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
                                             <View style={{flex:1,flexDirection:'row',marginLeft:10,marginTop:10}}>
-                                            <View style={{flexDirection:'column',marginLeft:15}}>        
+                                            <View style={{flexDirection:'column',marginLeft:10}}>        
                                             <Image
                                             style={{width: 25, height: 25,marginTop:1,marginLeft:5}}
                                             source={require('./co2.png')}
                                             />
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:8}}>CO2</Text>
                                             </View>
-                                            <View style={{flexDirection:'column',marginLeft:35}}>
-                                            <Text style={{fontSize:15,color:'#ff4d88'}}>{this.props.trips.CO2}</Text>
-                                            <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>KG</Text>
+                                            <View style={{flexDirection:'column',marginLeft:25}}>
+                                            <Text style={{fontSize:15,color:'#f000ba'}}>{this.props.trips.CO2}</Text>
+                                            <Text style={{fontSize:10,color:'#f000ba',marginTop:5,marginLeft:15}}>KG</Text>
                                             </View>
                                             </View>
                                         </View>
@@ -306,8 +307,8 @@ colornoti(){
                                         <Text style={{fontSize:8,color:'#6a83fb'}}>Fuel Volume Used</Text>
                                         </View>
                                         <View style={{flexDirection:'column',marginLeft:20}}>
-                                        <Text style={{fontSize:15,color:'#ff4d88'}}>{this.props.trips.Fueluse}</Text>
-                                        <Text style={{fontSize:10,color:'#ff4d88',marginTop:5,marginLeft:5}}>L</Text>
+                                        <Text style={{fontSize:15,color:'#f000ba'}}>{this.props.trips.Fueluse}</Text>
+                                        <Text style={{fontSize:10,color:'#f000ba',marginTop:5,marginLeft:5}}>L</Text>
                                         </View>
                                         </View>        
                                         </View>
@@ -320,34 +321,35 @@ colornoti(){
                                         />
                                         <Text style={{fontSize:8,color:'#6a83fb',marginLeft:2}}>Average Speed</Text>
                                         </View>
-                                        <View style={{flexDirection:'column',marginLeft:20}}>
-                                        <Text style={{fontSize:15,color:'#ff4d88'}}>{this.props.trips.speedavg}</Text>
-                                        <Text style={{fontSize:10,color:'#ff4d88',marginTop:5}}>km/h</Text>
+                                        <View style={{flexDirection:'column',marginLeft:12}}>
+                                        <Text style={{fontSize:15,color:'#f000ba'}}>{this.props.trips.speedavg}</Text>
+                                        <Text style={{fontSize:10,color:'#f000ba',marginTop:5,marginLeft:8}}>km/h</Text>
                                         </View>
                                         </View>
                                         </View>
                                     </View>        
                                 </View>
                                 <View style={{marginLeft:25,marginTop:70}}>
-                                    <Text style={{fontSize:15,color:'black'}}>Average Trips Comparing</Text>
+                                    <Text style={{fontSize:15,color:'black'}}>Compare to Average</Text>
                                 </View>
                                 <View style={{flex:1,marginTop:10}}>
                                     <View style={{width:290,height:60,backgroundColor:'white',justifyContent:'center',alignSelf:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
-                                    <View style={{flex:1,flexDirection:'row',marginLeft:20,marginTop:10}}>
+                                    <View style={{flex:1,flexDirection:'row',marginLeft:20,marginTop:5}}>
                                     <View style={{flexDirection:'column',marginLeft:2}}>        
                                     <Image
                                     style={{width: 25, height: 25,marginTop:1,marginLeft:18}}
                                     source={require('./gas.png')}
                                     />
                                     <Text style={{fontSize:8,color:'#6a83fb'}}>Fuel Consumption</Text>
+                                    <Text style={{fontSize:8,color:'#6a83fb',marginLeft:20}}>Rate</Text>
                                     </View>
                                     <View style={{flexDirection:'column',marginLeft:30}}>
                                     <Text style={{fontSize:10,color:'#6a83fb',marginLeft:3}}>This Trip</Text>
-                                    <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{this.props.trips.Fuelrate} KM/L</Text>
+                                    <Text style={{fontSize:15,color:'#f000ba',marginTop:5}}>{this.props.trips.Fuelrate} km/L</Text>
                                     </View>
-                                    <View style={{flexDirection:'column',marginLeft:30}}>
-                                    <Text style={{fontSize:10,color:'#6a83fb'}}>Average trips</Text>
-                                    <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgfuelrate / this.state.lengthfuelrate).toFixed(2)} KM/L</Text>
+                                    <View style={{flexDirection:'column',marginLeft:35}}>
+                                    <Text style={{fontSize:10,color:'#6a83fb'}}>Average</Text>
+                                    <Text style={{fontSize:15,color:'#f000ba',marginTop:5}}>{parseFloat(this.state.avgfuelrate / this.state.lengthfuelrate).toFixed(2)} km/L</Text>
                                     </View>
                                     </View>
                                     </View>        
@@ -364,11 +366,11 @@ colornoti(){
                                         </View>
                                         <View style={{flexDirection:'column',marginLeft:50}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:3}}>This Trip</Text>
-                                            <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{this.props.trips.CO2} KG</Text>
+                                            <Text style={{fontSize:15,color:'#f000ba',marginTop:5}}>{this.props.trips.CO2} kg</Text>
                                         </View>
                                         <View style={{flexDirection:'column',marginLeft:25}}>
-                                            <Text style={{fontSize:10,color:'#6a83fb'}}>Average trips</Text>
-                                            <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgCo2 / this.state.lengthCo2).toFixed(1)} KG</Text>
+                                            <Text style={{fontSize:10,color:'#6a83fb'}}>Average</Text>
+                                            <Text style={{fontSize:15,color:'#f000ba',marginTop:5}}>{parseFloat(this.state.avgCo2 / this.state.lengthCo2).toFixed(1)} kg</Text>
                                         </View>
                                         </View>
                                     </View>        
@@ -385,11 +387,11 @@ colornoti(){
                                         </View>
                                         <View style={{flexDirection:'column',marginLeft:40}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:3}}>This Trip</Text>
-                                            <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{this.props.trips.speedavg} KM/H</Text>
+                                            <Text style={{fontSize:15,color:'#f000ba',marginTop:5}}>{this.props.trips.speedavg} km/h</Text>
                                         </View>
-                                        <View style={{flexDirection:'column',marginLeft:30}}>
-                                            <Text style={{fontSize:10,color:'#6a83fb'}}>Average trips</Text>
-                                            <Text style={{fontSize:15,color:'#ff4d88',marginTop:5}}>{parseFloat(this.state.avgspeed / this.state.lengthspeed).toFixed(1) } KM/H</Text>
+                                        <View style={{flexDirection:'column',marginLeft:12}}>
+                                            <Text style={{fontSize:10,color:'#6a83fb'}}>Average</Text>
+                                            <Text style={{fontSize:15,color:'#f000ba',marginTop:5}}>{parseFloat(this.state.avgspeed / this.state.lengthspeed).toFixed(1) } km/h</Text>
                                         </View>
                                     </View>
                                     </View>        
@@ -523,7 +525,7 @@ colornoti(){
                         data={this.props.trips.fuelraterealtime}
                         contentInset={{ top: 20, bottom: 20 }}
                         curve={ shape.curveNatural }
-                        svg={{ fill: 'green' , }}
+                        svg={{ fill: '#90d1fa' , }}
                         gridMin={0}  
                         gridMax={40}
                     >
@@ -534,6 +536,7 @@ colornoti(){
                 </ScrollView>
             </Tab>
         </Tabs> 
+        <Text></Text>
       </Container>
     )
   }
@@ -544,7 +547,7 @@ const styles = StyleSheet.create({
     circle:{
         width: 20,
         height: 20,
-        backgroundColor: 'green',
+        backgroundColor: '#90d1fa',
         borderRadius: 10,
         marginLeft:10
     }
