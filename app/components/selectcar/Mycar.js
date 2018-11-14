@@ -123,7 +123,7 @@ export class MyCar extends React.Component {
                           {/* <TouchableOpacity onPress={Actions.editcar}> */}
                             <Image
                                 style={{width: 30, height: 30,alignItems:'center',paddingLeft:20}}
-                                source={require('../Image/Edit.png')}
+                                source={require('../Image/edit.png')}
                                   
                             />
                           </TouchableOpacity>

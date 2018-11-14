@@ -5,6 +5,7 @@ import { LoadingIndicator } from '../../loadingIndicator/loadingIndicator';
 import { styles } from '../BasicForm/styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
+import MapViewDirections from '../../../../node_modules/react-native-maps-directions';
 
 export class SignupFormComponent extends Component {
 
@@ -21,17 +22,17 @@ export class SignupFormComponent extends Component {
   render() {
     const { signup, loading } = this.props;
     return (
-      <KeyboardAwareScrollView style={styles.scrollView}>
+      <View style={styles.scrollView}>
         <View style={styles.imageBox}>
-          <Image style={styles.image} source={{ uri: 'https://appjoy.org/wp-content/uploads/2016/06/firebase-authentication-logo1.png' }}/>
+          <Image style={styles.image} source={require('../LoginForm/ecodrive.png')}/>
         </View>
         <View style={styles.loginBox}>
-            {loading ? <LoadingIndicator color="#ffffff"
+            {loading ? <LoadingIndicator color="#009900"
                                          size="large"/> :
               <BasicFormComponent buttonTitle={'signup'}
                                   onButtonPress={signup} /> }
         </View>
-      </KeyboardAwareScrollView>
+      </View>
     );
   }
 }

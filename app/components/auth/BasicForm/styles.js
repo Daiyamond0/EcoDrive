@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   },
   imageBox: {
     alignItems: 'center',
-    marginTop: 20
+    marginTop: 50
   },
   image: {
     width: 150,

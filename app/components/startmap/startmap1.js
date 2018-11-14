@@ -419,7 +419,7 @@ if(seconds<10){
     const totalfueluse = this.state.totalfueluse
     const fuelconsumption = this.state.sum.toFixed(1) / totalfueluse[totalfueluse.length - 1] 
     const acceleration = this.state.acceleration
-    if( fuelconsumption < (this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)) -0.5 && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
+    if( fuelconsumption < (this.props.carconnect.FuelConsumption- (this.props.carconnect.FuelConsumption * 0.2)) -0.2 && fuelconsumption > this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)){
       this.setState({red:true})
       this.setState({green:true})
       if(this.state.orange == true){
@@ -431,7 +431,7 @@ if(seconds<10){
           
           
         }
-    }if(fuelconsumption  < (this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)) -0.5 && fuelconsumption > 0){
+    }if(fuelconsumption  < (this.props.carconnect.FuelConsumption - (this.props.carconnect.FuelConsumption * 0.25)) -0.2 && fuelconsumption > 0){
       this.setState({orange:true})
       if(this.state.red == true){
         this.setState({red:false})

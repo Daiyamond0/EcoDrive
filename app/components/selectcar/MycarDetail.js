@@ -115,7 +115,7 @@ componentWillMount = () => {
    <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Actucal Rate</Text>
    </View>
    <View style={styles.box4}>
-   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{parseFloat(this.state.sumFuelrate / this.state.Fuelratelength).toFixed(2)} km/L</Text>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{parseFloat(this.state.sumFuelrate / this.state.Fuelratelength).toFixed(2) == 'NaN' ? '0' :parseFloat(this.state.sumFuelrate / this.state.Fuelratelength).toFixed(2)} km/L</Text>
    </View>
    </View>
    <View style={{flexDirection:'row',marginTop:5,alignSelf:'center'}}>
@@ -123,7 +123,7 @@ componentWillMount = () => {
    <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total Used</Text>
    </View>
    <View style={styles.box4}>
-   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{parseFloat(this.state.sumFueluse).toFixed(2) } L</Text>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{parseFloat(this.state.sumFueluse).toFixed(2) == 'NaN' ? '0':parseFloat(this.state.sumFueluse).toFixed(2) } L</Text>
    </View>
    </View>
    </View>
@@ -144,7 +144,7 @@ componentWillMount = () => {
    <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total Emission</Text>
    </View>
    <View style={styles.box4}>       
-   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{ parseFloat(this.state.sumCo2).toFixed(2) } kg</Text>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{ parseFloat(this.state.sumCo2).toFixed(2) == 'NaN' ? '0':  parseFloat(this.state.sumCo2).toFixed(2)} kg</Text>
    </View>
    </View>
    </View>
@@ -157,7 +157,7 @@ componentWillMount = () => {
    <Text style={{fontSize:13,color:'#ff4d88',marginLeft:15}}>Total Distance</Text>
    </View>
    <View style={styles.box4}>      
-   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.state.sumDistance} km</Text>
+   <Text style={{fontSize:13,color:'white',marginLeft:10}}>{this.state.sumDistance.length == 0 ? '0':this.state.sumDistance} km</Text>
    </View>
    </View>
    </View>
