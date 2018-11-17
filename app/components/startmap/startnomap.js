@@ -513,9 +513,13 @@ if(seconds<10){
     )
   }
   Startmap(){
-    
-    Actions.replace('startmap')
+    if(this.state.distance[this.state.distance.length -1] > 0){
+      alert('Stop Car first')
+    }else{
+      Actions.replace('startmap')
     this.ref.off()
+    }
+    
   }
  
   render () {

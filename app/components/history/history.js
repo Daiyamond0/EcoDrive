@@ -279,17 +279,17 @@ export class History extends React.Component {
               <View style={{flex:1,marginTop:65}}>
                                 <View style={{width:290,height:60,backgroundColor:'white',justifyContent:'center',alignSelf:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb',marginRight:18,}}>
                                     <View style={{flex:1,flexDirection:'row',marginLeft:30,marginTop:10}}>
-                                        <View style={{flexDirection:'column'}}>
+                                        <View style={{flexDirection:'column',marginLeft:15}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:2}}>Brand</Text>
                                             <Text style={{fontSize:11,color:'#f000ba',marginTop:5}}>{Object(item).Car.Make}</Text>
                                         </View>
                                         <Image
-                                            style={{width: 25, height: 25,marginLeft: 65,marginTop:12}}
+                                            style={{width: 25, height: 25,marginLeft: 40,marginTop:12}}
                                             source={require('./cars.png')}
                                         />
                                         <View style={{flexDirection:'column'}}>
-                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:70}}>Model</Text>
-                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:50}}>{Object(item).Car.Model}</Text>
+                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:50}}>Model</Text>
+                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:25}}>{Object(item).Car.Model}</Text>
                                         </View>
                                     </View>
                                 </View>        

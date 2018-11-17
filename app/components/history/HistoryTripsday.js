@@ -165,7 +165,7 @@ colornoti(){
                     <View style={{justifyContent:'center',alignItems:'center',alignSelf:'center',marginTop:20,height:40,width:250,borderRadius:5,backgroundColor:'#6a83fb'}}>
                         <Text style={{color:'white',fontSize:13}}>{this.props.trips.Date}</Text>
                     </View>
-                    <View style={{marginLeft:10,width:340,marginTop:10,height:1060,backgroundColor:'#f2f2f2'}}>
+                    <View style={{marginLeft:10,width:340,marginTop:10,height:990,backgroundColor:'#f2f2f2'}}>
                         <Text style={{color:'black',fontSize:20,marginLeft:20,marginTop:10}}>{this.props.trips.Time} - {this.props.trips.Timeend}</Text>
                         <View>
                             <View style={{flex:1,flexDirection:'row'}}>
@@ -188,28 +188,28 @@ colornoti(){
                             </View>
                             <View style={{flex:1,marginTop:65}}>
                                 <View style={{width:290,height:140,backgroundColor:'white',justifyContent:'center',alignSelf:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb',flexDirection:'column'}}>
-                                    <View style={{flex:1,flexDirection:'row',marginLeft:40,marginTop:10}}>
-                                        <View style={{flexDirection:'column'}}>
+                                    <View style={{flex:1,flexDirection:'row',marginLeft:30,marginTop:10}}>
+                                        <View style={{flexDirection:'column',marginLeft:15}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:5}}>Brand</Text>
                                             <Text style={{fontSize:11,color:'#f000ba',marginTop:5}}>{this.props.trips.Car.Make}</Text>
                                         </View>
                                         <Image
-                                            style={{width: 25, height: 25,marginLeft: 55,marginTop:12}}
+                                            style={{width: 25, height: 25,marginLeft: 40,marginTop:12}}
                                             source={require('./cars.png')}
                                         />
                                         <View style={{flexDirection:'column'}}>
-                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:60}}>Model</Text>
-                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:50}}>{this.props.trips.Car.Model}</Text>
+                                            <Text style={{fontSize:10,color:'#6a83fb',marginLeft:50}}>Model</Text>
+                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:25}}>{this.props.trips.Car.Model}</Text>
                                         </View>
                                     </View>
-                                    <View style={{flex:1,flexDirection:'row',marginLeft:28,marginTop:10}}>
+                                    <View style={{flex:1,flexDirection:'row',marginLeft:28,marginTop:10,marginBottom:10}}>
                                     <Image
                                             style={{width: 25, height: 25,marginTop:12}}
                                             source={require('./gas.png')}
                                         />
                                         <View style={{flexDirection:'column'}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:5}}>Standard</Text>
-                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:15}}>{this.props.trips.Car.FuelConsumption}</Text>
+                                            <Text style={{fontSize:15,color:'#f000ba',marginTop:5,marginLeft:15}}>{this.props.trips.Car.FuelConsumption}</Text>
                                             <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:15}}>km/L</Text>
                                         </View>
                                        
@@ -219,7 +219,7 @@ colornoti(){
                                         />
                                         <View style={{flexDirection:'column'}}>
                                             <Text style={{fontSize:10,color:'#6a83fb',marginLeft:10}}>Standard</Text>
-                                            <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:15}}>{((this.props.trips.Car.FuelType.CO2Emission/this.props.trips.Car.FuelConsumption)*100).toFixed(0)}</Text>
+                                            <Text style={{fontSize:15,color:'#f000ba',marginTop:5,marginLeft:15}}>{((this.props.trips.Car.FuelType.CO2Emission/this.props.trips.Car.FuelConsumption)*100).toFixed(0)}</Text>
                                             <Text style={{fontSize:11,color:'#f000ba',marginTop:5,marginLeft:15}}>g/km</Text>
                                         </View>
                                     </View>
@@ -354,7 +354,7 @@ colornoti(){
                                     </View>
                                     </View>        
                                 </View>
-                                <View style={{flex:1,marginTop:65}}>
+                                {/* <View style={{flex:1,marginTop:65}}>
                                     <View style={{width:290,height:60,backgroundColor:'white',justifyContent:'center',alignSelf:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
                                         <View style={{flex:1,flexDirection:'row',marginLeft:20,marginTop:10}}>
                                         <View style={{flexDirection:'column',marginLeft:2}}>        
@@ -374,7 +374,7 @@ colornoti(){
                                         </View>
                                         </View>
                                     </View>        
-                                </View>
+                                </View> */}
                                 <View style={{flex:1,marginTop:65}}>
                                     <View style={{width:290,height:60,backgroundColor:'white',justifyContent:'center',alignSelf:'center',borderRadius:5,borderWidth:2,borderColor:'#6a83fb'}}>
                                     <View style={{flex:1,flexDirection:'row',marginLeft:20,marginTop:10}}>
